@@ -17,9 +17,16 @@ function App() {
         >
           Learn React
         </a>
+        <button style={{ width: "100px", height: "50px", backgroundColor: 'blue'}} onClick={callApi}>Call API</button>
       </header>
     </div>
   );
+}
+
+function callApi() {
+  fetch('https://quaestio-be.azurewebsites.net/api/v1/test', { method: 'GET' })
+    .then(data => data.json()) // Parsing the data into a JavaScript object
+    .then(json => alert(JSON.stringify(json))) // Displaying the stringified data in an alert popup
 }
 
 export default App;
