@@ -17,7 +17,7 @@ function App() {
         >
           Learn React
         </a>
-        <button style={{ width: "100px", height: "50px", backgroundColor: 'blue'}} onClick={callApi}>Call API</button>
+        <button style={{ width: "100px", height: "50px", backgroundColor: 'white'}} onClick={callApi}>Call API</button>
       </header>
     </div>
   );
