@@ -78,6 +78,7 @@ function SearchBox({ setData, setError }) {
                   <option value="Ferrari">Ferrari</option>
                   <option value="Lamborghini">Lamborghini</option>
                   <option value="Porsche">Porsche</option>
+                  <option value="Quantum">Quantum</option>
                 </select>
               </div>
             </div>
