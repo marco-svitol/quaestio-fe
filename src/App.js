@@ -1,32 +1,23 @@
-import logo from './logo.svg';
-import './App.css';
+import React, { useState } from "react";
+import SearchBox from "./SearchBox";
+import NavBar from "./NavBar";
+import ReactGrid from "./ReactGrid";
+import "bootstrap/dist/js/bootstrap.bundle.min.js";
+import "bootstrap/dist/css/bootstrap.min.css";
 
 function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-        <button style={{ width: "100px", height: "50px", backgroundColor: 'white'}} onClick={callApi}>Call API</button>
-      </header>
-    </div>
-  );
+const [data, setData] = useState([]);
+const [error, setError] = useState(null);
+return (
+<div className="App">
+<NavBar />
+<div className="big-div">
+<div>
+<SearchBox setData={setData} setError={setError} />
+</div>
+{ data.length > 0 && <ReactGrid data={data} error={error} /> }
+</div>
+</div>
+);
 }
-
-function callApi() {
-  fetch('https://quaestio-be.azurewebsites.net/api/v1/test', { method: 'GET' })
-    .then(data => data.json()) // Parsing the data into a JavaScript object
-    .then(json => alert(JSON.stringify(json))) // Displaying the stringified data in an alert popup
-}
-
 export default App;
