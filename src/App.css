@@ -189,13 +189,14 @@ input[type="checkbox"] {
 .results-table-grid-container {
   margin-top: 1.1rem;
   text-align: center;
-  margin-left: 5.5rem;
+  margin-left: 1rem;
   background-color: #eeeeef;
+  max-width: 10%;
 }
 
 .main-table {
   background-color: #f8f8f8;
-  margin-left: 4rem;
+  margin-left: 1rem;
 }
 
 .table-cell td {
@@ -311,18 +312,22 @@ input[type="checkbox"] {
 }
 
 @media (min-width: 1400px) {
-  .results-table-grid-container {
-    margin-left: 0rem;
-  }
+
   .page-selector {
-    margin-right: 4rem;
+    margin-right: -47rem;
+  }
+
+  .search-container {
+    height: 1946px;
   }
 }
 
 @media (max-width: 1400px) {
   .results-table-grid-container {
     margin-top: -2rem;
+    max-width: 100%;
   }
+
   .search-form {
     margin-top: 1rem;
   }
@@ -368,7 +373,7 @@ input[type="checkbox"] {
 
   .page-selector-container {
     width: 100%;
-    margin-left: -4rem;
+    margin-left: 1rem;
     padding-top: 30px;
   }
 
