@@ -19,9 +19,9 @@ function SearchBox({ setData, setError }) {
     e.preventDefault();
     let queryString =
       "?pdfrom=" +
-      moment(dataFrom).format("DDMMYYYY") +
+      moment(dataFrom).format("YYYYMMDD") +
       "&pdto=" +
-      moment(dataTo).format("DDMMYYYY");
+      moment(dataTo).format("YYYYMMDD");
     if (selectedOption === "titolo" && titolo) queryString += "&ti=" + titolo;
     if (testo) queryString += "&txt=" + testo;
     if (selectedOption === "area-tecnica" && areaTecnica)
