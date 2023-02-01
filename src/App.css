@@ -362,6 +362,8 @@ input[type="checkbox"] {
  } 
   .search-container {
   margin-top: 1rem;
+  margin-right: -2rem;
+  margin-left: -4rem;
   }
   
   .container {
@@ -369,9 +371,10 @@ input[type="checkbox"] {
   flex-wrap: wrap;
   align-items: flex-start;
   }
-  
+
+
   .results-table-grid-container {
-  margin-left: .75rem;
+  margin-left: -.55rem;
   margin-top: 1rem;
   }
   
@@ -381,7 +384,7 @@ input[type="checkbox"] {
   
   .page-selector-container {
   width: 100%;
-  margin-left: -.5rem;
+  margin-left: -1rem;
   padding-top: 30px;
   }
   
