@@ -379,7 +379,7 @@ input[type="checkbox"] {
   
   .page-selector-container {
   width: 100%;
-  margin-left: 0;
+  margin-left: -.5rem;
   padding-top: 30px;
   }
   
