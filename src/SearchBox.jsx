@@ -17,21 +17,21 @@ function SearchBox({ setData, setError }) {
   const [includeDates, setIncludeDates] = useState(false);
 
   const handleSubmit = (e) => {
-e.preventDefault();
-let queryString = "";
+    e.preventDefault();
+    let queryString = "";
 
-if (includeDates && dataFrom && dataTo) {
-  queryString +=
-    "?pdfrom=" +
-    moment(dataFrom).format("YYYYMMDD") +
-    "&pdto=" +
-    moment(dataTo).format("YYYYMMDD");
-}
+    if (includeDates && dataFrom && dataTo) {
+      queryString +=
+        "?pdfrom=" +
+        moment(dataFrom).format("YYYYMMDD") +
+        "&pdto=" +
+        moment(dataTo).format("YYYYMMDD");
+    }
 
-if (selectedOption === "titolo" && titolo) queryString += "&ti=" + titolo;
-if (testo) queryString += "&txt=" + testo;
-if (selectedOption === "area-tecnica" && areaTecnica)
-  queryString += "&tecarea=" + areaTecnica;
+    if (selectedOption === "titolo" && titolo) queryString += "&ti=" + titolo;
+    if (testo) queryString += "&txt=" + testo;
+    if (selectedOption === "area-tecnica" && areaTecnica)
+      queryString += "&tecarea=" + areaTecnica;
 
     // Send the GET request to the API backend
     fetch("https://quaestio-be.azurewebsites.net/api/v1/search" + queryString)
@@ -118,39 +118,38 @@ if (selectedOption === "area-tecnica" && areaTecnica)
           </div>
 
           <div className="form-group row">
-  <div className="col-sm-6">
-    <div className="data-check-row">
-      <input
-        type="checkbox"
-        className="form-check-input"
-        value={includeDates}
-        onChange={(e) => setIncludeDates(!includeDates)}
-      />
-      <label className="form-check-label-data">Data: </label>
-    </div>
-    <div className="form-group row">
-      <div className="dal-row">
-        <label className="dal">Dal:</label>
-        <DatePicker
-          className="datepicker-textbox-one"
-          selected={dataFrom}
-          onChange={(date) => setDataFrom(date)}
-        />
-      </div>
-      <div className="form-group row">
-        <div className="al-row">
-          <label className="al">Al:</label>
-          <DatePicker
-            className="datepicker-textbox-two"
-            selected={dataTo}
-            onChange={(date) => setDataTo(date)}
-          />
-        </div>
-      </div>
-    </div>
-  </div>
-</div>
-
+            <div className="col-sm-6">
+              <div className="data-check-row">
+                <input
+                  type="checkbox"
+                  className="form-check-input"
+                  value={includeDates}
+                  onChange={(e) => setIncludeDates(!includeDates)}
+                />
+                <label className="form-check-label-data">Data: </label>
+              </div>
+              <div className="form-group row">
+                <div className="dal-row">
+                  <label className="dal">Dal:</label>
+                  <DatePicker
+                    className="datepicker-textbox-one"
+                    selected={dataFrom}
+                    onChange={(date) => setDataFrom(date)}
+                  />
+                </div>
+                <div className="form-group row">
+                  <div className="al-row">
+                    <label className="al">Al:</label>
+                    <DatePicker
+                      className="datepicker-textbox-two"
+                      selected={dataTo}
+                      onChange={(date) => setDataTo(date)}
+                    />
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
 
           <div className="form-group">
             <div className="form-check">
