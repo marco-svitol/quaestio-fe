@@ -23,9 +23,9 @@
   justify-content: space-between;
   background-color: #ddddde;
   height: 50px;
-}
-
-.navbar-tab {
+  }
+  
+  .navbar-tab {
   color: #428bca;
   padding-top: 14px;
   padding-bottom: 12px;
@@ -33,16 +33,16 @@
   padding-right: 15px;
   cursor: pointer;
   background-color: white;
-}
-
-.navbar-tab.active {
+  }
+  
+  .navbar-tab.active {
   background-color: #428bca;
   color: white;
-}
-
-.navbar-tab:hover {
+  }
+  
+  .navbar-tab:hover {
   background-color: rgb(230, 227, 227);
-}
+  }
 
 /* SEARCHBOX */
 
@@ -345,7 +345,6 @@ input[type="checkbox"] {
     position: relative;
     top: 0px;
     width: 100%;
-    padding-right: 8%;
   }
 
   .page-number {
@@ -355,78 +354,82 @@ input[type="checkbox"] {
 
 /* media query for small screens */
 @media (max-width: 576px) {
+
+ .big-div { 
+  width: 100%;
+ } 
   .search-container {
-    margin-left: -1rem;
+  margin-left: -1.8rem;
   }
-
+  
   .container {
-    display: flex;
-    flex-wrap: wrap;
-    align-items: flex-start;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-start;
   }
-
+  
   .results-table-grid-container {
-    margin-left: .21rem;
-    margin-top: 1rem;
+  margin-left: -.3rem;
+  margin-top: 1rem;
   }
-
+  
   .page-number {
-    width: calc(100% / 6);
+  width: calc(100% / 6);
   }
-
+  
   .page-selector-container {
-    width: 100%;
-    margin-left: rem;
-    padding-top: 30px;
+  width: 100%;
+  margin-left: 0;
+  padding-top: 30px;
   }
-
+  
   .search-form {
-    border: 1px solid black;
-    padding: 20px;
-    justify-content: center;
+  border: 1px solid black;
+  padding: 20px;
+  justify-content: center;
   }
-
+  
   .form-group .col-sm-2 {
-    display: none;
+  display: none;
   }
-
+  
   .form-group .col-sm-6 {
-    padding-left: 7.4rem;
+  padding-left: 7.4rem;
   }
-
+  
   .form-group .col.form-group .col-sm-12 {
-    display: flex;
-    align-items: center;
+  display: flex;
+  align-items: center;
   }
-
+  
   .form-group .col-sm-12 label {
-    margin-right: 10px;
+  margin-right: 10px;
   }
-
+  
   .form-group .col-sm-12 .form-control {
-    margin-right: 10px;
+  margin-right: 10px;
   }
-
+  
   .form-group .col-sm-12 .radio-btn {
-    margin-right: 10px;
+  margin-right: 10px;
   }
-
+  
   .form-group .col-sm-12 .select-titolo,
   .form-group .col-sm-12 .select-tecnica {
-    width: 150px;
+  width: 150px;
   }
-
+  
   .form-group .col-sm-12 .date-picker {
-    width: 150px;
-    margin-right: 10px;
+  width: 150px;
+  margin-right: 10px;
   }
-
+  
   .control-container {
-    width: 92%;
+  width: 92%;
   }
-
+  
   .ricerca {
-    margin-left: -18rem;
-    margin-top: 2rem;
+  margin-left: -18rem;
+  margin-top: 2rem;
   }
-}
+  }
