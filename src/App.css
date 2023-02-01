@@ -357,6 +357,7 @@ input[type="checkbox"] {
 
  .big-div { 
   width: 100%;
+  overflow: hidden;
  } 
   .search-container {
   margin-left: -1.8rem;
