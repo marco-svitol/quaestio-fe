@@ -52,6 +52,7 @@
   margin-bottom: 1rem;
   margin-top: 2.7rem;
   max-width: 500px;
+  margin-right: 1.5rem;
 }
 
 .form-group .btn {
@@ -360,7 +361,7 @@ input[type="checkbox"] {
   overflow: hidden;
  } 
   .search-container {
-  margin-left: -1.8rem;
+  margin-top: 1rem;
   }
   
   .container {
