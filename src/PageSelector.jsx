@@ -26,6 +26,7 @@ function PageSelector({ currentPage, totalPages, handlePageChange }) {
         <div className="numbers d-flex justify-content-between">
           {Array.from({ length: totalPages }, (_, i) => i + 1).map((page) => (
             <div
+              key={page}
               className={`number ${page === currentPage ? "active" : ""}`}
               onClick={() => handlePageChange(page)}
             >
