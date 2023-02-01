@@ -33,14 +33,14 @@ return (
 ) : (
 currentData.map((item, index) => (
 <tr className="table-cell" key={index}>
-<td>{item.invention_title}</td>
-<td>{item.doc_num}</td>
-<td>{item.inventor_name}</td>
-<td>{item.date}</td>
+<td style={{wordWrap:"break-word"}} >{item.invention_title}</td>
+<td style={{wordWrap:"break-word"}} >{item.doc_num}</td>
+<td style={{wordWrap:"break-word"}} >{item.inventor_name}</td>
+<td style={{wordWrap:"break-word"}} >{item.date}</td>
 <td>
-<a href={item.ops_link} target="_blank" rel="noopener noreferrer">
-{item.ops_link}
-</a>
+   <a style={{wordWrap:"break-word"}} href={item.ops_link} target="_blank" rel="noopener noreferrer">
+     {item.ops_link}
+   </a>
 </td>
 </tr>
 ))
