@@ -345,7 +345,7 @@ input[type="checkbox"] {
 
     .modal-button {
       background-color: #428bca;
-      padding: 0.5rem;
+      padding: .5rem;
       font-size: 1rem;
       border-radius: 5px;
       color: #eeeeef;
@@ -354,6 +354,7 @@ input[type="checkbox"] {
       position: absolute;
       right: 2rem;
       bottom: 1rem;
+      min-width: 100px;
     }
   
 @media (max-width: 1400px) {
@@ -466,4 +467,17 @@ input[type="checkbox"] {
     margin-left: -18rem;
     margin-top: 2rem;
   }
+
+  .modal-overlay {
+    width: 80%;
+    height: 65%;
+    margin-top: -3rem;
+  }
+
+  .modal-button {
+    margin-bottom: -5rem;
+    margin-right: 6rem;
+  }
+
 }
+
