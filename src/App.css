@@ -23,9 +23,9 @@
   justify-content: space-between;
   background-color: #ddddde;
   height: 50px;
-  }
-  
-  .navbar-tab {
+}
+
+.navbar-tab {
   color: #428bca;
   padding-top: 14px;
   padding-bottom: 12px;
@@ -33,16 +33,16 @@
   padding-right: 15px;
   cursor: pointer;
   background-color: white;
-  }
-  
-  .navbar-tab.active {
+}
+
+.navbar-tab.active {
   background-color: #428bca;
   color: white;
-  }
-  
-  .navbar-tab:hover {
+}
+
+.navbar-tab:hover {
   background-color: rgb(230, 227, 227);
-  }
+}
 
 /* SEARCHBOX */
 
@@ -318,13 +318,45 @@ input[type="checkbox"] {
   color: white;
 }
 
-/* @media (min-width: 1400px) {
+/* MODAL */
 
-  .search-container {
-    height: 1946px;
+.modal-overlay {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 60%;
+  height: 60%;
+  background-color: #eeeeef;
+  border: 1rem solid white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   }
-} */
 
+  .modal-content {
+    overflow: scroll;
+    max-height: 100%;
+    max-width: 80%;
+    padding: .5rem;
+    text-align: center;
+    background-color: #ffffff;
+    }
+
+    .modal-button {
+      background-color: #428bca;
+      padding: .5rem;
+      font-size: 1rem;
+      border-radius: 5px;
+      color: #eeeeef;
+      width: 20%;
+      float: right;
+      position: absolute;
+      right: 2rem;
+      bottom: 1rem;
+      min-width: 100px;
+    }
+  
 @media (max-width: 1400px) {
   .results-table-grid-container {
     margin-top: 3.7rem;
@@ -355,86 +387,97 @@ input[type="checkbox"] {
 
 /* media query for small screens */
 @media (max-width: 576px) {
-
- .big-div { 
-  width: 100%;
-  overflow: hidden;
- } 
+  .big-div {
+    width: 100%;
+    overflow: hidden;
+  }
   .search-container {
-  margin-top: 1rem;
-  margin-right: -2rem;
-  margin-left: -4rem;
-  }
-  
-  .container {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: flex-start;
+    margin-top: 1rem;
+    margin-right: -2rem;
+    margin-left: -4rem;
   }
 
+  .container {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: flex-start;
+  }
 
   .results-table-grid-container {
-  margin-left: -.55rem;
-  margin-top: 1rem;
+    margin-left: -0.55rem;
+    margin-top: 1rem;
   }
-  
+
   .page-number {
-  width: calc(100% / 6);
+    width: calc(100% / 6);
   }
-  
+
   .page-selector-container {
-  width: 100%;
-  margin-left: -1rem;
-  padding-top: 30px;
+    width: 100%;
+    margin-left: -1rem;
+    padding-top: 30px;
   }
-  
+
   .search-form {
-  border: 1px solid black;
-  padding: 20px;
-  justify-content: center;
+    border: 1px solid black;
+    padding: 20px;
+    justify-content: center;
   }
-  
+
   .form-group .col-sm-2 {
-  display: none;
+    display: none;
   }
-  
+
   .form-group .col-sm-6 {
-  padding-left: 7.4rem;
+    padding-left: 7.4rem;
   }
-  
+
   .form-group .col.form-group .col-sm-12 {
-  display: flex;
-  align-items: center;
+    display: flex;
+    align-items: center;
   }
-  
+
   .form-group .col-sm-12 label {
-  margin-right: 10px;
+    margin-right: 10px;
   }
-  
+
   .form-group .col-sm-12 .form-control {
-  margin-right: 10px;
+    margin-right: 10px;
   }
-  
+
   .form-group .col-sm-12 .radio-btn {
-  margin-right: 10px;
+    margin-right: 10px;
   }
-  
+
   .form-group .col-sm-12 .select-titolo,
   .form-group .col-sm-12 .select-tecnica {
-  width: 150px;
+    width: 150px;
   }
-  
+
   .form-group .col-sm-12 .date-picker {
-  width: 150px;
-  margin-right: 10px;
+    width: 150px;
+    margin-right: 10px;
   }
-  
+
   .control-container {
-  width: 92%;
+    width: 92%;
   }
-  
+
   .ricerca {
-  margin-left: -18rem;
-  margin-top: 2rem;
+    margin-left: -18rem;
+    margin-top: 2rem;
   }
+
+  .modal-overlay {
+    width: 80%;
+    height: 65%;
+    margin-top: -3rem;
   }
+
+  .modal-button {
+    margin-bottom: -5rem;
+    margin-right: 6rem;
+  }
+
+}
+
