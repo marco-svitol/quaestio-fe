@@ -22,7 +22,7 @@ const Modal = ({
             <p>{selectedInventionTitle}</p>
             <p>{selectedInventionAbstract}</p>
           </div>
-            <button className="modal-button" onClick={handleClose}>Close</button>
+            <button className="modal-button" onClick={handleClose}>Chiudi</button>
         </div>
       )}
     </div>

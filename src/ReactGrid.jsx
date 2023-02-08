@@ -32,10 +32,10 @@ function ReactGrid({ data, error }) {
       <table className="main-table">
         <thead className="header-cell">
           <tr>
-            <th>Title</th>
-            <th>Number</th>
-            <th>Author</th>
-            <th>Date</th>
+            <th>Titolo</th>
+            <th>Numero</th>
+            <th>Autore</th>
+            <th>Data</th>
             <th>LinkOPS</th>
           </tr>
         </thead>
