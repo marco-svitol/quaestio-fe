@@ -352,7 +352,7 @@ input[type="checkbox"] {
       width: 20%;
       float: right;
       position: absolute;
-      right: 2rem;
+      right: 3rem;
       bottom: 1rem;
       min-width: 100px;
     }
@@ -476,7 +476,8 @@ input[type="checkbox"] {
 
   .modal-button {
     margin-bottom: -5rem;
-    margin-right: 6rem;
+    right: 6rem;
+    
   }
 
 }
