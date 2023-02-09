@@ -10,6 +10,7 @@ const Modal = ({
   const handleClickOutside = (event) => {
     if (event.target.className === "modal-overlay") {
       setShowModal(false);
+      handleClose();
     }
   };
 
@@ -17,12 +18,24 @@ const Modal = ({
     <div>
       {showModal && (
         <div className="modal-overlay" onClick={handleClickOutside}>
-          <div className="modal-content">
-            <h3>Abstract</h3>
-            <p>{selectedInventionTitle}</p>
-            <p>{selectedInventionAbstract}</p>
-          </div>
-            <button className="modal-button" onClick={handleClose}>Chiudi</button>
+          <div className="pop-up" onClick={e => e.stopPropagation()}>
+            <div className="modal-content">
+              
+                <h3>Abstract</h3>
+                <p>{selectedInventionTitle}</p>
+                <p>{selectedInventionAbstract}</p>
+            </div>
+          
+            <button
+              className="modal-button"
+              onClick={() => {
+                setShowModal(false);
+                handleClose();
+              }}
+            >
+              Chiudi
+            </button>
+          </div>  
         </div>
       )}
     </div>
