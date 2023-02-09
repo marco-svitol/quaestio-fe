@@ -30,8 +30,21 @@ function SearchBox({ setData, setError }) {
 
     if (selectedOption === "titolo" && titolo) queryString += "&ti=" + titolo;
     if (testo) queryString += "&txt=" + testo;
-    if (selectedOption === "area-tecnica" && areaTecnica)
-      queryString += "&tecarea=" + areaTecnica;
+    if (selectedOption === "area-tecnica" && areaTecnica) {
+      switch (areaTecnica) {
+        case "freno":
+          queryString += "&tecarea=A91";
+          break;
+        case "motore":
+          queryString += "&tecarea=A55";
+          break;
+        case "trasmissione":
+          queryString += "&tecarea=F91";
+          break;
+        default:
+          break;
+      }
+    }
 
     // Send the GET request to the API backend
     fetch("https://quaestio-be.azurewebsites.net/api/v1/search" + queryString)
