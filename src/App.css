@@ -459,18 +459,6 @@ input[type="checkbox"] {
     margin-right: 10px;
   }
 
-  .data-check-row {
-    margin-left: 1.85rem;
-  }
-
-  .dal-row {
-    margin-left: -1rem;
-  }
-  
-  .al-row {
-    margin-left: -1rem;
-  }
-
   .control-container {
     width: 92%;
   }
@@ -488,8 +476,30 @@ input[type="checkbox"] {
 
   .modal-button {
     margin-bottom: -5rem;
+    right: 8.5rem;
+  }
+
+}
+
+
+/* media query for very small screens */
+@media (max-width: 400px) {
+
+  .modal-button {
+    margin-bottom: -5rem;
     right: 6rem;
-    
+  }
+
+  .data-check-row {
+    margin-left: 1.85rem;
+  }
+
+  .dal-row {
+    margin-left: -1rem;
+  }
+  
+  .al-row {
+    margin-left: -1rem;
   }
 
 }
