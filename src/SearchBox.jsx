@@ -18,33 +18,32 @@ function SearchBox({ setData, setError }) {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    let queryString = "";
-
-    if (includeDates && dataFrom && dataTo) {
-      queryString +=
-        "?pdfrom=" +
-        moment(dataFrom).format("YYYYMMDD") +
-        "&pdto=" +
-        moment(dataTo).format("YYYYMMDD");
-    }
-
-    if (selectedOption === "titolo" && titolo) queryString += "&ti=" + titolo;
-    if (testo) queryString += "&txt=" + testo;
-    if (selectedOption === "area-tecnica" && areaTecnica) {
+    let queryString = "?";
+    if (selectedOption === "titolo" && titolo) {
+      queryString += "ti=" + titolo}
+    else if (selectedOption === "area-tecnica" && areaTecnica) {
       switch (areaTecnica) {
         case "freno":
-          queryString += "&tecarea=A91";
+          queryString += "tecarea=A91";
           break;
         case "motore":
-          queryString += "&tecarea=A55";
+          queryString += "tecarea=A55";
           break;
         case "trasmissione":
-          queryString += "&tecarea=F91";
+          queryString += "tecarea=F91";
           break;
         default:
           break;
       }
     }
+    if (includeDates && dataFrom && dataTo) {
+      queryString +=
+        "&pdfrom=" +
+        moment(dataFrom).format("YYYYMMDD") +
+        "&pdto=" +
+        moment(dataTo).format("YYYYMMDD");
+    }
+    if (testo) queryString += "&txt=" + testo;
 
     // Send the GET request to the API backend
     fetch("https://quaestio-be.azurewebsites.net/api/v1/search" + queryString)
