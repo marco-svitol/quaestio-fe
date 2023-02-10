@@ -325,38 +325,43 @@ input[type="checkbox"] {
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  width: 60%;
-  height: 60%;
-  background-color: #eeeeef;
-  border: 1rem solid white;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(255, 255, 255, 0.5);
   display: flex;
   align-items: center;
   justify-content: center;
-  }
+}
 
-  .modal-content {
-    overflow: scroll;
-    max-height: 100%;
-    max-width: 80%;
-    padding: .5rem;
-    text-align: center;
-    background-color: #ffffff;
-    }
+.pop-up {
+  border: 2rem solid white;
+  background-color: rgba(230, 227, 227, 0.8);
+  width: 70%;
+  height: 50%;
+}
 
-    .modal-button {
-      background-color: #428bca;
-      padding: .5rem;
-      font-size: 1rem;
-      border-radius: 5px;
-      color: #eeeeef;
-      width: 20%;
-      float: right;
-      position: absolute;
-      right: 3rem;
-      bottom: 1rem;
-      min-width: 100px;
-    }
-  
+.modal-content {
+  overflow: scroll;
+  height: 100%;
+  max-width: 100%;
+  padding: 1rem;
+  text-align: center;
+  background-color: #eeeeef;
+}
+
+.modal-button {
+  background-color: #428bca;
+  font-size: 1rem;
+  border-radius: 5px;
+  color: #eeeeef;
+  width: 10%;
+  float: right;
+  position: absolute;
+  min-width: 100px;
+  right: 16rem;
+}
+
+
 @media (max-width: 1400px) {
   .results-table-grid-container {
     margin-top: 3.7rem;
@@ -383,6 +388,7 @@ input[type="checkbox"] {
   .page-number {
     width: calc(100% / 9);
   }
+
 }
 
 /* media query for small screens */
@@ -469,26 +475,23 @@ input[type="checkbox"] {
   }
 
   .modal-overlay {
+    width: 100%;
+    height: 100%;
+  }
+
+  .pop-up {
+    height: 80%;
     width: 80%;
-    height: 65%;
-    margin-top: -3rem;
+    margin-top: 1rem;
   }
 
   .modal-button {
-    margin-bottom: -5rem;
-    right: 8.5rem;
+    right: 6rem;
   }
-
 }
-
 
 /* media query for very small screens */
 @media (max-width: 400px) {
-
-  .modal-button {
-    margin-bottom: -5rem;
-    right: 6rem;
-  }
 
   .data-check-row {
     margin-left: 1.85rem;
@@ -497,9 +500,8 @@ input[type="checkbox"] {
   .dal-row {
     margin-left: -1rem;
   }
-  
+
   .al-row {
     margin-left: -1rem;
   }
-
 }
