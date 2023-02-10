@@ -365,7 +365,6 @@ input[type="checkbox"] {
   right: 16rem;
 }
 
-
 @media (max-width: 1400px) {
   .results-table-grid-container {
     margin-top: 3.7rem;
@@ -392,7 +391,6 @@ input[type="checkbox"] {
   .page-number {
     width: calc(100% / 9);
   }
-
 }
 
 /* media query for small screens */
@@ -498,7 +496,7 @@ input[type="checkbox"] {
   .testo-text {
     margin-right: 1rem;
   }
-  
+
   .dal-row {
     margin-left: 1rem;
   }
@@ -507,9 +505,8 @@ input[type="checkbox"] {
     margin-left: rem;
     margin-top: 1rem;
   }
-  
+
   .data {
     margin-left: 1.3rem;
   }
-
 }
