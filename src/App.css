@@ -126,7 +126,7 @@
 }
 
 .data {
-  margin-left: 1.3rem;
+  margin-left: 1.5rem;
 }
 
 .form-check-label-data {
@@ -502,11 +502,11 @@ input[type="checkbox"] {
   }
 
   .data-check-row {
-    margin-left: rem;
+    margin-left: 3.1rem;
     margin-top: 1rem;
   }
 
   .data {
-    margin-left: 1.3rem;
+    margin-left: 2.3rem;
   }
 }
