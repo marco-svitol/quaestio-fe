@@ -10,13 +10,13 @@ import "bootstrap/dist/css/bootstrap.min.css";
 function SearchBox({ setData, setError }) {
   const [titolo, setTitolo] = useState("");
   const [areaTecnica, setAreaTecnica] = useState("");
-  const [dataFrom, setDataFrom] = useState("");
-  const [dataTo, setDataTo] = useState("");
+  const [dataFrom, setDataFrom] = useState(null);
+  const [dataTo, setDataTo] = useState(null);
   const [testo, setTesto] = useState("");
   const [selectedOption, setSelectedOption] = useState("titolo");
   const [includeDates, setIncludeDates] = useState(false);
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     let queryString = "";
 
@@ -46,21 +46,20 @@ function SearchBox({ setData, setError }) {
       }
     }
 
-    // Send the GET request to the API backend
-    fetch("https://quaestio-be.azurewebsites.net/api/v1/search" + queryString)
-      .then((response) => {
-        if (response.ok) {
-          return response.json();
-        }
+    try {
+      // Send the GET request to the API backend
+      const response = await fetch(
+        "https://quaestio-be.azurewebsites.net/api/v1/search" + queryString
+      );
+      if (!response.ok) {
         throw new Error(response.statusText);
-      })
-      .then((data) => {
-        console.log(data);
-        setData(data);
-      })
-      .catch((error) => {
-        setError(error.message);
-      });
+      }
+      const data = await response.json();
+      console.log(data);
+      setData(data);
+    } catch (error) {
+      setError(error.message);
+    }
   };
   const handleChange = (e) => {
     if (e.target.value === "titolo") {
@@ -69,7 +68,6 @@ function SearchBox({ setData, setError }) {
       setSelectedOption("area-tecnica");
     }
   };
-
   return (
     <div className="search-container">
       <div className="container">
@@ -139,7 +137,6 @@ function SearchBox({ setData, setError }) {
                   value={includeDates}
                   onChange={(e) => setIncludeDates(!includeDates)}
                 />
-                <label className="form-check-label-data">Data: </label>
               </div>
               <div className="form-group row">
                 <div className="dal-row">
