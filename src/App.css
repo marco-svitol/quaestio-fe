@@ -116,10 +116,6 @@
   margin-left: -0.5rem;
 }
 
-.dal {
-  margin-left: 1.4rem;
-}
-
 .al-row {
   margin-left: -0.5rem;
 }
@@ -127,6 +123,10 @@
 .data-check-row {
   margin-left: 2.25rem;
   margin-top: 1rem;
+}
+
+.data {
+  margin-left: 1.3rem;
 }
 
 .form-check-label-data {
@@ -503,8 +503,13 @@ input[type="checkbox"] {
     margin-left: 1rem;
   }
 
-  .dal {
-    margin-left: 0rem;
+  .data-check-row {
+    margin-left: rem;
+    margin-top: 1rem;
+  }
+  
+  .data {
+    margin-left: 1.3rem;
   }
 
 }

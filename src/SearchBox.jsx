@@ -138,6 +138,9 @@ function SearchBox({ setData, setError }) {
                   onChange={(e) => setIncludeDates(!includeDates)}
                 />
               </div>
+              <div>
+                <label className="data">Data: </label>
+              </div>
               <div className="form-group row">
                 <div className="dal-row">
                   <label className="dal">Dal:</label>
