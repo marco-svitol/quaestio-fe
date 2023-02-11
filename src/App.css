@@ -125,6 +125,10 @@
   margin-top: 1rem;
 }
 
+.data {
+  margin-left: 1.5rem;
+}
+
 .form-check-label-data {
   margin-left: -0.8rem;
 }
@@ -361,7 +365,6 @@ input[type="checkbox"] {
   right: 16rem;
 }
 
-
 @media (max-width: 1400px) {
   .results-table-grid-container {
     margin-top: 3.7rem;
@@ -388,7 +391,6 @@ input[type="checkbox"] {
   .page-number {
     width: calc(100% / 9);
   }
-
 }
 
 /* media query for small screens */
@@ -434,11 +436,7 @@ input[type="checkbox"] {
     display: none;
   }
 
-  .form-group .col-sm-6 {
-    padding-left: 7.4rem;
-  }
-
-  .form-group .col.form-group .col-sm-12 {
+  .form-group .col.form-group .col-sm-12 .col-sm-6 {
     display: flex;
     align-items: center;
   }
@@ -488,20 +486,27 @@ input[type="checkbox"] {
   .modal-button {
     right: 6rem;
   }
-}
 
-/* media query for very small screens */
-@media (max-width: 400px) {
+  .form-group.row {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
 
-  .data-check-row {
-    margin-left: 1.85rem;
+  .testo-text {
+    margin-right: 1rem;
   }
 
   .dal-row {
-    margin-left: -1rem;
+    margin-left: 1rem;
   }
 
-  .al-row {
-    margin-left: -1rem;
+  .data-check-row {
+    margin-left: 3.1rem;
+    margin-top: 1rem;
+  }
+
+  .data {
+    margin-left: 2.3rem;
   }
 }

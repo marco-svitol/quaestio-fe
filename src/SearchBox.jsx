@@ -10,57 +10,55 @@ import "bootstrap/dist/css/bootstrap.min.css";
 function SearchBox({ setData, setError }) {
   const [titolo, setTitolo] = useState("");
   const [areaTecnica, setAreaTecnica] = useState("");
-  const [dataFrom, setDataFrom] = useState("");
-  const [dataTo, setDataTo] = useState("");
+  const [dataFrom, setDataFrom] = useState(null);
+  const [dataTo, setDataTo] = useState(null);
   const [testo, setTesto] = useState("");
   const [selectedOption, setSelectedOption] = useState("titolo");
   const [includeDates, setIncludeDates] = useState(false);
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    let queryString = "";
-
-    if (includeDates && dataFrom && dataTo) {
-      queryString +=
-        "?pdfrom=" +
-        moment(dataFrom).format("YYYYMMDD") +
-        "&pdto=" +
-        moment(dataTo).format("YYYYMMDD");
-    }
-
-    if (selectedOption === "titolo" && titolo) queryString += "&ti=" + titolo;
-    if (testo) queryString += "&txt=" + testo;
-    if (selectedOption === "area-tecnica" && areaTecnica) {
+    let queryString = "?";
+    if (selectedOption === "titolo" && titolo) {
+      queryString += "ti=" + titolo;
+    } else if (selectedOption === "area-tecnica" && areaTecnica) {
       switch (areaTecnica) {
         case "freno":
-          queryString += "&tecarea=A91";
+          queryString += "tecarea=A91";
           break;
         case "motore":
-          queryString += "&tecarea=A55";
+          queryString += "tecarea=A55";
           break;
         case "trasmissione":
-          queryString += "&tecarea=F91";
+          queryString += "tecarea=F91";
           break;
         default:
           break;
       }
     }
+    if (includeDates && dataFrom && dataTo) {
+      queryString +=
+        "&pdfrom=" +
+        moment(dataFrom).format("YYYYMMDD") +
+        "&pdto=" +
+        moment(dataTo).format("YYYYMMDD");
+    }
+    if (testo) queryString += "&txt=" + testo;
 
-    // Send the GET request to the API backend
-    fetch("https://quaestio-be.azurewebsites.net/api/v1/search" + queryString)
-      .then((response) => {
-        if (response.ok) {
-          return response.json();
-        }
+    try {
+      // Send the GET request to the API backend
+      const response = await fetch(
+        "https://quaestio-be.azurewebsites.net/api/v1/search" + queryString
+      );
+      if (!response.ok) {
         throw new Error(response.statusText);
-      })
-      .then((data) => {
-        console.log(data);
-        setData(data);
-      })
-      .catch((error) => {
-        setError(error.message);
-      });
+      }
+      const data = await response.json();
+      console.log(data);
+      setData(data);
+    } catch (error) {
+      setError(error.message);
+    }
   };
   const handleChange = (e) => {
     if (e.target.value === "titolo") {
@@ -139,7 +137,9 @@ function SearchBox({ setData, setError }) {
                   value={includeDates}
                   onChange={(e) => setIncludeDates(!includeDates)}
                 />
-                <label className="form-check-label-data">Data: </label>
+              </div>
+              <div>
+                <label className="data">Data: </label>
               </div>
               <div className="form-group row">
                 <div className="dal-row">
