@@ -156,6 +156,7 @@ label {
   flex-wrap: wrap;
   justify-content: space-between;
   margin-left: 1rem;
+  margin-top: 4rem;
   margin-right: -0.74rem;
   background-color: white;
   border-radius: 30px;
@@ -299,16 +300,15 @@ input[type="checkbox"] {
 .page-selector-container {
   width: 100%;
   display: flex;
-  justify-content: center;
+  justify-content: flex-end;
   align-items: center;
 }
 
 .page-selector {
   background-color: #eeeeee;
   flex-wrap: wrap;
-  margin-right: 3rem;
-  margin-bottom: 2rem;
-  margin-top: 2rem;
+  margin-right: 6rem;
+  margin-bottom: 1rem;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -367,7 +367,7 @@ input[type="checkbox"] {
   padding: 12px;
   padding-bottom: 12px;
   cursor: pointer;
-  background-color: #ddddde;
+  background-color: #eeeeef;
   display: inline-block;
 }
 
@@ -456,6 +456,7 @@ input[type="checkbox"] {
   .page-selector-container {
     position: relative;
     top: 0px;
+    margin-left: -8.5rem;
     width: 100%;
   }
 
@@ -493,7 +494,6 @@ input[type="checkbox"] {
 
   .page-selector-container {
     width: 100%;
-    margin-left: -1rem;
     padding-top: 30px;
   }
 

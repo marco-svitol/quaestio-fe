@@ -32,6 +32,14 @@ function ReactGrid({ data, error }) {
 
   return (
     <div className="results-table-grid-container">
+           <div>
+        <PageSelector
+          currentPage={currentPage}
+          totalPages={totalPages}
+          handlePageChange={handlePageChange}
+          itemsPerPage={itemsPerPage}
+        />
+      </div>
       <table className="main-table">
         <thead className="header-cell">
           <tr>
@@ -116,14 +124,6 @@ function ReactGrid({ data, error }) {
           handleClose={handleClose}
         />
       )}
-      <div>
-        <PageSelector
-          currentPage={currentPage}
-          totalPages={totalPages}
-          handlePageChange={handlePageChange}
-          itemsPerPage={itemsPerPage}
-        />
-      </div>
     </div>
   );
 }
