@@ -34,6 +34,7 @@
   border-radius: 30px;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
   width: 350px;
+  border: 1px solid black;
 }
 
 h2 {
@@ -123,7 +124,7 @@ label {
   background-color: #eeeeee;
   float: left;
   margin-bottom: 1rem;
-  margin-top: 2.7rem;
+  margin-top: 1rem;
   max-width: 500px;
   margin-right: 1.5rem;
 }
@@ -160,6 +161,7 @@ label {
   margin-right: -0.74rem;
   background-color: white;
   border-radius: 30px;
+  border: 1px solid black;
 }
 
 .form-control {
@@ -267,7 +269,7 @@ input[type="checkbox"] {
 /* RESULTS TABLE */
 
 .results-table-grid-container {
-  margin-top: 2.7rem;
+  margin-top: 1rem;
   text-align: center;
   margin-left: 1rem;
   background-color: #eeeeef;
@@ -456,7 +458,7 @@ input[type="checkbox"] {
   .page-selector-container {
     position: relative;
     top: 0px;
-    margin-left: -8.5rem;
+    margin-left: 1rem;
     width: 100%;
   }
 
