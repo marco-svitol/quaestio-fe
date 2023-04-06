@@ -15,6 +15,79 @@
   min-height: 100vh;
 }
 
+/* LOGINBOX */
+
+.login-page {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+  background-color: #eeeeee;
+}
+
+.login-box {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 2rem;
+  background-color: white;
+  border-radius: 30px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  width: 350px;
+}
+
+h2 {
+  margin-bottom: 1.5rem;
+  color: #222;
+  font-weight: 600;
+}
+
+.input-group {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  margin-bottom: 1rem;
+}
+
+.input-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  width: 100%;
+}
+
+label {
+  margin-bottom: 0.5rem;
+  color: #555;
+  font-weight: 500;
+}
+
+.input-field {
+  padding: 0.5rem;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  width: 100%;
+  font-size: 14px;
+  outline: none;
+  transition: border-color 0.3s;
+}
+
+.input-field:focus {
+  border-color: #007bff;
+}
+
+.login-button {
+  padding: 0.75rem 1rem;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 20px;
+  cursor: pointer;
+  width: 100%;
+  font-size: 16px;
+}
+
 /* NAVBAR */
 
 .navbar-container {
@@ -84,7 +157,8 @@
   justify-content: space-between;
   margin-left: 1rem;
   margin-right: -0.74rem;
-  background-color: #f8f8f8;
+  background-color: white;
+  border-radius: 30px;
 }
 
 .form-control {
@@ -175,10 +249,6 @@
   align-items: center;
 }
 
-form {
-  border: 1px solid black;
-}
-
 input[type="radio"],
 input[type="checkbox"] {
   width: 1rem;
@@ -201,6 +271,7 @@ input[type="checkbox"] {
   margin-left: 1rem;
   background-color: #eeeeef;
   overflow-x: auto;
+  font-size: 12px;
 }
 
 .main-table {
@@ -313,7 +384,7 @@ input[type="checkbox"] {
 .page-selector .arrow {
   font-size: 20px;
   color: #428bca;
-  padding: 14px;
+  padding: 11px;
   cursor: pointer;
 }
 

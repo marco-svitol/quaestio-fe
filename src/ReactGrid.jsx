@@ -7,8 +7,9 @@ function ReactGrid({ data, error }) {
   const [currentPage, setCurrentPage] = useState(1);
   const [showPopUp, setShowPopUp] = useState(false);
   const [selectedInventionTitle, setSelectedInventionTitle] = useState(null);
-  const [selectedInventionAbstract, setSelectedInventionAbstract] = useState(null);
-  const itemsPerPage = 12;
+  const [selectedInventionAbstract, setSelectedInventionAbstract] =
+    useState(null);
+  const itemsPerPage = 5;
   const totalPages = Math.ceil(data.length / itemsPerPage);
   const startIndex = (currentPage - 1) * itemsPerPage;
   const currentData = data.slice(startIndex, startIndex + itemsPerPage);
@@ -26,6 +27,8 @@ function ReactGrid({ data, error }) {
   const handleClose = () => {
     setShowPopUp(false);
   };
+
+  const emptyRows = itemsPerPage - currentData.length;
 
   return (
     <div className="results-table-grid-container">
@@ -45,52 +48,64 @@ function ReactGrid({ data, error }) {
               <td colSpan={5}>Error: {error}</td>
             </tr>
           ) : (
-            currentData.map((item, index) => (
-              <tr className="table-cell" key={index}>
-                <td
-                  style={{ wordWrap: "break-word" }}
-                  onClick={() =>
-                    handleClick(item.invention_title, item.abstract)
-                  }
-                >
-                  {item.invention_title}
-                </td>
-                <td
-                  style={{ wordWrap: "break-word" }}
-                  onClick={() =>
-                    handleClick(item.invention_title, item.abstract)
-                  }
-                >
-                  {item.doc_num}
-                </td>
-                <td
-                  style={{ wordWrap: "break-word" }}
-                  onClick={() =>
-                    handleClick(item.invention_title, item.abstract)
-                  }
-                >
-                  {item.inventor_name}
-                </td>
-                <td
-                  style={{ wordWrap: "break-word" }}
-                  onClick={() =>
-                    handleClick(item.invention_title, item.abstract)
-                  }
-                >
-                  {item.date}
-                </td>
-                <td>
-                  <a
+            <>
+              {currentData.map((item, index) => (
+                <tr className="table-cell" key={index}>
+                  <td
                     style={{ wordWrap: "break-word" }}
-                    href={item.ops_link}
-                    target="_blank"
-                    rel="noopener noreferrer"
+                    onClick={() =>
+                      handleClick(item.invention_title, item.abstract)
+                    }
                   >
-                    {item.ops_link}
-                  </a>
-                </td>
-              </tr>
-            ))
+                    {item.invention_title}
+                  </td>
+                  <td
+                    style={{ wordWrap: "break-word" }}
+                    onClick={() =>
+                      handleClick(item.invention_title, item.abstract)
+                    }
+                  >
+                    {item.doc_num}
+                  </td>
+                  <td
+                    style={{ wordWrap: "break-word" }}
+                    onClick={() =>
+                      handleClick(item.invention_title, item.abstract)
+                    }
+                  >
+                    {item.inventor_name}
+                  </td>
+                  <td
+                    style={{ wordWrap: "break-word" }}
+                    onClick={() =>
+                      handleClick(item.invention_title, item.abstract)
+                    }
+                  >
+                    {item.date}
+                  </td>
+                  <td>
+                    <a
+                      style={{ wordWrap: "break-word" }}
+                      href={item.ops_link}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
+                      {item.ops_link}
+                    </a>
+                  </td>
+                </tr>
+              ))}
+              {emptyRows > 0 &&
+                Array.from({ length: emptyRows }, (_, index) => (
+                  <tr className="table-cell" key={currentData.length + index}>
+                    <td />
+                    <td />
+                    <td />
+                    <td />
+                    <td />
+                  </tr>
+                ))}
+            </>
           )}
         </tbody>
       </table>
