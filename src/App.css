@@ -123,7 +123,7 @@ label {
 .search-container {
   background-color: #eeeeee;
   float: left;
-  margin-top: 0.75rem;
+  margin-top: 2rem;
   margin-bottom: 1rem;
   max-width: 500px;
   margin-right: 1.5rem;
@@ -140,6 +140,14 @@ label {
   margin-bottom: 0.5rem;
   padding: 0 0.5rem;
 }
+
+.area-div {
+ margin-right: 5.6rem;
+}
+
+.titolo-div {
+  margin-right: 5.6rem;
+ }
 
 .al {
   padding-top: 1rem;
@@ -162,7 +170,7 @@ label {
 }
 
 .form-check-label-testo {
-  margin-top: 0.5rem;
+  margin-top: .7rem;
   margin-left: -0.1rem;
 }
 
@@ -226,7 +234,7 @@ label {
 }
 
 .data-check-row {
-  margin-left: 0rem;
+  margin-left: -.1rem;
   margin-top: 1rem;
 }
 
@@ -235,7 +243,7 @@ label {
 }
 
 .date-field {
-  margin-top: 1rem;
+  margin-top: 1.5rem;
 }
 
 .btn {
@@ -613,6 +621,8 @@ input[type="checkbox"] {
   .form-check-input {
     margin-left: -.7rem;
   }
+
+
 }
 
 /* media query for very small screens */

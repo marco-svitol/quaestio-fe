@@ -73,6 +73,7 @@ function SearchBox({ setData, setError }) {
       <div className="container">
         <form className="search-form" onSubmit={handleSubmit}>
           <div className="form-group row">
+            <div className="titolo-div">
             <div>
               <input
                 type="radio"
@@ -99,8 +100,11 @@ function SearchBox({ setData, setError }) {
                 </select>
               </div>
             </div>
+            </div>
           </div>
+
           <div className="form-group row">
+            <div className="area-div">
             <div>
               <input
                 type="radio"
@@ -125,6 +129,7 @@ function SearchBox({ setData, setError }) {
                   <option value="trasmissione">Trasmissione</option>
                 </select>
               </div>
+            </div>
             </div>
           </div>
 
