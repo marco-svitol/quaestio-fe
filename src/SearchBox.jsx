@@ -129,60 +129,55 @@ function SearchBox({ setData, setError }) {
           </div>
 
           <div className="form-group row">
-            <div className="col-sm-6">
-              <div className="data-check-row">
-                <input
-                  type="checkbox"
-                  className="form-check-input"
-                  value={includeDates}
-                  onChange={(e) => setIncludeDates(!includeDates)}
-                />
-              </div>
-              <div>
-                <label className="data">Data: </label>
-              </div>
-              <div className="form-group row">
-                <div className="dal-row">
-                  <label className="dal">Dal:</label>
-                  <DatePicker
-                    className="datepicker-textbox-one"
-                    selected={dataFrom}
-                    onChange={(date) => setDataFrom(date)}
-                  />
-                </div>
-                <div className="form-group row">
-                  <div className="al-row">
-                    <label className="al">Al:</label>
-                    <DatePicker
-                      className="datepicker-textbox-two"
-                      selected={dataTo}
-                      onChange={(date) => setDataTo(date)}
-                    />
-                  </div>
-                </div>
-              </div>
+            <div className="data-check-row">
+              <div className="date-field">
+              <input
+                type="checkbox"
+                className="form-check-input"
+                value={includeDates}
+                onChange={(e) => setIncludeDates(!includeDates)}
+              />
+            
+            <div>
+              <label className="data">Data: </label>
+            </div>
+            <div className="dal-row">
+              <label className="dal">Dal:</label>
+              <DatePicker
+                className="datepicker-textbox-one"
+                selected={dataFrom}
+                onChange={(date) => setDataFrom(date)}
+              />
+            </div>
+            <div className="al-row">
+              <label className="al">Al:</label>
+              <DatePicker
+                className="datepicker-textbox-two"
+                selected={dataTo}
+                onChange={(date) => setDataTo(date)}
+              />
+            </div>
+          </div>
+          </div>
+          </div>
+          <div className="form-group row">
+            <div className="testo-row">
+              <input type="checkbox" className="form-check-input" />
+              <label className="form-check-label-testo">Testo:</label>
+            </div>
+            <div>
+              <input
+                type="text"
+                className="testo-text"
+                value={testo}
+                onChange={(e) => setTesto(e.target.value)}
+              />
             </div>
           </div>
 
-          <div className="form-group">
-            <div className="form-check">
-              <input type="checkbox" className="form-check-input" />
-              <label className="form-check-label-testo">Testo:</label>
-              <div className="form-group row">
-                <input
-                  type="text"
-                  className="testo-text"
-                  value={testo}
-                  onChange={(e) => setTesto(e.target.value)}
-                />
-              </div>
-            </div>
-            <div className="ricerca">
-              <div className="form-group text-center search-button-container">
-                <button className="btn btn-primary search-button">
-                  Ricerca
-                </button>
-              </div>
+          <div className="ricerca">
+            <div className="form-group text-center search-button-container">
+              <button className="btn btn-primary search-button">Ricerca</button>
             </div>
           </div>
         </form>
@@ -190,5 +185,4 @@ function SearchBox({ setData, setError }) {
     </div>
   );
 }
-
 export default SearchBox;

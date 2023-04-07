@@ -32,7 +32,7 @@ function ReactGrid({ data, error }) {
 
   return (
     <div className="results-table-grid-container">
-           <div>
+      <div>
         <PageSelector
           currentPage={currentPage}
           totalPages={totalPages}
@@ -65,7 +65,9 @@ function ReactGrid({ data, error }) {
                       handleClick(item.invention_title, item.abstract)
                     }
                   >
-                    {item.invention_title}
+                    {item.invention_title.length > 70
+                      ? item.invention_title.slice(0, 70) + "..."
+                      : item.invention_title}
                   </td>
                   <td
                     style={{ wordWrap: "break-word" }}

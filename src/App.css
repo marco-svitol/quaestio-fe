@@ -123,10 +123,12 @@ label {
 .search-container {
   background-color: #eeeeee;
   float: left;
+  margin-top: 0.75rem;
   margin-bottom: 1rem;
-  margin-top: 1rem;
   max-width: 500px;
   margin-right: 1.5rem;
+  left: 1rem;
+  position: absolute;
 }
 
 .form-group .btn {
@@ -148,8 +150,25 @@ label {
   margin-left: 1rem;
 }
 
+.testo-row {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  margin-left: 1.5rem;
+}
+
+.testo-row input[type="checkbox"] {
+  margin-left: -25px;
+}
+
+.form-check-label-testo {
+  margin-top: 0.5rem;
+  margin-left: -0.1rem;
+}
+
 .testo-text {
-  margin-left: -1.25rem;
+  margin-left: 1rem;
+  margin-bottom: 1rem;
 }
 
 .search-form {
@@ -178,27 +197,36 @@ label {
 }
 
 .form-check {
-  position: relative;
-  display: block;
-  padding-left: 1.25rem;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  margin-bottom: 5px;
 }
 
 .form-check-input {
   position: absolute;
   margin-top: 0.3rem;
-  margin-left: -2.25rem;
+  margin-left: 0rem;
+}
+
+.form-check input[type="checkbox"] {
+  margin-right: 5px;
+}
+
+.form-check .form-check-label-testo {
+  margin-right: 5px;
 }
 
 .dal-row {
-  margin-left: -0.5rem;
+  margin-left: 1rem;
 }
 
 .al-row {
-  margin-left: -0.5rem;
+  margin-left: 1rem;
 }
 
 .data-check-row {
-  margin-left: 2.25rem;
+  margin-left: 0rem;
   margin-top: 1rem;
 }
 
@@ -206,8 +234,8 @@ label {
   margin-left: 1.5rem;
 }
 
-.form-check-label-data {
-  margin-left: -0.8rem;
+.date-field {
+  margin-top: 1rem;
 }
 
 .btn {
@@ -252,18 +280,18 @@ label {
   align-items: center;
 }
 
+.datepicker-textbox-two {
+  margin-bottom: 1rem;
+}
+
 input[type="radio"],
 input[type="checkbox"] {
   width: 1rem;
 }
 
-.form-check-label-testo {
-  margin-bottom: 1rem;
-}
-
 .ricerca {
-  margin-top: 2rem;
-  margin-right: -15rem;
+  margin-top: 1.2rem;
+  margin-right: 1rem;
 }
 
 /* RESULTS TABLE */
@@ -271,7 +299,7 @@ input[type="checkbox"] {
 .results-table-grid-container {
   margin-top: 1rem;
   text-align: center;
-  margin-left: 1rem;
+  margin-left: calc(500px + 2rem);
   background-color: #eeeeef;
   overflow-x: auto;
   font-size: 12px;
@@ -438,19 +466,16 @@ input[type="checkbox"] {
   right: 16rem;
 }
 
-@media (max-width: 1400px) {
+/* media query for small screens */
+@media (max-width: 1200px) {
   .results-table-grid-container {
-    margin-top: 3.7rem;
     max-width: 100%;
-  }
-
-  .search-form {
-    margin-top: 1rem;
   }
 
   .container {
     max-width: 100%;
   }
+
   .navbar {
     position: relative;
   }
@@ -459,24 +484,30 @@ input[type="checkbox"] {
     position: relative;
     top: 0px;
     margin-left: 1rem;
+    justify-content: center;
     width: 100%;
   }
 
   .page-number {
     width: calc(100% / 9);
   }
-}
 
-/* media query for small screens */
-@media (max-width: 576px) {
+  .testo-row {
+    margin-left: 0rem;
+  }
+
+  .testo-text {
+    margin-left: 0rem;
+    margin-bottom: 1rem;
+  }
+
   .big-div {
     width: 100%;
     overflow: hidden;
   }
   .search-container {
-    margin-top: 1rem;
-    margin-right: -2rem;
-    margin-left: -4rem;
+    margin-right: 4rem;
+    position: relative;
   }
 
   .container {
@@ -486,8 +517,7 @@ input[type="checkbox"] {
   }
 
   .results-table-grid-container {
-    margin-left: -0.55rem;
-    margin-top: 1rem;
+    margin-left: 0.01rem;
   }
 
   .page-number {
@@ -501,7 +531,24 @@ input[type="checkbox"] {
 
   .search-form {
     border: 1px solid black;
-    padding: 20px;
+    padding-left: 120px;
+    padding-right: 120px;
+    justify-content: center;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .form-group {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .form-group.row {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
     justify-content: center;
   }
 
@@ -541,8 +588,7 @@ input[type="checkbox"] {
   }
 
   .ricerca {
-    margin-left: -18rem;
-    margin-top: 2rem;
+    margin-top: 0rem;
   }
 
   .modal-overlay {
@@ -560,26 +606,19 @@ input[type="checkbox"] {
     right: 6rem;
   }
 
-  .form-group.row {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-  }
-
-  .testo-text {
-    margin-right: 1rem;
-  }
-
-  .dal-row {
-    margin-left: 1rem;
-  }
-
-  .data-check-row {
-    margin-left: 3.1rem;
-    margin-top: 1rem;
-  }
-
   .data {
-    margin-left: 2.3rem;
+    margin-left: .8rem;
+  }
+
+  .form-check-input {
+    margin-left: -.7rem;
+  }
+}
+
+/* media query for very small screens */
+
+@media (max-width: 550px) {
+  .date-field {
+    margin-left: -1rem;
   }
 }
