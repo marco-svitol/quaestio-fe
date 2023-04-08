@@ -10,7 +10,7 @@ function ReactGrid({ data, error }) {
   const [selectedInventionTitle, setSelectedInventionTitle] = useState(null);
   const [selectedInventionAbstract, setSelectedInventionAbstract] =
     useState(null);
-  const itemsPerPage = 6;
+  const itemsPerPage = 7;
   const totalPages = Math.ceil(data.length / itemsPerPage);
 
   const handlePageChange = (newPage) => {
