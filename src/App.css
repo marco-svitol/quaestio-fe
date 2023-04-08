@@ -10,7 +10,7 @@
 .big-div {
   display: flex;
   flex-wrap: wrap;
-  background-color: #eeeeee;
+  background-color: white;
   justify-content: center;
   min-height: 100vh;
 }
@@ -121,9 +121,9 @@ label {
 /* SEARCHBOX */
 
 .search-container {
-  background-color: #eeeeee;
+  background-color: white;
   float: left;
-  margin-top: 2rem;
+  margin-top: 0rem;
   margin-bottom: 1rem;
   max-width: 500px;
   margin-right: 1.5rem;
@@ -184,7 +184,7 @@ label {
   flex-wrap: wrap;
   justify-content: space-between;
   margin-left: 1rem;
-  margin-top: 4rem;
+  margin-top: 3rem;
   margin-right: -0.74rem;
   background-color: white;
   border-radius: 30px;
@@ -308,13 +308,41 @@ input[type="checkbox"] {
   margin-top: 1rem;
   text-align: center;
   margin-left: calc(500px + 2rem);
-  background-color: #eeeeef;
+  background-color: white;
   overflow-x: auto;
   font-size: 12px;
 }
 
+.results-table-grid-container .fixed-height {
+  max-height: 700px;
+  overflow-y: auto;
+}
+
+.results-table-grid-container th,
+.results-table-grid-container td {
+  width: 20%; 
+  text-align: left;
+}
+
+.MuiDataGrid-root {
+  width: 100%;
+  overflow-x: hidden;
+}
+
+.MuiDataGrid-columnsContainer {
+  width: 100%;
+}
+
+.MuiDataGrid-window {
+  overflow-x: hidden !important;
+}
+
+.empty-row .MuiDataGrid-cell {
+  height: 60px; 
+}
+
 .main-table {
-  background-color: #f8f8f8;
+  background-color: white;
   margin-left: 1rem;
   table-layout: fixed;
   width: 60vw;
@@ -333,6 +361,13 @@ input[type="checkbox"] {
   background-color: #e5e5e5;
 }
 
+.no-vertical-lines th,
+.no-vertical-lines td {
+  border-left: none;
+  border-right: none;
+}
+
+
 /* PAGE SELECTOR */
 
 .page-selector-container {
@@ -343,14 +378,13 @@ input[type="checkbox"] {
 }
 
 .page-selector {
-  background-color: #eeeeee;
+  background-color: white;
   flex-wrap: wrap;
   margin-right: 6rem;
   margin-bottom: 1rem;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  background-color: #eeeeef;
   height: 50px;
 }
 
@@ -405,7 +439,7 @@ input[type="checkbox"] {
   padding: 12px;
   padding-bottom: 12px;
   cursor: pointer;
-  background-color: #eeeeef;
+  background-color: white;
   display: inline-block;
 }
 
