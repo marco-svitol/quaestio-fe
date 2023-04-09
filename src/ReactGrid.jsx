@@ -10,7 +10,7 @@ function ReactGrid({ data, error }) {
   const [selectedInventionTitle, setSelectedInventionTitle] = useState(null);
   const [selectedInventionAbstract, setSelectedInventionAbstract] =
     useState(null);
-  const itemsPerPage = 7;
+  const itemsPerPage = 12;
   const totalPages = Math.ceil(data.length / itemsPerPage);
 
   const handlePageChange = (newPage) => {
@@ -32,7 +32,16 @@ function ReactGrid({ data, error }) {
     { field: "doc_num", headerName: "Numero", width: 200 },
     { field: "inventor_name", headerName: "Autore", width: 200 },
     { field: "date", headerName: "Data", width: 200 },
-    { field: "ops_link", headerName: "LinkOPS", width: 200 },
+    {
+      field: "ops_link",
+      headerName: "LinkOPS",
+      width: 200,
+      renderCell: (params) => (
+        <a href={params.value} target="_blank" rel="noreferrer">
+          {params.value}
+        </a>
+      ),
+    },
   ];
 
   return (
@@ -59,7 +68,11 @@ function ReactGrid({ data, error }) {
         page={currentPage - 1}
         onPageChange={(params) => handlePageChange(params.page + 1)}
         hideFooterPagination
-        onRowClick={(params) => handleClick(params.row.invention_title, params.row.abstract)}
+        onCellClick={(params, event) => {
+          if (params.field !== "ops_link") {
+            handleClick(params.row.invention_title, params.row.abstract);
+          }
+        }}
       />
       {showPopUp && (
         <Modal

@@ -8,7 +8,7 @@ import "bootstrap/dist/css/bootstrap.min.css";
 
 function App() {
   const [data, setData] = useState([]);
-  const [error, setError] = useState(null);
+  const [setError] = useState(null);
   const [isLoginDisplayed, setIsLoginDisplayed] = useState(true);
 
   const toggleDisplay = () => {
@@ -23,8 +23,10 @@ function App() {
           <LoginBox toggleDisplay={toggleDisplay} />
         ) : (
           <>
-            <SearchBox setData={setData} setError={setError} />
-            {data.length > 0 && <ReactGrid data={data} error={error} />}
+            <div className="app-container">
+              <SearchBox setData={setData} setError={setError} />
+              <ReactGrid data={data} />
+            </div>
           </>
         )}
       </div>
