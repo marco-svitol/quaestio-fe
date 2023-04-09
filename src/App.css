@@ -3,6 +3,10 @@
   overflow-x: auto;
 }
 
+.body-loading {
+  cursor: progress;
+}
+
 .app-container {
   display: flex;
 }
