@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import "./App.css";
 import PageSelector from "./PageSelector";
 import Modal from "./Modal";
-import { DataGrid, GridOverlay } from "@mui/x-data-grid";
+import { DataGrid } from "@mui/x-data-grid";
 
 function ReactGrid({ data, error }) {
   const [currentPage, setCurrentPage] = useState(1);
