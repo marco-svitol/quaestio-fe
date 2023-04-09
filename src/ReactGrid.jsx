@@ -2,16 +2,16 @@ import React, { useState } from "react";
 import "./App.css";
 import PageSelector from "./PageSelector";
 import Modal from "./Modal";
+import { DataGrid, GridOverlay } from "@mui/x-data-grid";
 
 function ReactGrid({ data, error }) {
   const [currentPage, setCurrentPage] = useState(1);
   const [showPopUp, setShowPopUp] = useState(false);
   const [selectedInventionTitle, setSelectedInventionTitle] = useState(null);
-  const [selectedInventionAbstract, setSelectedInventionAbstract] = useState(null);
+  const [selectedInventionAbstract, setSelectedInventionAbstract] =
+    useState(null);
   const itemsPerPage = 12;
   const totalPages = Math.ceil(data.length / itemsPerPage);
-  const startIndex = (currentPage - 1) * itemsPerPage;
-  const currentData = data.slice(startIndex, startIndex + itemsPerPage);
 
   const handlePageChange = (newPage) => {
     setCurrentPage(newPage);
@@ -27,80 +27,25 @@ function ReactGrid({ data, error }) {
     setShowPopUp(false);
   };
 
+  const columns = [
+    { field: "invention_title", headerName: "Titolo", width: 200 },
+    { field: "doc_num", headerName: "Numero", width: 200 },
+    { field: "inventor_name", headerName: "Autore", width: 200 },
+    { field: "date", headerName: "Data", width: 200 },
+    {
+      field: "ops_link",
+      headerName: "LinkOPS",
+      width: 200,
+      renderCell: (params) => (
+        <a href={params.value} target="_blank" rel="noreferrer">
+          {params.value}
+        </a>
+      ),
+    },
+  ];
+
   return (
     <div className="results-table-grid-container">
-      <table className="main-table">
-        <thead className="header-cell">
-          <tr>
-            <th>Titolo</th>
-            <th>Numero</th>
-            <th>Autore</th>
-            <th>Data</th>
-            <th>LinkOPS</th>
-          </tr>
-        </thead>
-        <tbody>
-          {error ? (
-            <tr>
-              <td colSpan={5}>Error: {error}</td>
-            </tr>
-          ) : (
-            currentData.map((item, index) => (
-              <tr className="table-cell" key={index}>
-                <td
-                  style={{ wordWrap: "break-word" }}
-                  onClick={() =>
-                    handleClick(item.invention_title, item.abstract)
-                  }
-                >
-                  {item.invention_title}
-                </td>
-                <td
-                  style={{ wordWrap: "break-word" }}
-                  onClick={() =>
-                    handleClick(item.invention_title, item.abstract)
-                  }
-                >
-                  {item.doc_num}
-                </td>
-                <td
-                  style={{ wordWrap: "break-word" }}
-                  onClick={() =>
-                    handleClick(item.invention_title, item.abstract)
-                  }
-                >
-                  {item.inventor_name}
-                </td>
-                <td
-                  style={{ wordWrap: "break-word" }}
-                  onClick={() =>
-                    handleClick(item.invention_title, item.abstract)
-                  }
-                >
-                  {item.date}
-                </td>
-                <td>
-                  <a
-                    style={{ wordWrap: "break-word" }}
-                    href={item.ops_link}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                  >
-                    {item.ops_link}
-                  </a>
-                </td>
-              </tr>
-            ))
-          )}
-        </tbody>
-      </table>
-      {showPopUp && (
-        <Modal
-          selectedInventionTitle={selectedInventionTitle}
-          selectedInventionAbstract={selectedInventionAbstract}
-          handleClose={handleClose}
-        />
-      )}
       <div>
         <PageSelector
           currentPage={currentPage}
@@ -109,6 +54,33 @@ function ReactGrid({ data, error }) {
           itemsPerPage={itemsPerPage}
         />
       </div>
+      <DataGrid
+        className="main-table no-vertical-lines"
+        autoHeight
+        disableColumnMenu
+        disableSelectionOnClick
+        disableExtendRowFullWidth
+        rows={data}
+        columns={columns}
+        getRowId={(row) => row.doc_num}
+        pagination
+        pageSize={itemsPerPage}
+        page={currentPage - 1}
+        onPageChange={(params) => handlePageChange(params.page + 1)}
+        hideFooterPagination
+        onCellClick={(params, event) => {
+          if (params.field !== "ops_link") {
+            handleClick(params.row.invention_title, params.row.abstract);
+          }
+        }}
+      />
+      {showPopUp && (
+        <Modal
+          selectedInventionTitle={selectedInventionTitle}
+          selectedInventionAbstract={selectedInventionAbstract}
+          handleClose={handleClose}
+        />
+      )}
     </div>
   );
 }

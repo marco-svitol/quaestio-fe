@@ -6,6 +6,7 @@ import moment from "moment";
 import "moment/locale/it";
 import "bootstrap/dist/js/bootstrap.bundle.min.js";
 import "bootstrap/dist/css/bootstrap.min.css";
+import { showLoading, hideLoading } from "./LoadingUtils.jsx";
 
 function SearchBox({ setData, setError }) {
   const [titolo, setTitolo] = useState("");
@@ -46,6 +47,8 @@ function SearchBox({ setData, setError }) {
     if (testo) queryString += "&txt=" + testo;
 
     try {
+      showLoading();
+
       // Send the GET request to the API backend
       const response = await fetch(
         "https://quaestio-be.azurewebsites.net/api/v1/search" + queryString
@@ -58,6 +61,8 @@ function SearchBox({ setData, setError }) {
       setData(data);
     } catch (error) {
       setError(error.message);
+    } finally {
+      hideLoading();
     }
   };
   const handleChange = (e) => {
@@ -73,122 +78,127 @@ function SearchBox({ setData, setError }) {
       <div className="container">
         <form className="search-form" onSubmit={handleSubmit}>
           <div className="form-group row">
-            <div>
+            <div className="custom-control custom-radio custom-control-inline">
               <input
                 type="radio"
-                className="radio-btn"
+                id="titolo"
                 name="search-option"
+                className="custom-control-input"
                 value="titolo"
                 checked={selectedOption === "titolo"}
                 onChange={handleChange}
               />
-              <label>Titolo:</label>
+              <label className="custom-control-label" htmlFor="titolo">
+                Titolo
+              </label>
             </div>
-            <div className="col-sm-11">
-              <div className="control-container">
-                <select
-                  className="form-control"
-                  value={titolo}
-                  onChange={(e) => setTitolo(e.target.value)}
-                >
-                  <option value="null">Nome</option>
-                  <option value="Ferrari">Ferrari</option>
-                  <option value="Lamborghini">Lamborghini</option>
-                  <option value="Porsche">Porsche</option>
-                  <option value="Quantum">Quantum</option>
-                </select>
-              </div>
+            <div className="col-sm-8">
+              <select
+                className="form-control"
+                value={titolo}
+                onChange={(e) => setTitolo(e.target.value)}
+              >
+                <option value="null">Nome</option>
+                <option value="Ferrari">Ferrari</option>
+                <option value="Lamborghini">Lamborghini</option>
+                <option value="Porsche">Porsche</option>
+                <option value="Quantum">Quantum</option>
+              </select>
             </div>
           </div>
+
           <div className="form-group row">
-            <div>
+            <div className="custom-control custom-radio custom-control-inline">
               <input
                 type="radio"
-                className="radio-btn"
+                id="area-tecnica"
                 name="search-option"
+                className="custom-control-input"
                 value="area-tecnica"
                 checked={selectedOption === "area-tecnica"}
                 onChange={handleChange}
               />
-              <label>Area:</label>
+              <label className="custom-control-label" htmlFor="area-tecnica">
+                Area
+              </label>
             </div>
-            <div className="col-sm-11">
-              <div className="control-container">
-                <select
+            <div className="col-sm-8">
+              <select
+                className="form-control"
+                value={areaTecnica}
+                onChange={(e) => setAreaTecnica(e.target.value)}
+              >
+                <option value="null">Nome</option>
+                <option value="freno">Freno</option>
+                <option value="motore">Motore</option>
+                <option value="trasmissione">Trasmissione</option>
+              </select>
+            </div>
+          </div>
+
+          <div className="form-group row">
+            <div className="custom-control custom-checkbox">
+              <input
+                type="checkbox"
+                className="custom-control-input"
+                id="include-dates"
+                value={includeDates}
+                onChange={(e) => setIncludeDates(!includeDates)}
+              />
+              <label className="custom-control-label" htmlFor="include-dates">
+                Data:
+              </label>
+            </div>
+            <div className="col-sm-4">
+              <div className="date-picker-div">
+                <label className="mr-2">Dal:</label>
+                <DatePicker
                   className="form-control"
-                  value={areaTecnica}
-                  onChange={(e) => setAreaTecnica(e.target.value)}
-                >
-                  <option value="null">Nome</option>
-                  <option value="freno">Freno</option>
-                  <option value="motore">Motore</option>
-                  <option value="trasmissione">Trasmissione</option>
-                </select>
+                  selected={dataFrom}
+                  onChange={(date) => setDataFrom(date)}
+                />
+              </div>
+            </div>
+            <div className="col-sm-4">
+              <div className="date-picker-div">
+                <label className="mr-2">Al:</label>
+                <DatePicker
+                  className="form-control"
+                  selected={dataTo}
+                  onChange={(date) => setDataTo(date)}
+                />
               </div>
             </div>
           </div>
 
           <div className="form-group row">
-            <div className="col-sm-6">
-              <div className="data-check-row">
-                <input
-                  type="checkbox"
-                  className="form-check-input"
-                  value={includeDates}
-                  onChange={(e) => setIncludeDates(!includeDates)}
-                />
-              </div>
-              <div>
-                <label className="data">Data: </label>
-              </div>
-              <div className="form-group row">
-                <div className="dal-row">
-                  <label className="dal">Dal:</label>
-                  <DatePicker
-                    className="datepicker-textbox-one"
-                    selected={dataFrom}
-                    onChange={(date) => setDataFrom(date)}
-                  />
-                </div>
-                <div className="form-group row">
-                  <div className="al-row">
-                    <label className="al">Al:</label>
-                    <DatePicker
-                      className="datepicker-textbox-two"
-                      selected={dataTo}
-                      onChange={(date) => setDataTo(date)}
-                    />
-                  </div>
-                </div>
-              </div>
+            <div className="custom-control custom-checkbox">
+              <input
+                type="checkbox"
+                className="custom-control-input"
+                id="testo-checkbox"
+              />
+              <label className="custom-control-label" htmlFor="testo-checkbox">
+                Testo:
+              </label>
+            </div>
+            <div className="col-sm-8">
+              <input
+                type="text"
+                className="form-control"
+                value={testo}
+                onChange={(e) => setTesto(e.target.value)}
+              />
             </div>
           </div>
-
-          <div className="form-group">
-            <div className="form-check">
-              <input type="checkbox" className="form-check-input" />
-              <label className="form-check-label-testo">Testo:</label>
-              <div className="form-group row">
-                <input
-                  type="text"
-                  className="testo-text"
-                  value={testo}
-                  onChange={(e) => setTesto(e.target.value)}
-                />
-              </div>
-            </div>
-            <div className="ricerca">
-              <div className="form-group text-center search-button-container">
-                <button className="btn btn-primary search-button">
-                  Ricerca
-                </button>
-              </div>
-            </div>
+          <div className="form-group text-center search-button-container">
+            <button type="submit" className="btn btn-primary search-button">
+              Ricerca
+            </button>
           </div>
         </form>
       </div>
     </div>
   );
 }
-
 export default SearchBox;

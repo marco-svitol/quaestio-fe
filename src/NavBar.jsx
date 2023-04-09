@@ -1,23 +1,17 @@
-import React, { useState } from "react";
+import React from "react";
 
-function NavBar() {
-  const [activeTab, setActiveTab] = useState("Home");
-
-  const handleClick = (tab) => {
-    setActiveTab(tab);
-  };
-
+function NavBar({ handleTabChange, activeTab }) {
   return (
     <div className="navbar-container">
       <div
         className={`navbar-tab ${activeTab === "Home" ? "active" : ""}`}
-        onClick={() => handleClick("Home")}
+        onClick={() => handleTabChange("Home")}
       >
         Home
       </div>
       <div
         className={`navbar-tab ${activeTab === "Account" ? "active" : ""}`}
-        onClick={() => handleClick("Account")}
+        onClick={() => handleTabChange("Account")}
       >
         Account
       </div>
