@@ -6,6 +6,7 @@ import moment from "moment";
 import "moment/locale/it";
 import "bootstrap/dist/js/bootstrap.bundle.min.js";
 import "bootstrap/dist/css/bootstrap.min.css";
+import { showLoading, hideLoading } from "./LoadingUtils.jsx";
 
 function SearchBox({ setData, setError }) {
   const [titolo, setTitolo] = useState("");
@@ -46,6 +47,8 @@ function SearchBox({ setData, setError }) {
     if (testo) queryString += "&txt=" + testo;
 
     try {
+      showLoading();
+
       // Send the GET request to the API backend
       const response = await fetch(
         "https://quaestio-be.azurewebsites.net/api/v1/search" + queryString
@@ -58,6 +61,8 @@ function SearchBox({ setData, setError }) {
       setData(data);
     } catch (error) {
       setError(error.message);
+    } finally {
+      hideLoading();
     }
   };
   const handleChange = (e) => {
@@ -145,8 +150,8 @@ function SearchBox({ setData, setError }) {
               </label>
             </div>
             <div className="col-sm-4">
-            <div className="date-picker-div">
-              <label className="mr-2">Dal:</label>
+              <div className="date-picker-div">
+                <label className="mr-2">Dal:</label>
                 <DatePicker
                   className="form-control"
                   selected={dataFrom}
@@ -155,8 +160,8 @@ function SearchBox({ setData, setError }) {
               </div>
             </div>
             <div className="col-sm-4">
-            <div className="date-picker-div">
-              <label className="mr-2">Al:</label>
+              <div className="date-picker-div">
+                <label className="mr-2">Al:</label>
                 <DatePicker
                   className="form-control"
                   selected={dataTo}
