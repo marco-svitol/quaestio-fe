@@ -1,12 +1,11 @@
-import React from 'react';
-import './App.css';
-import UserProfile from './UserProfile';
-import AccountSettings from './AccountSettings';
-import SubscriptionInfo from './SubscriptionInfo';
-import UsageAnalytics from './UsageAnalytics';
-import AccessControls from './AccessControls';
-import HelpSupport from './HelpSupport';
-import IntegrationOptions from './IntegrationOptions';
+import React from "react";
+import "./App.css";
+import UserProfile from "./UserProfile";
+import AccountSettings from "./AccountSettings";
+import SubscriptionInfo from "./SubscriptionInfo";
+import UsageAnalytics from "./UsageAnalytics";
+import AccessControls from "./AccessControls";
+import HelpSupport from "./HelpSupport";
 
 const AccountPage = () => {
   return (
@@ -17,7 +16,6 @@ const AccountPage = () => {
       <UsageAnalytics />
       <AccessControls />
       <HelpSupport />
-      <IntegrationOptions />
     </div>
   );
 };

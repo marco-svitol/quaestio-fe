@@ -122,7 +122,6 @@ label {
   background-color: rgb(230, 227, 227);
 }
 
-
 /* SEARCHBOX */
 
 .search-container {
@@ -158,7 +157,6 @@ label {
   gap: 1rem;
   width: 100%;
 }
-
 
 .form-group.row {
   display: flex;
@@ -198,7 +196,6 @@ label {
 .form-group .form-label {
   width: 100%;
 }
-
 
 /* RESULTS TABLE */
 
@@ -408,7 +405,8 @@ label {
 
 /* ACCOUNT PAGE */
 
-html, body {
+html,
+body {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
@@ -420,21 +418,20 @@ html, body {
   display: flex;
   flex-wrap: wrap;
   justify-content: space-around;
-  padding: 2rem;
-  gap: 2rem;
+  padding: .5rem;
+  gap: 1rem;
 }
 
 .account-page-container {
   display: flex;
   flex-direction: row;
-  font-family: 'Arial', sans-serif;
-  margin-top: 4rem;
+  font-family: "Arial", sans-serif;
+  margin-top: 2rem;
   flex-wrap: wrap;
   width: 100%;
   max-width: 1200px;
-  gap: 1rem;
+  gap: .5rem;
 }
-
 
 .account-page h1 {
   margin-bottom: 30px;
@@ -485,7 +482,7 @@ html, body {
 /* USER PROFILE */
 
 .user-profile {
-  font-family: 'Arial', sans-serif;
+  font-family: "Arial", sans-serif;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -547,7 +544,7 @@ html, body {
 /* ACCOUNT SETTINGS */
 
 .account-settings {
-  font-family: 'Arial', sans-serif;
+  font-family: "Arial", sans-serif;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -599,7 +596,7 @@ html, body {
 /* SUBSCRIPTION INFO */
 
 .subscription-info {
-  font-family: 'Arial', sans-serif;
+  font-family: "Arial", sans-serif;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -649,7 +646,7 @@ html, body {
   border-radius: 4px;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
   margin-left: 1rem;
-  max-height: 460px;
+  max-height: 440px;
 }
 
 .usage-analytics h3 {
@@ -665,7 +662,7 @@ html, body {
   background-color: white;
   border-radius: 4px;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-  max-height: 460px;
+  max-height: 440px;
 }
 
 .access-controls h3 {
@@ -694,7 +691,7 @@ html, body {
 /* HELP SUPPORT */
 
 .help-support {
-  font-family: 'Arial', sans-serif;
+  font-family: "Arial", sans-serif;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -705,7 +702,7 @@ html, body {
   margin-left: 1rem;
   width: 300px;
   min-height: 200px;
-  max-height: 460px;
+  max-height: 440px;
   justify-content: space-between;
 }
 
@@ -732,56 +729,6 @@ html, body {
   color: #4a5568;
 }
 
-/* INTEGRATION OPTIONS */
-
-.integration-options-container {
-  width: 100%;
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 2rem;
-}
-
-.integration-options-title {
-  font-size: 2.5rem;
-  margin-bottom: 2rem;
-  text-align: center;
-}
-
-.integration-options-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-  grid-gap: 2rem;
-}
-
-.integration-option {
-  display: flex;
-  align-items: center;
-  padding: 1.5rem;
-  border-radius: 0.5rem;
-  background-color: #f4f4f4;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  transition: transform 0.3s ease-out;
-}
-
-.integration-option:hover {
-  transform: translateY(-5px);
-}
-
-.integration-icon {
-  font-size: 2.5rem;
-  margin-right: 1rem;
-  color: #333;
-}
-
-.integration-name {
-  font-size: 1.5rem;
-  color: #333;
-}
-
-
-
-
-
 /* media query for small screens */
 @media (max-width: 1135px) {
   .app-container {
@@ -803,7 +750,7 @@ html, body {
     padding-left: 1rem;
     padding-right: 1rem;
     width: 100%;
-    max-width: 75%; 
+    max-width: 75%;
     margin-right: auto;
     margin-left: auto;
   }
@@ -873,7 +820,6 @@ html, body {
     flex-direction: column;
     align-items: center;
   }
-
 }
 
 /* media query for very small screens */
