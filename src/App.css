@@ -209,6 +209,10 @@ label {
   padding-right: 5px;
 }
 
+.testo-label {
+  padding-left: 20px;
+}
+
 /* RESULTS TABLE */
 
 .results-table-grid-container {

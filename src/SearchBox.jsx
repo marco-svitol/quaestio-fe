@@ -213,7 +213,10 @@ function SearchBox({ setData, setError, refreshToken }) {
                 className="custom-control-input"
                 id="testo-checkbox"
               />
-              <label className="custom-control-label" htmlFor="testo-checkbox">
+              <label
+                className="custom-control-label testo-label"
+                htmlFor="testo-checkbox"
+              >
                 Testo:
               </label>
             </div>
