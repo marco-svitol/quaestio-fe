@@ -8,20 +8,20 @@ import "bootstrap/dist/js/bootstrap.bundle.min.js";
 import "bootstrap/dist/css/bootstrap.min.css";
 import { showLoading, hideLoading } from "./LoadingUtils.jsx";
 
-function SearchBox({ setData, setError }) {
-  const [titolo, setTitolo] = useState("");
+function SearchBox({ setData, setError, refreshToken }) {
+  const [richiedente, setRichiedente] = useState("");
   const [areaTecnica, setAreaTecnica] = useState("");
   const [dataFrom, setDataFrom] = useState(null);
   const [dataTo, setDataTo] = useState(null);
   const [testo, setTesto] = useState("");
-  const [selectedOption, setSelectedOption] = useState("titolo");
+  const [selectedOption, setSelectedOption] = useState("richiedente");
   const [includeDates, setIncludeDates] = useState(false);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     let queryString = "?";
-    if (selectedOption === "titolo" && titolo) {
-      queryString += "ti=" + titolo;
+    if (selectedOption === "richiedente" && richiedente) {
+      queryString += "pa=" + encodeURIComponent(richiedente);
     } else if (selectedOption === "area-tecnica" && areaTecnica) {
       switch (areaTecnica) {
         case "freno":
@@ -44,30 +44,58 @@ function SearchBox({ setData, setError }) {
         "&pdto=" +
         moment(dataTo).format("YYYYMMDD");
     }
-    if (testo) queryString += "&txt=" + testo;
+    if (testo) queryString += "&txt=" + encodeURIComponent(testo);
 
     try {
       showLoading();
 
-      // Send the GET request to the API backend
-      const response = await fetch(
-        "https://quaestio-be.azurewebsites.net/api/v1/search" + queryString
+      await refreshToken();
+      const response = await searchPatents(
+        queryString.includes("pa") ? richiedente : "",
+        includeDates && dataFrom ? moment(dataFrom).format("YYYYMMDD") : "",
+        includeDates && dataTo ? moment(dataTo).format("YYYYMMDD") : "",
+        testo
       );
-      if (!response.ok) {
-        throw new Error(response.statusText);
-      }
-      const data = await response.json();
-      console.log(data);
-      setData(data);
+      console.log(response);
+      setData(response);
     } catch (error) {
       setError(error.message);
     } finally {
       hideLoading();
     }
   };
+
+  async function searchPatents(pa, pdfrom, pdto, txt) {
+    const url = new URL(
+      "/api/v1/search",
+      "https://quaestio-be.azurewebsites.net"
+    );
+    url.searchParams.append("pa", pa);
+    if (pdfrom) url.searchParams.append("pdfrom", pdfrom);
+    if (pdto) url.searchParams.append("pdto", pdto);
+    if (txt) url.searchParams.append("txt", txt);
+
+    const token = sessionStorage.getItem("token");
+
+    const response = await fetch(url, {
+      method: "GET",
+      headers: {
+        Authorization: `Bearer ${token}`,
+        Accept: "application/json",
+        "Content-Type": "application/json",
+      },
+    });
+
+    if (!response.ok) {
+      throw new Error(`HTTP error ${response.status}`);
+    }
+
+    return response.json();
+  }
+
   const handleChange = (e) => {
-    if (e.target.value === "titolo") {
-      setSelectedOption("titolo");
+    if (e.target.value === "richiedente") {
+      setSelectedOption("richiedente");
     } else if (e.target.value === "area-tecnica") {
       setSelectedOption("area-tecnica");
     }
@@ -81,28 +109,32 @@ function SearchBox({ setData, setError }) {
             <div className="custom-control custom-radio custom-control-inline">
               <input
                 type="radio"
-                id="titolo"
+                id="richiedente"
                 name="search-option"
                 className="custom-control-input"
-                value="titolo"
-                checked={selectedOption === "titolo"}
+                value="richiedente"
+                checked={selectedOption === "richiedente"}
                 onChange={handleChange}
               />
-              <label className="custom-control-label" htmlFor="titolo">
-                Titolo
+              <label
+                className="custom-control-label richiedente-label"
+                htmlFor="richiedente"
+              >
+                Richiedente
               </label>
             </div>
             <div className="col-sm-8">
               <select
                 className="form-control"
-                value={titolo}
-                onChange={(e) => setTitolo(e.target.value)}
+                value={richiedente}
+                onChange={(e) => setRichiedente(e.target.value)}
               >
                 <option value="null">Nome</option>
                 <option value="Ferrari">Ferrari</option>
                 <option value="Lamborghini">Lamborghini</option>
                 <option value="Porsche">Porsche</option>
                 <option value="Quantum">Quantum</option>
+                <option value="Emmet Brown">Emmet Brown</option>
               </select>
             </div>
           </div>
@@ -118,7 +150,10 @@ function SearchBox({ setData, setError }) {
                 checked={selectedOption === "area-tecnica"}
                 onChange={handleChange}
               />
-              <label className="custom-control-label" htmlFor="area-tecnica">
+              <label
+                className="custom-control-label area-label"
+                htmlFor="area-tecnica"
+              >
                 Area
               </label>
             </div>

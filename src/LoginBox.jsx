@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import "./App.css";
 
-const LoginBox = ({ toggleDisplay }) => {
+const LoginBox = ({ toggleDisplay, setIsLoggedIn }) => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
 
@@ -34,6 +34,7 @@ const LoginBox = ({ toggleDisplay }) => {
       sessionStorage.setItem("token", response.token);
       sessionStorage.setItem("reftoken", response.refreshtoken);
       sessionStorage.setItem("uid", response.uid);
+      setIsLoggedIn(true);
       toggleDisplay();
     } catch (error) {
       console.error("Error:", error); // Log any errors

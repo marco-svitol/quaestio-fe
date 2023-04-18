@@ -201,6 +201,14 @@ label {
   width: 100%;
 }
 
+.richiedente-label {
+  padding-left: 63px;
+}
+
+.area-label {
+  padding-right: 5px;
+}
+
 /* RESULTS TABLE */
 
 .results-table-grid-container {
