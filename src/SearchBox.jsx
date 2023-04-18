@@ -19,6 +19,7 @@ function SearchBox({ setData, setError, refreshToken }) {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    await refreshToken();
     let queryString = "?";
     if (selectedOption === "richiedente" && richiedente) {
       queryString += "pa=" + encodeURIComponent(richiedente);

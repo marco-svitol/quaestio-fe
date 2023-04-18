@@ -10,17 +10,20 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import "./App.css";
 
 async function refreshToken() {
+  const uid = sessionStorage.getItem("uid");
+  const refToken = sessionStorage.getItem("reftoken");
+
   const url = new URL(
     "/api/v1/auth/refresh",
     "https://quaestio-be.azurewebsites.net"
   );
 
-  const refToken = sessionStorage.getItem("reftoken");
+  url.searchParams.append("uid", uid);
+  url.searchParams.append("reftoken", refToken);
 
   const response = await fetch(url, {
-    method: "POST",
+    method: "GET",
     headers: {
-      Authorization: `Bearer ${refToken}`,
       Accept: "application/json",
       "Content-Type": "application/json",
     },
