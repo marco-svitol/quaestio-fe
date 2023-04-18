@@ -1,18 +1,43 @@
 import React, { useState } from "react";
 import "./App.css";
 
-const LoginBox = ({ toggleDisplay }) => {
+const LoginBox = ({ toggleDisplay, setIsLoggedIn }) => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
 
-  const handleSubmit = (event) => {
+  async function loginUser(username, password) {
+    const url = new URL(
+      "/api/v1/auth/login",
+      "https://quaestio-be.azurewebsites.net"
+    );
+    url.searchParams.append("username", username);
+    url.searchParams.append("password", password);
+
+    const response = await fetch(url, {
+      method: "GET",
+    });
+
+    if (!response.ok) {
+      throw new Error(`HTTP error ${response.status}`);
+    }
+
+    return response.json();
+  }
+
+  const handleSubmit = async (event) => {
     event.preventDefault();
     console.log("Username:", username, "Password:", password);
 
-    // Add your authentication logic here
-    if (username === "test" && password === "test") {
+    try {
+      const response = await loginUser(username, password);
+      console.log("API response:", response); // Log the response
+      sessionStorage.setItem("token", response.token);
+      sessionStorage.setItem("reftoken", response.refreshtoken);
+      sessionStorage.setItem("uid", response.uid);
+      setIsLoggedIn(true);
       toggleDisplay();
-    } else {
+    } catch (error) {
+      console.error("Error:", error); // Log any errors
       alert("Invalid username or password");
     }
   };

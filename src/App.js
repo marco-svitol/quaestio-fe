@@ -4,35 +4,85 @@ import LoginBox from "./LoginBox";
 import NavBar from "./NavBar";
 import ReactGrid from "./ReactGrid";
 import AccountPage from "./AccountPage";
+import LogoutButton from "./LogoutButton";
 import "bootstrap/dist/js/bootstrap.bundle.min.js";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "./App.css";
 
+async function refreshToken() {
+  const uid = sessionStorage.getItem("uid");
+  const refToken = sessionStorage.getItem("reftoken");
+
+  const url = new URL(
+    "/api/v1/auth/refresh",
+    "https://quaestio-be.azurewebsites.net"
+  );
+
+  url.searchParams.append("uid", uid);
+  url.searchParams.append("reftoken", refToken);
+
+  const response = await fetch(url, {
+    method: "GET",
+    headers: {
+      Accept: "application/json",
+      "Content-Type": "application/json",
+    },
+  });
+
+  if (!response.ok) {
+    throw new Error(`HTTP error ${response.status}`);
+  }
+
+  const data = await response.json();
+  sessionStorage.setItem("token", data.token);
+}
+
 function App() {
   const [data, setData] = useState([]);
-  const [setError] = useState(null);
+  const [error, setError] = useState(null);
   const [isLoginDisplayed, setIsLoginDisplayed] = useState(true);
   const [activeTab, setActiveTab] = useState("Home");
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
 
   const toggleDisplay = () => {
     setIsLoginDisplayed(!isLoginDisplayed);
+    setIsLoggedIn(!isLoggedIn);
   };
 
   const handleTabChange = (tab) => {
     setActiveTab(tab);
   };
 
+  const handleLogout = () => {
+    sessionStorage.clear();
+    setIsLoggedIn(false);
+    toggleDisplay();
+  };
+
   return (
     <div className="App">
-      <NavBar handleTabChange={handleTabChange} activeTab={activeTab} />
+      {isLoggedIn && (
+        <NavBar
+          handleTabChange={handleTabChange}
+          activeTab={activeTab}
+          isLoggedIn={isLoggedIn}
+        />
+      )}
       <div className="big-div">
         {isLoginDisplayed ? (
-          <LoginBox toggleDisplay={toggleDisplay} />
+          <LoginBox
+            toggleDisplay={toggleDisplay}
+            setIsLoggedIn={setIsLoggedIn}
+          />
         ) : (
           <>
             {activeTab === "Home" && (
               <div className="app-container">
-                <SearchBox setData={setData} setError={setError} />
+                <SearchBox
+                  setData={setData}
+                  setError={setError}
+                  refreshToken={refreshToken}
+                />
                 <ReactGrid data={data} />
               </div>
             )}
@@ -40,6 +90,7 @@ function App() {
           </>
         )}
       </div>
+      {isLoggedIn && <LogoutButton handleLogout={handleLogout} />}
     </div>
   );
 }

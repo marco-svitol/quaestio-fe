@@ -201,6 +201,18 @@ label {
   width: 100%;
 }
 
+.richiedente-label {
+  padding-left: 63px;
+}
+
+.area-label {
+  padding-right: 5px;
+}
+
+.testo-label {
+  padding-left: 20px;
+}
+
 /* RESULTS TABLE */
 
 .results-table-grid-container {
@@ -361,6 +373,25 @@ label {
 .page-selector .arrow:hover {
   background-color: #428bca;
   color: white;
+}
+
+/* LOGOUT BUTTON */
+
+.logout-button {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  background-color: #f8f9fa;
+  color: #000;
+  border: 1px solid #ced4da;
+  border-radius: 5px;
+  padding: 10px 20px;
+  font-size: 14px;
+  cursor: pointer;
+}
+.logout-button:hover {
+  background-color: #e9ecef;
+  border-color: #999;
 }
 
 /* MODAL */
