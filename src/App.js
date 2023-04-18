@@ -13,9 +13,11 @@ function App() {
   const [setError] = useState(null);
   const [isLoginDisplayed, setIsLoginDisplayed] = useState(true);
   const [activeTab, setActiveTab] = useState("Home");
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
 
   const toggleDisplay = () => {
     setIsLoginDisplayed(!isLoginDisplayed);
+    setIsLoggedIn(!isLoggedIn);
   };
 
   const handleTabChange = (tab) => {
@@ -24,7 +26,13 @@ function App() {
 
   return (
     <div className="App">
-      <NavBar handleTabChange={handleTabChange} activeTab={activeTab} />
+      {isLoggedIn && (
+        <NavBar
+          handleTabChange={handleTabChange}
+          activeTab={activeTab}
+          isLoggedIn={isLoggedIn}
+        />
+      )}
       <div className="big-div">
         {isLoginDisplayed ? (
           <LoginBox toggleDisplay={toggleDisplay} />
