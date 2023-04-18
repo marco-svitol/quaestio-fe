@@ -363,6 +363,25 @@ label {
   color: white;
 }
 
+/* LOGOUT BUTTON */
+
+.logout-button {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  background-color: #f8f9fa;
+  color: #000;
+  border: 1px solid #ced4da;
+  border-radius: 5px;
+  padding: 10px 20px;
+  font-size: 14px;
+  cursor: pointer;
+}
+.logout-button:hover {
+  background-color: #e9ecef;
+  border-color: #999;
+}
+
 /* MODAL */
 
 .modal-overlay {

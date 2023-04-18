@@ -4,6 +4,7 @@ import LoginBox from "./LoginBox";
 import NavBar from "./NavBar";
 import ReactGrid from "./ReactGrid";
 import AccountPage from "./AccountPage";
+import LogoutButton from "./LogoutButton";
 import "bootstrap/dist/js/bootstrap.bundle.min.js";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "./App.css";
@@ -22,6 +23,12 @@ function App() {
 
   const handleTabChange = (tab) => {
     setActiveTab(tab);
+  };
+
+  const handleLogout = () => {
+    sessionStorage.clear();
+    setIsLoggedIn(false);
+    toggleDisplay();
   };
 
   return (
@@ -48,6 +55,7 @@ function App() {
           </>
         )}
       </div>
+      {isLoggedIn && <LogoutButton handleLogout={handleLogout} />}
     </div>
   );
 }
