@@ -27,6 +27,14 @@ function SearchBox({ setData, setError, refreshToken }) {
   const [selectedOption, setSelectedOption] = useState("richiedente");
   const [includeDates, setIncludeDates] = useState(false);
 
+  const setQuickDate = (days) => {
+    const now = new Date();
+    const fromDate = new Date();
+    fromDate.setDate(now.getDate() - days);
+    setDataFrom(fromDate);
+    setDataTo(now);
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
 
@@ -208,6 +216,31 @@ function SearchBox({ setData, setError, refreshToken }) {
                   selected={dataTo}
                   onChange={(date) => setDataTo(date)}
                 />
+              </div>
+            </div>
+            <div className="col-auto">
+              <div className="text-center date-button-container">
+                <button
+                  type="button"
+                  className="btn btn-outline-primary btn-sm mr-1"
+                  onClick={() => setQuickDate(1)}
+                >
+                  ultime 24 ore
+                </button>
+                <button
+                  type="button"
+                  className="btn btn-outline-primary btn-sm mr-1"
+                  onClick={() => setQuickDate(7)}
+                >
+                  ultima settimana
+                </button>
+                <button
+                  type="button"
+                  className="btn btn-outline-primary btn-sm"
+                  onClick={() => setQuickDate(30)}
+                >
+                  ultimo mese
+                </button>
               </div>
             </div>
           </div>
