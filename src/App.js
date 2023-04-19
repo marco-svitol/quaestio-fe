@@ -12,14 +12,23 @@ import "./App.css";
 async function refreshToken() {
   const uid = sessionStorage.getItem("uid");
   const refToken = sessionStorage.getItem("reftoken");
+  console.log("UID:", uid);
+  console.log("RefToken:", refToken);
+
+  const currentTime = Math.floor(Date.now() / 1000);
+  const decodedRefToken = JSON.parse(atob(refToken.split(".")[1]));
+  const tokenExp = decodedRefToken.exp;
+
+  if (currentTime >= tokenExp) {
+    console.log("Refresh token has expired");
+    return;
+  }
 
   const url = new URL(
-    "/api/v1/auth/refresh",
+    `/api/v1/auth/refreshtoken?uid=${uid}&reftoken=${refToken}`,
     "https://quaestio-be.azurewebsites.net"
   );
-
-  url.searchParams.append("uid", uid);
-  url.searchParams.append("reftoken", refToken);
+  console.log("URL:", url);
 
   const response = await fetch(url, {
     method: "GET",
@@ -29,7 +38,10 @@ async function refreshToken() {
     },
   });
 
+  console.log("Response:", response);
+
   if (!response.ok) {
+    console.log("Error response:", response);
     throw new Error(`HTTP error ${response.status}`);
   }
 

@@ -20,39 +20,12 @@ function SearchBox({ setData, setError, refreshToken }) {
   const handleSubmit = async (e) => {
     e.preventDefault();
     await refreshToken();
-    let queryString = "?";
-    if (selectedOption === "richiedente" && richiedente) {
-      queryString += "pa=" + encodeURIComponent(richiedente);
-    } else if (selectedOption === "area-tecnica" && areaTecnica) {
-      switch (areaTecnica) {
-        case "freno":
-          queryString += "tecarea=A91";
-          break;
-        case "motore":
-          queryString += "tecarea=A55";
-          break;
-        case "trasmissione":
-          queryString += "tecarea=F91";
-          break;
-        default:
-          break;
-      }
-    }
-    if (includeDates && dataFrom && dataTo) {
-      queryString +=
-        "&pdfrom=" +
-        moment(dataFrom).format("YYYYMMDD") +
-        "&pdto=" +
-        moment(dataTo).format("YYYYMMDD");
-    }
-    if (testo) queryString += "&txt=" + encodeURIComponent(testo);
 
     try {
       showLoading();
-
-      await refreshToken();
       const response = await searchPatents(
-        queryString.includes("pa") ? richiedente : "",
+        selectedOption === "richiedente" ? richiedente : "",
+        areaTecnica,
         includeDates && dataFrom ? moment(dataFrom).format("YYYYMMDD") : "",
         includeDates && dataTo ? moment(dataTo).format("YYYYMMDD") : "",
         testo
@@ -66,12 +39,27 @@ function SearchBox({ setData, setError, refreshToken }) {
     }
   };
 
-  async function searchPatents(pa, pdfrom, pdto, txt) {
+  async function searchPatents(pa, areaTecnica, pdfrom, pdto, txt) {
     const url = new URL(
       "/api/v1/search",
       "https://quaestio-be.azurewebsites.net"
     );
-    url.searchParams.append("pa", pa);
+    if (pa) url.searchParams.append("pa", pa);
+    if (areaTecnica) {
+      switch (areaTecnica) {
+        case "freno":
+          url.searchParams.append("tecarea", "A91");
+          break;
+        case "motore":
+          url.searchParams.append("tecarea", "A55");
+          break;
+        case "trasmissione":
+          url.searchParams.append("tecarea", "F91");
+          break;
+        default:
+          break;
+      }
+    }
     if (pdfrom) url.searchParams.append("pdfrom", pdfrom);
     if (pdto) url.searchParams.append("pdto", pdto);
     if (txt) url.searchParams.append("txt", txt);
