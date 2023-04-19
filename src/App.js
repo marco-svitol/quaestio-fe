@@ -33,12 +33,13 @@ async function refreshToken() {
   const response = await fetch(url, {
     method: "GET",
     headers: {
+      Authorization: `Bearer ${refToken}`,
       Accept: "application/json",
       "Content-Type": "application/json",
     },
   });
 
-  console.log("Response:", response);
+  console.log("Authorization header:", response.headers.get("Authorization"));
 
   if (!response.ok) {
     console.log("Error response:", response);
