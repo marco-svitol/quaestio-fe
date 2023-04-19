@@ -62,7 +62,7 @@ function ReactGrid({ data, error }) {
         disableExtendRowFullWidth
         rows={data}
         columns={columns}
-        getRowId={(row) => row.doc_num}
+        getRowId={(row, index) => row.doc_num || `row-${index}`}
         pagination
         pageSize={itemsPerPage}
         page={currentPage - 1}

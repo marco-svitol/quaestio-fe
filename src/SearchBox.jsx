@@ -49,7 +49,12 @@ function SearchBox({ setData, setError, refreshToken }) {
   };
 
   async function searchPatents(pa, areaTecnica, pdfrom, pdto, txt, token) {
+    console.log("searchPatents: token", token);
+
     const url = new URL("https://quaestio-be.azurewebsites.net/api/v1/search");
+
+    const decodedToken = JSON.parse(atob(token.split(".")[1]));
+    const uid = decodedToken.uid;
 
     const queryParams = new URLSearchParams({
       pa,
@@ -57,6 +62,7 @@ function SearchBox({ setData, setError, refreshToken }) {
       pdfrom,
       pdto,
       txt,
+      uid,
     });
 
     url.search = queryParams;
