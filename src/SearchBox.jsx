@@ -23,6 +23,7 @@ function SearchBox({ setData, setError, refreshToken }) {
 
     try {
       showLoading();
+      await refreshToken();
       const response = await searchPatents(
         selectedOption === "richiedente" ? richiedente : "",
         areaTecnica,
