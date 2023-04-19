@@ -32,27 +32,14 @@ function SearchBox({ setData, setError, refreshToken }) {
 
     try {
       showLoading();
-
-      let token = sessionStorage.getItem("token");
-      if (isTokenExpired(token)) {
-        const refreshed = await refreshToken();
-        if (refreshed) {
-          token = sessionStorage.getItem("token");
-        } else {
-          throw new Error("Failed to refresh the token");
-        }
-      }
-      console.log("Token before searchPatents call: ", token);
-
-      const response = await searchPatents(
+      const response = await withTokenRefresh(searchPatents)(
         selectedOption === "richiedente" ? richiedente : "",
-        areaTecnica,
+        selectedOption === "area-tecnica" ? areaTecnica : "",
         includeDates && dataFrom ? moment(dataFrom).format("YYYYMMDD") : "",
         includeDates && dataTo ? moment(dataTo).format("YYYYMMDD") : "",
-        testo,
-        token
+        testo
       );
-      console.log(response);
+
       setData(response);
     } catch (error) {
       setError(error.message);
@@ -83,7 +70,6 @@ function SearchBox({ setData, setError, refreshToken }) {
           "application/json, application/pdf, application/jpeg, application/gif",
       },
     };
-
     const response = await fetch(url, requestOptions);
 
     if (!response.ok) {
@@ -94,12 +80,25 @@ function SearchBox({ setData, setError, refreshToken }) {
     return data;
   }
 
+  function withTokenRefresh(func) {
+    return async function (...args) {
+      let token = sessionStorage.getItem("token");
+
+      if (isTokenExpired(token)) {
+        const refreshed = await refreshToken();
+        if (refreshed) {
+          token = sessionStorage.getItem("token");
+        } else {
+          throw new Error("Failed to refresh the token");
+        }
+      }
+
+      return await func(...args, token);
+    };
+  }
+
   const handleChange = (e) => {
-    if (e.target.value === "richiedente") {
-      setSelectedOption("richiedente");
-    } else if (e.target.value === "area-tecnica") {
-      setSelectedOption("area-tecnica");
-    }
+    setSelectedOption(e.target.value);
   };
 
   return (
