@@ -213,6 +213,14 @@ label {
   padding-left: 20px;
 }
 
+.date-button-container {
+  white-space: nowrap;
+}
+
+.date-button-container {
+  margin-left: 0;
+}
+
 /* RESULTS TABLE */
 
 .results-table-grid-container {
@@ -791,6 +799,7 @@ body {
     max-width: 75%;
     margin-right: auto;
     margin-left: auto;
+    margin-top: 3rem;
   }
 
   .form-group .col-sm-12 label {
@@ -882,6 +891,10 @@ body {
   .help-support {
     width: 100%;
   }
+
+  .date-button-container {
+    white-space: nowrap;
+  }
 }
 
 /* media query for very small screens */
@@ -917,5 +930,10 @@ body {
     margin-right: auto;
     max-width: 100%;
     margin-left: 0rem;
+  }
+
+  .date-button-container {
+    white-space: nowrap;
+    margin-left: -20px;
   }
 }

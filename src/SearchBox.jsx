@@ -27,32 +27,27 @@ function SearchBox({ setData, setError, refreshToken }) {
   const [selectedOption, setSelectedOption] = useState("richiedente");
   const [includeDates, setIncludeDates] = useState(false);
 
+  const setQuickDate = (days) => {
+    const now = new Date();
+    const fromDate = new Date();
+    fromDate.setDate(now.getDate() - days);
+    setDataFrom(fromDate);
+    setDataTo(now);
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
 
     try {
       showLoading();
-
-      let token = sessionStorage.getItem("token");
-      if (isTokenExpired(token)) {
-        const refreshed = await refreshToken();
-        if (refreshed) {
-          token = sessionStorage.getItem("token");
-        } else {
-          throw new Error("Failed to refresh the token");
-        }
-      }
-      console.log("Token before searchPatents call: ", token);
-
-      const response = await searchPatents(
+      const response = await withTokenRefresh(searchPatents)(
         selectedOption === "richiedente" ? richiedente : "",
-        areaTecnica,
+        selectedOption === "area-tecnica" ? areaTecnica : "",
         includeDates && dataFrom ? moment(dataFrom).format("YYYYMMDD") : "",
         includeDates && dataTo ? moment(dataTo).format("YYYYMMDD") : "",
-        testo,
-        token
+        testo
       );
-      console.log(response);
+
       setData(response);
     } catch (error) {
       setError(error.message);
@@ -62,7 +57,12 @@ function SearchBox({ setData, setError, refreshToken }) {
   };
 
   async function searchPatents(pa, areaTecnica, pdfrom, pdto, txt, token) {
+    console.log("searchPatents: token", token);
+
     const url = new URL("https://quaestio-be.azurewebsites.net/api/v1/search");
+
+    const decodedToken = JSON.parse(atob(token.split(".")[1]));
+    const uid = decodedToken.uid;
 
     const queryParams = new URLSearchParams({
       pa,
@@ -70,6 +70,7 @@ function SearchBox({ setData, setError, refreshToken }) {
       pdfrom,
       pdto,
       txt,
+      uid,
     });
 
     url.search = queryParams;
@@ -83,7 +84,6 @@ function SearchBox({ setData, setError, refreshToken }) {
           "application/json, application/pdf, application/jpeg, application/gif",
       },
     };
-
     const response = await fetch(url, requestOptions);
 
     if (!response.ok) {
@@ -94,12 +94,25 @@ function SearchBox({ setData, setError, refreshToken }) {
     return data;
   }
 
+  function withTokenRefresh(func) {
+    return async function (...args) {
+      let token = sessionStorage.getItem("token");
+
+      if (isTokenExpired(token)) {
+        const refreshed = await refreshToken();
+        if (refreshed) {
+          token = sessionStorage.getItem("token");
+        } else {
+          throw new Error("Failed to refresh the token");
+        }
+      }
+
+      return await func(...args, token);
+    };
+  }
+
   const handleChange = (e) => {
-    if (e.target.value === "richiedente") {
-      setSelectedOption("richiedente");
-    } else if (e.target.value === "area-tecnica") {
-      setSelectedOption("area-tecnica");
-    }
+    setSelectedOption(e.target.value);
   };
 
   return (
@@ -203,6 +216,31 @@ function SearchBox({ setData, setError, refreshToken }) {
                   selected={dataTo}
                   onChange={(date) => setDataTo(date)}
                 />
+              </div>
+            </div>
+            <div className="col-auto">
+              <div className="text-center date-button-container">
+                <button
+                  type="button"
+                  className="btn btn-outline-primary btn-sm mr-1"
+                  onClick={() => setQuickDate(1)}
+                >
+                  ultime 24 ore
+                </button>
+                <button
+                  type="button"
+                  className="btn btn-outline-primary btn-sm mr-1"
+                  onClick={() => setQuickDate(7)}
+                >
+                  ultima settimana
+                </button>
+                <button
+                  type="button"
+                  className="btn btn-outline-primary btn-sm"
+                  onClick={() => setQuickDate(30)}
+                >
+                  ultimo mese
+                </button>
               </div>
             </div>
           </div>
