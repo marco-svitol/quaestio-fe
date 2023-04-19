@@ -8,6 +8,16 @@ import "bootstrap/dist/js/bootstrap.bundle.min.js";
 import "bootstrap/dist/css/bootstrap.min.css";
 import { showLoading, hideLoading } from "./LoadingUtils.jsx";
 
+function isTokenExpired(token) {
+  if (!token) return true;
+
+  const currentTime = Math.floor(Date.now() / 1000);
+  const decodedToken = JSON.parse(atob(token.split(".")[1]));
+  const tokenExp = decodedToken.exp;
+
+  return currentTime >= tokenExp;
+}
+
 function SearchBox({ setData, setError, refreshToken }) {
   const [richiedente, setRichiedente] = useState("");
   const [areaTecnica, setAreaTecnica] = useState("");
@@ -19,43 +29,28 @@ function SearchBox({ setData, setError, refreshToken }) {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    await refreshToken();
-    let queryString = "?";
-    if (selectedOption === "richiedente" && richiedente) {
-      queryString += "pa=" + encodeURIComponent(richiedente);
-    } else if (selectedOption === "area-tecnica" && areaTecnica) {
-      switch (areaTecnica) {
-        case "freno":
-          queryString += "tecarea=A91";
-          break;
-        case "motore":
-          queryString += "tecarea=A55";
-          break;
-        case "trasmissione":
-          queryString += "tecarea=F91";
-          break;
-        default:
-          break;
-      }
-    }
-    if (includeDates && dataFrom && dataTo) {
-      queryString +=
-        "&pdfrom=" +
-        moment(dataFrom).format("YYYYMMDD") +
-        "&pdto=" +
-        moment(dataTo).format("YYYYMMDD");
-    }
-    if (testo) queryString += "&txt=" + encodeURIComponent(testo);
 
     try {
       showLoading();
 
-      await refreshToken();
+      let token = sessionStorage.getItem("token");
+      if (isTokenExpired(token)) {
+        const refreshed = await refreshToken();
+        if (refreshed) {
+          token = sessionStorage.getItem("token");
+        } else {
+          throw new Error("Failed to refresh the token");
+        }
+      }
+      console.log("Token before searchPatents call: ", token);
+
       const response = await searchPatents(
-        queryString.includes("pa") ? richiedente : "",
+        selectedOption === "richiedente" ? richiedente : "",
+        areaTecnica,
         includeDates && dataFrom ? moment(dataFrom).format("YYYYMMDD") : "",
         includeDates && dataTo ? moment(dataTo).format("YYYYMMDD") : "",
-        testo
+        testo,
+        token
       );
       console.log(response);
       setData(response);
@@ -66,32 +61,37 @@ function SearchBox({ setData, setError, refreshToken }) {
     }
   };
 
-  async function searchPatents(pa, pdfrom, pdto, txt) {
-    const url = new URL(
-      "/api/v1/search",
-      "https://quaestio-be.azurewebsites.net"
-    );
-    url.searchParams.append("pa", pa);
-    if (pdfrom) url.searchParams.append("pdfrom", pdfrom);
-    if (pdto) url.searchParams.append("pdto", pdto);
-    if (txt) url.searchParams.append("txt", txt);
+  async function searchPatents(pa, areaTecnica, pdfrom, pdto, txt, token) {
+    const url = new URL("https://quaestio-be.azurewebsites.net/api/v1/search");
 
-    const token = sessionStorage.getItem("token");
-
-    const response = await fetch(url, {
-      method: "GET",
-      headers: {
-        Authorization: `Bearer ${token}`,
-        Accept: "application/json",
-        "Content-Type": "application/json",
-      },
+    const queryParams = new URLSearchParams({
+      pa,
+      tecarea: areaTecnica,
+      pdfrom,
+      pdto,
+      txt,
     });
 
+    url.search = queryParams;
+
+    const requestOptions = {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+        Accept:
+          "application/json, application/pdf, application/jpeg, application/gif",
+      },
+    };
+
+    const response = await fetch(url, requestOptions);
+
     if (!response.ok) {
-      throw new Error(`HTTP error ${response.status}`);
+      throw new Error(`Error ${response.status}: ${response.statusText}`);
     }
 
-    return response.json();
+    const data = await response.json();
+    return data;
   }
 
   const handleChange = (e) => {

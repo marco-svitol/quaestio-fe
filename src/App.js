@@ -8,38 +8,52 @@ import LogoutButton from "./LogoutButton";
 import "bootstrap/dist/js/bootstrap.bundle.min.js";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "./App.css";
+import axios from "axios";
+
+function isTokenExpired(token) {
+  if (!token) return true;
+
+  const currentTime = Math.floor(Date.now() / 1000);
+  const decodedToken = JSON.parse(atob(token.split(".")[1]));
+  const tokenExp = decodedToken.exp;
+
+  return currentTime >= tokenExp;
+}
 
 async function refreshToken() {
   const uid = sessionStorage.getItem("uid");
   const refToken = sessionStorage.getItem("reftoken");
+  console.log("UID:", uid);
+  console.log("RefToken:", refToken);
 
-  const url = new URL(
-    "/api/v1/auth/refresh",
-    "https://quaestio-be.azurewebsites.net"
-  );
-
-  url.searchParams.append("uid", uid);
-  url.searchParams.append("reftoken", refToken);
-
-  const response = await fetch(url, {
-    method: "GET",
-    headers: {
-      Accept: "application/json",
-      "Content-Type": "application/json",
-    },
-  });
-
-  if (!response.ok) {
-    throw new Error(`HTTP error ${response.status}`);
+  if (isTokenExpired(refToken)) {
+    console.log("Refresh token has expired");
+    return;
   }
 
-  const data = await response.json();
-  sessionStorage.setItem("token", data.token);
+  try {
+    const response = await axios.post(
+      "https://quaestio-be.azurewebsites.net/api/v1/auth/refresh",
+      {
+        uid: uid,
+        token: refToken,
+      }
+    );
+
+    if (response.status === 200) {
+      sessionStorage.setItem("token", response.data.token);
+      console.log("Token refreshed");
+    } else {
+      console.log("Error refreshing token");
+    }
+  } catch (error) {
+    console.log("Error refreshing token:", error);
+  }
 }
 
 function App() {
   const [data, setData] = useState([]);
-  const [error, setError] = useState(null);
+  const [, setError] = useState(null);
   const [isLoginDisplayed, setIsLoginDisplayed] = useState(true);
   const [activeTab, setActiveTab] = useState("Home");
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -90,7 +104,9 @@ function App() {
           </>
         )}
       </div>
-      {isLoggedIn && <LogoutButton handleLogout={handleLogout} />}
+      {isLoggedIn && (
+        <LogoutButton handleLogout={handleLogout} refreshToken={refreshToken} />
+      )}
     </div>
   );
 }
