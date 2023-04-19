@@ -19,7 +19,6 @@ function SearchBox({ setData, setError, refreshToken }) {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    await refreshToken();
 
     try {
       showLoading();

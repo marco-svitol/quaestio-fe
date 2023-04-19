@@ -25,7 +25,7 @@ async function refreshToken() {
   }
 
   const url = new URL(
-    `/api/v1/auth/refreshtoken?uid=${uid}&reftoken=${refToken}`,
+    `/api/v1/auth/refresh?uid=${uid}&reftoken=${refToken}`,
     "https://quaestio-be.azurewebsites.net"
   );
   console.log("URL:", url);
@@ -52,7 +52,7 @@ async function refreshToken() {
 
 function App() {
   const [data, setData] = useState([]);
-  const [error, setError] = useState(null);
+  const [, setError] = useState(null);
   const [isLoginDisplayed, setIsLoginDisplayed] = useState(true);
   const [activeTab, setActiveTab] = useState("Home");
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -103,7 +103,9 @@ function App() {
           </>
         )}
       </div>
-      {isLoggedIn && <LogoutButton handleLogout={handleLogout} />}
+      {isLoggedIn && (
+        <LogoutButton handleLogout={handleLogout} refreshToken={refreshToken} />
+      )}
     </div>
   );
 }
