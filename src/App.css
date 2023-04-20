@@ -226,7 +226,7 @@ label {
 .results-table-grid-container {
   margin-top: 1rem;
   text-align: center;
-  margin-left: 2rem;
+  margin-left: 1rem;
   background-color: white;
   overflow-x: auto;
   font-size: 12px;
@@ -245,7 +245,6 @@ label {
 
 .MuiDataGrid-root {
   width: 100%;
-  overflow-x: hidden;
 }
 
 .MuiDataGrid-columnsContainer {
@@ -253,7 +252,7 @@ label {
 }
 
 .MuiDataGrid-window {
-  overflow-x: hidden !important;
+  overflow-x: auto !important;
 }
 
 .empty-row .MuiDataGrid-cell {
@@ -284,6 +283,18 @@ label {
 .no-vertical-lines td {
   border-left: none;
   border-right: none;
+}
+
+.row-new {
+  background-color: lightgreen;
+}
+
+.row-listed {
+  background-color: lightorange;
+}
+
+.row-read {
+  background-color: lightred;
 }
 
 /* PAGE SELECTOR */
