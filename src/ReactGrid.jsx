@@ -29,20 +29,47 @@ function ReactGrid({ data, error }) {
 
   const columns = [
     { field: "invention_title", headerName: "Titolo", width: 200 },
-    { field: "doc_num", headerName: "Numero", width: 200 },
+    { field: "doc_num", headerName: "Numero", width: 150 },
     { field: "inventor_name", headerName: "Autore", width: 200 },
-    { field: "date", headerName: "Data", width: 200 },
+    { field: "date", headerName: "Data", width: 100 },
     {
       field: "ops_link",
       headerName: "LinkOPS",
-      width: 200,
+      width: 190,
       renderCell: (params) => (
         <a href={params.value} target="_blank" rel="noreferrer">
           {params.value}
         </a>
       ),
     },
+
+    {
+      field: "read_status",
+      headerName: "Stato",
+      width: 80,
+      renderCell: (params) => {
+        const status = params.row.read_history;
+        if (status === "new") {
+          return <span className="text-primary font-weight-bold">Nuovo</span>;
+        } else if (status === "listed") {
+          return <span className="text-warning">Non letto</span>;
+        } else {
+          return <span className="text-success">Letto</span>;
+        }
+      },
+    },
   ];
+
+  const getRowClassName = (params) => {
+    const status = params.row.read_history;
+    if (status === "new") {
+      return "row-new";
+    } else if (status === "listed") {
+      return "row-listed";
+    } else {
+      return "row-read";
+    }
+  };
 
   return (
     <div className="results-table-grid-container">
@@ -73,6 +100,7 @@ function ReactGrid({ data, error }) {
             handleClick(params.row.invention_title, params.row.abstract);
           }
         }}
+        getRowClassName={getRowClassName}
       />
       {showPopUp && (
         <Modal
@@ -84,4 +112,5 @@ function ReactGrid({ data, error }) {
     </div>
   );
 }
+
 export default ReactGrid;
