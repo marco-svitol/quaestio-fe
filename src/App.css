@@ -239,7 +239,6 @@ label {
 
 .results-table-grid-container th,
 .results-table-grid-container td {
-  width: 20%;
   text-align: left;
 }
 
@@ -263,7 +262,7 @@ label {
   background-color: white;
   margin-left: 2rem;
   table-layout: fixed;
-  width: 60vw;
+  width: calc(375px + 150px + 200px + 100px + 80px);
   min-width: 600px;
 }
 
@@ -295,6 +294,10 @@ label {
 
 .row-read {
   background-color: #ff9999;
+}
+
+.MuiDataGrid-cell {
+  padding-right: 0 !important;
 }
 
 /* PAGE SELECTOR */
@@ -874,6 +877,15 @@ body {
 
 /* media query for medium small screens */
 @media (max-width: 768px) {
+  .search-container {
+    margin-left: auto;
+    margin-right: auto;
+    position: relative;
+    width: 80%;
+    max-width: none;
+    min-width: 0;
+  }
+
   .account-page {
     flex-direction: column;
     align-items: center;
