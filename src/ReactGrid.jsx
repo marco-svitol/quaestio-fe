@@ -10,6 +10,7 @@ function ReactGrid({ data, error }) {
   const [selectedInventionTitle, setSelectedInventionTitle] = useState(null);
   const [selectedInventionAbstract, setSelectedInventionAbstract] =
     useState(null);
+  const [selectedOpsLink, setSelectedOpsLink] = useState(null);
   const itemsPerPage = 12;
   const totalPages = Math.ceil(data.length / itemsPerPage);
 
@@ -17,9 +18,10 @@ function ReactGrid({ data, error }) {
     setCurrentPage(newPage);
   };
 
-  const handleClick = (inventionTitle, inventionAbstract) => {
+  const handleClick = (inventionTitle, inventionAbstract, opsLink) => {
     setSelectedInventionTitle(inventionTitle);
     setSelectedInventionAbstract(inventionAbstract);
+    setSelectedOpsLink(opsLink);
     setShowPopUp(true);
   };
 
@@ -28,21 +30,10 @@ function ReactGrid({ data, error }) {
   };
 
   const columns = [
-    { field: "invention_title", headerName: "Titolo", width: 200 },
+    { field: "invention_title", headerName: "Titolo", width: 375 },
     { field: "doc_num", headerName: "Numero", width: 150 },
     { field: "inventor_name", headerName: "Autore", width: 200 },
     { field: "date", headerName: "Data", width: 100 },
-    {
-      field: "ops_link",
-      headerName: "LinkOPS",
-      width: 190,
-      renderCell: (params) => (
-        <a href={params.value} target="_blank" rel="noreferrer">
-          {params.value}
-        </a>
-      ),
-    },
-
     {
       field: "read_status",
       headerName: "Stato",
@@ -96,9 +87,11 @@ function ReactGrid({ data, error }) {
         onPageChange={(params) => handlePageChange(params.page + 1)}
         hideFooterPagination
         onCellClick={(params, event) => {
-          if (params.field !== "ops_link") {
-            handleClick(params.row.invention_title, params.row.abstract);
-          }
+          handleClick(
+            params.row.invention_title,
+            params.row.abstract,
+            params.row.ops_link
+          );
         }}
         getRowClassName={getRowClassName}
       />
@@ -106,6 +99,7 @@ function ReactGrid({ data, error }) {
         <Modal
           selectedInventionTitle={selectedInventionTitle}
           selectedInventionAbstract={selectedInventionAbstract}
+          selectedOpsLink={selectedOpsLink}
           handleClose={handleClose}
         />
       )}
