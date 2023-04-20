@@ -290,11 +290,11 @@ label {
 }
 
 .row-listed {
-  background-color: lightorange;
+  background-color: #ffcc99;
 }
 
 .row-read {
-  background-color: lightred;
+  background-color: #ff9999;
 }
 
 /* PAGE SELECTOR */
