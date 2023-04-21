@@ -3,6 +3,7 @@ import "./App.css";
 import PageSelector from "./PageSelector";
 import Modal from "./Modal";
 import { DataGrid } from "@mui/x-data-grid";
+import axios from "axios";
 
 function ReactGrid({ data, error }) {
   const [currentPage, setCurrentPage] = useState(1);
@@ -18,10 +19,43 @@ function ReactGrid({ data, error }) {
     setCurrentPage(newPage);
   };
 
-  const handleClick = (inventionTitle, inventionAbstract, opsLink) => {
+  const openDoc = async (uid, doc_num) => {
+    const token = sessionStorage.getItem("token");
+    try {
+      const response = await axios.get(
+        `https://quaestio-be.azurewebsites.net/api/v1/opendoc`,
+        {
+          params: { uid, doc_num },
+          headers: { Authorization: `Bearer ${token}` },
+        }
+      );
+      if (response.status === 200) {
+        window.open(response.data.url, "_blank");
+      } else {
+        console.error("Error while fetching OPS document link");
+      }
+    } catch (error) {
+      console.error("Error while fetching OPS document link:", error);
+    }
+  };
+
+  const handleClick = async (
+    inventionTitle,
+    inventionAbstract,
+    opsLink,
+    uid,
+    docNum
+  ) => {
     setSelectedInventionTitle(inventionTitle);
     setSelectedInventionAbstract(inventionAbstract);
-    setSelectedOpsLink(opsLink);
+
+    const updatedOpsLink = await openDoc(uid, docNum);
+    if (updatedOpsLink) {
+      setSelectedOpsLink(updatedOpsLink);
+    } else {
+      setSelectedOpsLink(opsLink);
+    }
+
     setShowPopUp(true);
   };
 
@@ -90,7 +124,9 @@ function ReactGrid({ data, error }) {
           handleClick(
             params.row.invention_title,
             params.row.abstract,
-            params.row.ops_link
+            params.row.ops_link,
+            sessionStorage.getItem("uid"),
+            params.row.doc_num
           );
         }}
         getRowClassName={getRowClassName}
