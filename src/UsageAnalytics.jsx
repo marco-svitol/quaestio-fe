@@ -1,13 +1,13 @@
-import React from 'react';
-import { Bar } from '@visx/shape';
-import { scaleBand, scaleLinear } from '@visx/scale';
-import './App.css';
+import React from "react";
+import { Bar } from "@visx/shape";
+import { scaleBand, scaleLinear } from "@visx/scale";
+import "./App.css";
 
 const data = [
-  { category: 'A', value: 10 },
-  { category: 'B', value: 20 },
-  { category: 'C', value: 30 },
-  { category: 'D', value: 40 },
+  { category: "A", value: 10 },
+  { category: "B", value: 20 },
+  { category: "C", value: 30 },
+  { category: "D", value: 40 },
 ];
 
 const width = 400;
@@ -27,22 +27,24 @@ const yScale = scaleLinear({
 const UsageAnalytics = () => {
   return (
     <div className="usage-analytics">
-      <h3>Usage Analytics</h3>
-      <svg width={width} height={height}>
-        {data.map((d, i) => {
-          const barHeight = height - yScale(d.value);
-          return (
-            <Bar
-              key={`bar-${i}`}
-              x={xScale(d.category)}
-              y={yScale(d.value)}
-              width={xScale.bandwidth()}
-              height={barHeight}
-              fill="#428bca"
-            />
-          );
-        })}
-      </svg>
+      <div className="disabled-component">
+        <h3>Usage Analytics</h3>
+        <svg width={width} height={height}>
+          {data.map((d, i) => {
+            const barHeight = height - yScale(d.value);
+            return (
+              <Bar
+                key={`bar-${i}`}
+                x={xScale(d.category)}
+                y={yScale(d.value)}
+                width={xScale.bandwidth()}
+                height={barHeight}
+                fill="#428bca"
+              />
+            );
+          })}
+        </svg>
+      </div>
     </div>
   );
 };
