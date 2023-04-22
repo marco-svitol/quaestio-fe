@@ -4,7 +4,6 @@ import {
   Route,
   Routes,
   Navigate,
-  useLocation,
 } from "react-router-dom";
 import SearchBox from "./SearchBox";
 import LoginBox from "./LoginBox";
@@ -60,7 +59,7 @@ async function refreshToken() {
 function App() {
   const [data, setData] = useState([]);
   const [, setError] = useState(null);
-  const [, setIsLoggedIn] = useState(false);
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
 
   const isAuthenticated = () => {
     const token = sessionStorage.getItem("token");
@@ -79,22 +78,24 @@ function App() {
     setIsLoggedIn(false);
   };
 
-  function AppContent() {
-    const location = useLocation();
-    const isLoggedIn = isAuthenticated();
-
-    useEffect(() => {
-      if (location.pathname !== "/login" && !isLoggedIn) {
-        window.location.replace("/login");
-      }
-    }, [location, isLoggedIn]);
-
-    return (
+  return (
+    <Router>
       <Routes>
-        <Route path="/" element={<Navigate to="/search" />} />
+        <Route
+          path="/"
+          element={
+            isLoggedIn ? <Navigate to="/search" /> : <Navigate to="/login" />
+          }
+        />
         <Route
           path="/login"
-          element={<LoginBox setIsLoggedIn={setIsLoggedIn} />}
+          element={
+            isLoggedIn ? (
+              <Navigate to="/search" />
+            ) : (
+              <LoginBox setIsLoggedIn={setIsLoggedIn} />
+            )
+          }
         />
         <Route
           path="/search"
@@ -103,17 +104,19 @@ function App() {
               <>
                 <NavBar isLoggedIn={isLoggedIn} />
                 <div className="big-div">
-                  <SearchBox
-                    setData={setData}
-                    setError={setError}
+                  <div className="app-container">
+                    <SearchBox
+                      setData={setData}
+                      setError={setError}
+                      refreshToken={refreshToken}
+                    />
+                    <ReactGrid data={data} />
+                  </div>
+                  <LogoutButton
+                    handleLogout={handleLogout}
                     refreshToken={refreshToken}
                   />
-                  <ReactGrid data={data} />
                 </div>
-                <LogoutButton
-                  handleLogout={handleLogout}
-                  refreshToken={refreshToken}
-                />
               </>
             ) : (
               <Navigate to="/login" />
@@ -140,12 +143,6 @@ function App() {
           }
         />
       </Routes>
-    );
-  }
-
-  return (
-    <Router>
-      <AppContent />
     </Router>
   );
 }
