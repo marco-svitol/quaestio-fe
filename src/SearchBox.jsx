@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import "./App.css";
@@ -26,6 +26,43 @@ function SearchBox({ setData, setError, refreshToken }) {
   const [testo, setTesto] = useState("");
   const [selectedOption, setSelectedOption] = useState("richiedente");
   const [includeDates, setIncludeDates] = useState(false);
+  const [applicants, setApplicants] = useState([]);
+  const [tecareas, setTecareas] = useState([]);
+
+  useEffect(() => {
+    (async function () {
+      try {
+        const token = sessionStorage.getItem("token");
+        const decodedToken = JSON.parse(atob(token.split(".")[1]));
+        const uid = decodedToken.uid;
+        const userProfile = await getUserProfile(uid, token);
+        setApplicants(userProfile.searchvalues.applicants);
+        setTecareas(userProfile.searchvalues.tecareas);
+      } catch (error) {
+        setError(error.message);
+      }
+    })();
+  }, [setError]);
+
+  async function getUserProfile(uid, token) {
+    const url = new URL(
+      "https://quaestio-be.azurewebsites.net/api/v1/userprofile"
+    );
+    const requestOptions = {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+        Accept: "application/json",
+      },
+    };
+    const response = await fetch(url, requestOptions);
+    if (!response.ok) {
+      throw new Error(`Error ${response.status}: ${response.statusText}`);
+    }
+    const data = await response.json();
+    return data;
+  }
 
   const setQuickDate = (days) => {
     const now = new Date();
@@ -143,12 +180,12 @@ function SearchBox({ setData, setError, refreshToken }) {
                 value={richiedente}
                 onChange={(e) => setRichiedente(e.target.value)}
               >
-                <option value="null">Nome</option>
-                <option value="Ferrari">Ferrari</option>
-                <option value="Lamborghini">Lamborghini</option>
-                <option value="Porsche">Porsche</option>
-                <option value="Quantum">Quantum</option>
-                <option value="Emmet Brown">Emmet Brown</option>
+                <option value="">Select applicant</option>
+                {applicants.map((applicant) => (
+                  <option key={applicant} value={applicant}>
+                    {applicant}
+                  </option>
+                ))}
               </select>
             </div>
           </div>
@@ -177,10 +214,12 @@ function SearchBox({ setData, setError, refreshToken }) {
                 value={areaTecnica}
                 onChange={(e) => setAreaTecnica(e.target.value)}
               >
-                <option value="null">Nome</option>
-                <option value="freno">Freno</option>
-                <option value="motore">Motore</option>
-                <option value="trasmissione">Trasmissione</option>
+                <option value="">Select technical area</option>
+                {tecareas.map((tecarea) => (
+                  <option key={tecarea.id} value={tecarea.id}>
+                    {tecarea.name}
+                  </option>
+                ))}
               </select>
             </div>
           </div>
