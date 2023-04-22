@@ -3,6 +3,7 @@ import "./App.css";
 import PageSelector from "./PageSelector";
 import Modal from "./Modal";
 import { DataGrid } from "@mui/x-data-grid";
+import axios from "axios";
 
 function ReactGrid({ data, error }) {
   const [currentPage, setCurrentPage] = useState(1);
@@ -10,6 +11,7 @@ function ReactGrid({ data, error }) {
   const [selectedInventionTitle, setSelectedInventionTitle] = useState(null);
   const [selectedInventionAbstract, setSelectedInventionAbstract] =
     useState(null);
+  const [selectedOpsLink, setSelectedOpsLink] = useState(null);
   const itemsPerPage = 12;
   const totalPages = Math.ceil(data.length / itemsPerPage);
 
@@ -17,9 +19,43 @@ function ReactGrid({ data, error }) {
     setCurrentPage(newPage);
   };
 
-  const handleClick = (inventionTitle, inventionAbstract) => {
+  const openDoc = async (uid, doc_num) => {
+    const token = sessionStorage.getItem("token");
+    try {
+      const response = await axios.get(
+        `https://quaestio-be.azurewebsites.net/api/v1/opendoc`,
+        {
+          params: { uid, doc_num },
+          headers: { Authorization: `Bearer ${token}` },
+        }
+      );
+      if (response.status === 200) {
+        window.open(response.data.url, "_blank");
+      } else {
+        console.error("Error while fetching OPS document link");
+      }
+    } catch (error) {
+      console.error("Error while fetching OPS document link:", error);
+    }
+  };
+
+  const handleClick = async (
+    inventionTitle,
+    inventionAbstract,
+    opsLink,
+    uid,
+    docNum
+  ) => {
     setSelectedInventionTitle(inventionTitle);
     setSelectedInventionAbstract(inventionAbstract);
+
+    const updatedOpsLink = await openDoc(uid, docNum);
+    if (updatedOpsLink) {
+      setSelectedOpsLink(updatedOpsLink);
+    } else {
+      setSelectedOpsLink(opsLink);
+    }
+
     setShowPopUp(true);
   };
 
@@ -28,21 +64,10 @@ function ReactGrid({ data, error }) {
   };
 
   const columns = [
-    { field: "invention_title", headerName: "Titolo", width: 200 },
+    { field: "invention_title", headerName: "Titolo", width: 375 },
     { field: "doc_num", headerName: "Numero", width: 150 },
     { field: "inventor_name", headerName: "Autore", width: 200 },
     { field: "date", headerName: "Data", width: 100 },
-    {
-      field: "ops_link",
-      headerName: "LinkOPS",
-      width: 190,
-      renderCell: (params) => (
-        <a href={params.value} target="_blank" rel="noreferrer">
-          {params.value}
-        </a>
-      ),
-    },
-
     {
       field: "read_status",
       headerName: "Stato",
@@ -96,9 +121,13 @@ function ReactGrid({ data, error }) {
         onPageChange={(params) => handlePageChange(params.page + 1)}
         hideFooterPagination
         onCellClick={(params, event) => {
-          if (params.field !== "ops_link") {
-            handleClick(params.row.invention_title, params.row.abstract);
-          }
+          handleClick(
+            params.row.invention_title,
+            params.row.abstract,
+            params.row.ops_link,
+            sessionStorage.getItem("uid"),
+            params.row.doc_num
+          );
         }}
         getRowClassName={getRowClassName}
       />
@@ -106,6 +135,7 @@ function ReactGrid({ data, error }) {
         <Modal
           selectedInventionTitle={selectedInventionTitle}
           selectedInventionAbstract={selectedInventionAbstract}
+          selectedOpsLink={selectedOpsLink}
           handleClose={handleClose}
         />
       )}

@@ -19,7 +19,7 @@
   display: flex;
   flex-wrap: wrap;
   background-color: white;
-  justify-content: center;
+  justify-content: flex-start;
   min-height: 100vh;
 }
 
@@ -31,6 +31,8 @@
   justify-content: center;
   height: 80vh;
   background-color: white;
+  margin-left: auto;
+  margin-right: auto;
 }
 
 .login-box {
@@ -215,9 +217,6 @@ label {
 
 .date-button-container {
   white-space: nowrap;
-}
-
-.date-button-container {
   margin-left: 0;
 }
 
@@ -239,7 +238,6 @@ label {
 
 .results-table-grid-container th,
 .results-table-grid-container td {
-  width: 20%;
   text-align: left;
 }
 
@@ -263,7 +261,7 @@ label {
   background-color: white;
   margin-left: 2rem;
   table-layout: fixed;
-  width: 60vw;
+  width: calc(375px + 150px + 200px + 100px + 80px);
   min-width: 600px;
 }
 
@@ -290,11 +288,15 @@ label {
 }
 
 .row-listed {
-  background-color: lightorange;
+  background-color: #ffcc99;
 }
 
 .row-read {
-  background-color: lightred;
+  background-color: #ff9999;
+}
+
+.MuiDataGrid-cell {
+  padding-right: 0 !important;
 }
 
 /* PAGE SELECTOR */
@@ -420,7 +422,7 @@ label {
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  width: 80%;
+  width: 100%;
   height: 100%;
   background-color: rgba(255, 255, 255, 0.5);
   display: flex;
@@ -790,27 +792,35 @@ body {
 @media (max-width: 1135px) {
   .app-container {
     flex-direction: column;
+    width: 100%;
+  }
+
+  .results-table-grid-container {
+    margin-right: auto;
+    max-width: 100%;
+    margin-left: auto;
   }
 
   .search-container {
     margin-left: auto;
     margin-right: auto;
     position: relative;
-    width: 90%;
     max-width: none;
+    width: 80%;
     max-height: 750px;
     padding-top: 2rem;
-    padding-bottom: 2rem;
   }
 
   .search-form {
     padding-left: 1rem;
     padding-right: 1rem;
     width: 100%;
-    max-width: 75%;
-    margin-right: auto;
-    margin-left: auto;
+    max-width: 800px;
+    min-width: 320px;
+    margin-right: 0;
+    margin-left: 0;
     margin-top: 3rem;
+    justify-content: center;
   }
 
   .form-group .col-sm-12 label {
@@ -874,6 +884,27 @@ body {
 
 /* media query for medium small screens */
 @media (max-width: 768px) {
+  .search-container {
+    margin-left: 0rem;
+    margin-right: auto;
+    position: relative;
+    width: 100%;
+    max-width: none;
+    min-width: 0;
+  }
+
+  .search-form {
+    justify-content: center;
+  }
+
+  .results-table-grid-container {
+    margin-left: -2rem;
+  }
+
+  .page-selector-container {
+    margin-left: 2.5rem;
+  }
+
   .account-page {
     flex-direction: column;
     align-items: center;
@@ -922,13 +953,15 @@ body {
   }
 
   .search-form {
-    margin-left: 0rem;
+    margin-left: auto;
+    margin-right: auto;
+    width: 90%;
+    justify-content: center;
   }
 
   .page-selector-container {
     display: flex;
     justify-content: center;
-    margin: 0;
   }
 
   .form-group .custom-control-label {
@@ -940,11 +973,11 @@ body {
   .results-table-grid-container {
     margin-right: auto;
     max-width: 100%;
-    margin-left: 0rem;
+    margin-left: -2rem;
   }
 
   .date-button-container {
     white-space: nowrap;
-    margin-left: -20px;
+    margin-left: -2.5rem;
   }
 }
