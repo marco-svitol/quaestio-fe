@@ -36,8 +36,11 @@ function SearchBox({ setData, setError, refreshToken }) {
         const decodedToken = JSON.parse(atob(token.split(".")[1]));
         const uid = decodedToken.uid;
         const userProfile = await getUserProfile(uid, token);
-        setApplicants(userProfile.searchvalues.applicants);
-        setTecareas(userProfile.searchvalues.tecareas);
+
+        const profile = userProfile[0];
+
+        setApplicants(profile.searchvalues.applicants);
+        setTecareas(profile.searchvalues.tecareas);
       } catch (error) {
         setError(error.message);
       }
@@ -48,6 +51,9 @@ function SearchBox({ setData, setError, refreshToken }) {
     const url = new URL(
       "https://quaestio-be.azurewebsites.net/api/v1/userprofile"
     );
+
+    url.search = new URLSearchParams({ uid });
+
     const requestOptions = {
       method: "GET",
       headers: {
@@ -61,6 +67,11 @@ function SearchBox({ setData, setError, refreshToken }) {
       throw new Error(`Error ${response.status}: ${response.statusText}`);
     }
     const data = await response.json();
+
+    // Add console.log statements here to check the response and data
+    console.log("Response:", response);
+    console.log("Data:", data);
+
     return data;
   }
 

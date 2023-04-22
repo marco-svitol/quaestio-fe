@@ -30,12 +30,14 @@ function ReactGrid({ data, error }) {
         }
       );
       if (response.status === 200) {
-        window.open(response.data.url, "_blank");
+        return response.data.url;
       } else {
         console.error("Error while fetching OPS document link");
+        return null;
       }
     } catch (error) {
       console.error("Error while fetching OPS document link:", error);
+      return null;
     }
   };
 
@@ -50,11 +52,7 @@ function ReactGrid({ data, error }) {
     setSelectedInventionAbstract(inventionAbstract);
 
     const updatedOpsLink = await openDoc(uid, docNum);
-    if (updatedOpsLink) {
-      setSelectedOpsLink(updatedOpsLink);
-    } else {
-      setSelectedOpsLink(opsLink);
-    }
+    setSelectedOpsLink(updatedOpsLink || opsLink);
 
     setShowPopUp(true);
   };
