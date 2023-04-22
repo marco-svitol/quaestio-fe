@@ -99,56 +99,6 @@ label {
   font-size: 16px;
 }
 
-.input-group {
-  display: flex;
-  flex-direction: column;
-  margin-bottom: 1rem;
-}
-
-.show-password-wrapper {
-  display: flex;
-  align-items: center;
-  justify-content: flex-start;
-  margin-bottom: 1rem;
-}
-
-.show-password-wrapper input[type="checkbox"] {
-  width: 16px;
-  height: 16px;
-  margin-right: 0.5rem;
-  appearance: none;
-  background-color: #f3f3f3;
-  border: 1px solid #c3c3c3;
-  border-radius: 3px;
-  cursor: pointer;
-  outline: none;
-  transition: background-color 0.2s, border-color 0.2s;
-}
-
-.show-password-wrapper input[type="checkbox"]:checked {
-  background-color: #428bca;
-  border-color: #428bca;
-}
-
-.show-password-wrapper input[type="checkbox"]:checked::after {
-  content: "";
-  display: block;
-  width: 5px;
-  height: 10px;
-  border: solid white;
-  border-width: 0 2px 2px 0;
-  transform: rotate(45deg);
-  position: relative;
-  left: 4px;
-  top: 0px;
-}
-
-.show-password-wrapper label {
-  margin-top: 0.4rem;
-  font-size: 14px;
-  cursor: pointer;
-}
-
 /* NAVBAR */
 
 .navbar-container {
