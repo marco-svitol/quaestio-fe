@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import "./App.css";
 import PageSelector from "./PageSelector";
 import Modal from "./Modal";
@@ -12,8 +12,13 @@ function ReactGrid({ data, error }) {
   const [selectedInventionAbstract, setSelectedInventionAbstract] =
     useState(null);
   const [selectedOpsLink, setSelectedOpsLink] = useState(null);
+  const [updatedRows, setUpdatedRows] = useState([]);
   const itemsPerPage = 12;
   const totalPages = Math.ceil(data.length / itemsPerPage);
+
+  useEffect(() => {
+    setUpdatedRows(data);
+  }, [data]);
 
   const handlePageChange = (newPage) => {
     setCurrentPage(newPage);
@@ -55,6 +60,12 @@ function ReactGrid({ data, error }) {
     setSelectedOpsLink(updatedOpsLink || opsLink);
 
     setShowPopUp(true);
+
+    setUpdatedRows((prevRows) =>
+      prevRows.map((row) =>
+        row.doc_num === docNum ? { ...row, read_history: "read" } : row
+      )
+    );
   };
 
   const handleClose = () => {
@@ -110,7 +121,7 @@ function ReactGrid({ data, error }) {
         disableColumnMenu
         disableSelectionOnClick
         disableExtendRowFullWidth
-        rows={data}
+        rows={updatedRows}
         columns={columns}
         getRowId={(row, index) => row.doc_num || `row-${index}`}
         pagination
@@ -140,5 +151,4 @@ function ReactGrid({ data, error }) {
     </div>
   );
 }
-
 export default ReactGrid;

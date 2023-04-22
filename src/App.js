@@ -1,4 +1,10 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import {
+  BrowserRouter as Router,
+  Route,
+  Routes,
+  Navigate,
+} from "react-router-dom";
 import SearchBox from "./SearchBox";
 import LoginBox from "./LoginBox";
 import NavBar from "./NavBar";
@@ -50,64 +56,94 @@ async function refreshToken() {
     console.log("Error refreshing token:", error);
   }
 }
-
 function App() {
   const [data, setData] = useState([]);
   const [, setError] = useState(null);
-  const [isLoginDisplayed, setIsLoginDisplayed] = useState(true);
-  const [activeTab, setActiveTab] = useState("Home");
   const [isLoggedIn, setIsLoggedIn] = useState(false);
 
-  const toggleDisplay = () => {
-    setIsLoginDisplayed(!isLoginDisplayed);
-    setIsLoggedIn(!isLoggedIn);
+  const isAuthenticated = () => {
+    const token = sessionStorage.getItem("token");
+    const refreshToken = sessionStorage.getItem("reftoken");
+    return token || refreshToken;
   };
 
-  const handleTabChange = (tab) => {
-    setActiveTab(tab);
-  };
+  useEffect(() => {
+    if (isAuthenticated()) {
+      setIsLoggedIn(true);
+    }
+  }, []);
 
   const handleLogout = () => {
     sessionStorage.clear();
     setIsLoggedIn(false);
-    toggleDisplay();
   };
 
   return (
-    <div className="App">
-      {isLoggedIn && (
-        <NavBar
-          handleTabChange={handleTabChange}
-          activeTab={activeTab}
-          isLoggedIn={isLoggedIn}
+    <Router>
+      <Routes>
+        <Route
+          path="/"
+          element={
+            isLoggedIn ? <Navigate to="/search" /> : <Navigate to="/login" />
+          }
         />
-      )}
-      <div className="big-div">
-        {isLoginDisplayed ? (
-          <LoginBox
-            toggleDisplay={toggleDisplay}
-            setIsLoggedIn={setIsLoggedIn}
-          />
-        ) : (
-          <>
-            {activeTab === "Home" && (
-              <div className="app-container">
-                <SearchBox
-                  setData={setData}
-                  setError={setError}
+        <Route
+          path="/login"
+          element={
+            isLoggedIn ? (
+              <Navigate to="/search" />
+            ) : (
+              <LoginBox setIsLoggedIn={setIsLoggedIn} />
+            )
+          }
+        />
+        <Route
+          path="/search"
+          element={
+            isLoggedIn ? (
+              <>
+                <NavBar isLoggedIn={isLoggedIn} />
+                <div className="big-div">
+                  <div className="app-container">
+                    <SearchBox
+                      setData={setData}
+                      setError={setError}
+                      refreshToken={refreshToken}
+                    />
+                    <ReactGrid data={data} />
+                  </div>
+                  <LogoutButton
+                    handleLogout={handleLogout}
+                    refreshToken={refreshToken}
+                  />
+                </div>
+              </>
+            ) : (
+              <Navigate to="/login" />
+            )
+          }
+        />
+        <Route
+          path="/account"
+          element={
+            isLoggedIn ? (
+              <>
+                <NavBar isLoggedIn={isLoggedIn} />
+                <div className="big-div">
+                  <AccountPage />
+                </div>
+                <LogoutButton
+                  handleLogout={handleLogout}
                   refreshToken={refreshToken}
                 />
-                <ReactGrid data={data} />
-              </div>
-            )}
-            {activeTab === "Account" && <AccountPage />}
-          </>
-        )}
-      </div>
-      {isLoggedIn && (
-        <LogoutButton handleLogout={handleLogout} refreshToken={refreshToken} />
-      )}
-    </div>
+              </>
+            ) : (
+              <Navigate to="/login" />
+            )
+          }
+        />
+      </Routes>
+    </Router>
   );
 }
 

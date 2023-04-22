@@ -1,20 +1,27 @@
 import React from "react";
+import { Link, useLocation } from "react-router-dom";
 
-function NavBar({ handleTabChange, activeTab }) {
+function NavBar() {
+  const location = useLocation();
+
   return (
     <div className="navbar-container">
-      <div
-        className={`navbar-tab ${activeTab === "Home" ? "active" : ""}`}
-        onClick={() => handleTabChange("Home")}
+      <Link
+        className={`navbar-tab ${
+          location.pathname === "/search" ? "active" : ""
+        }`}
+        to="/search"
       >
         Home
-      </div>
-      <div
-        className={`navbar-tab ${activeTab === "Account" ? "active" : ""}`}
-        onClick={() => handleTabChange("Account")}
+      </Link>
+      <Link
+        className={`navbar-tab ${
+          location.pathname === "/account" ? "active" : ""
+        }`}
+        to="/account"
       >
         Account
-      </div>
+      </Link>
     </div>
   );
 }
