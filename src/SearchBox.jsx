@@ -28,6 +28,8 @@ function SearchBox({ setData, setError, refreshToken }) {
   const [includeDates, setIncludeDates] = useState(false);
   const [applicants, setApplicants] = useState([]);
   const [tecareas, setTecareas] = useState([]);
+  const [applicantsLoading, setApplicantsLoading] = useState(true);
+  const [tecareasLoading, setTecareasLoading] = useState(true);
 
   useEffect(() => {
     (async function () {
@@ -43,6 +45,10 @@ function SearchBox({ setData, setError, refreshToken }) {
         setTecareas(profile.searchvalues.tecareas);
       } catch (error) {
         setError(error.message);
+      } finally {
+        // Set the loading states to false when the data is fetched or an error occurs
+        setApplicantsLoading(false);
+        setTecareasLoading(false);
       }
     })();
   }, [setError]);
@@ -191,12 +197,18 @@ function SearchBox({ setData, setError, refreshToken }) {
                 value={richiedente}
                 onChange={(e) => setRichiedente(e.target.value)}
               >
-                <option value="">Select applicant</option>
-                {applicants.map((applicant) => (
-                  <option key={applicant} value={applicant}>
-                    {applicant}
-                  </option>
-                ))}
+                {applicantsLoading ? (
+                  <option>Caricamento richiedente...</option>
+                ) : (
+                  <>
+                    <option value="">Selezionare il richiedente</option>
+                    {applicants.map((applicant) => (
+                      <option key={applicant} value={applicant}>
+                        {applicant}
+                      </option>
+                    ))}
+                  </>
+                )}
               </select>
             </div>
           </div>
@@ -225,12 +237,18 @@ function SearchBox({ setData, setError, refreshToken }) {
                 value={areaTecnica}
                 onChange={(e) => setAreaTecnica(e.target.value)}
               >
-                <option value="">Select technical area</option>
-                {tecareas.map((tecarea) => (
-                  <option key={tecarea.id} value={tecarea.id}>
-                    {tecarea.name}
-                  </option>
-                ))}
+                {tecareasLoading ? (
+                  <option>Caricamento l'area tecnica...</option>
+                ) : (
+                  <>
+                    <option value="">Selezionare l'area tecnica</option>
+                    {tecareas.map((tecarea) => (
+                      <option key={tecarea.id} value={tecarea.id}>
+                        {tecarea.name}
+                      </option>
+                    ))}
+                  </>
+                )}
               </select>
             </div>
           </div>

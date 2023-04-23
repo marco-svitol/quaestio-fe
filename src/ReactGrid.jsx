@@ -17,7 +17,8 @@ function ReactGrid({ data, error }) {
   const totalPages = Math.ceil(data.length / itemsPerPage);
 
   useEffect(() => {
-    setUpdatedRows(data);
+    const filteredData = data.filter((row) => row.doc_num);
+    setUpdatedRows(filteredData);
   }, [data]);
 
   const handlePageChange = (newPage) => {

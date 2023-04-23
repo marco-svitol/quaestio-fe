@@ -845,7 +845,7 @@ body {
 }
 
 /* media query for small screens */
-@media (max-width: 1135px) {
+@media (max-width: 1456px) {
   .app-container {
     flex-direction: column;
     width: 100%;
@@ -939,7 +939,7 @@ body {
 }
 
 /* media query for medium small screens */
-@media (max-width: 768px) {
+@media (max-width: 767px) {
   .search-container {
     margin-left: 0rem;
     margin-right: auto;
