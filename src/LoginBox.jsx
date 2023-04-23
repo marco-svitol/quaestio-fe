@@ -1,9 +1,12 @@
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import "./App.css";
 
-const LoginBox = ({ toggleDisplay, setIsLoggedIn }) => {
+const LoginBox = ({ setIsLoggedIn }) => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
+  const navigate = useNavigate();
 
   async function loginUser(username, password) {
     const url = new URL(
@@ -35,7 +38,7 @@ const LoginBox = ({ toggleDisplay, setIsLoggedIn }) => {
       sessionStorage.setItem("reftoken", response.refreshtoken);
       sessionStorage.setItem("uid", response.uid);
       setIsLoggedIn(true);
-      toggleDisplay();
+      navigate("/search");
     } catch (error) {
       console.error("Error:", error); // Log any errors
       alert("Invalid username or password");
@@ -63,13 +66,24 @@ const LoginBox = ({ toggleDisplay, setIsLoggedIn }) => {
             <div className="input-wrapper">
               <label htmlFor="password">Password:</label>
               <input
-                type="password"
+                type={showPassword ? "text" : "password"}
                 id="password"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 className="input-field"
               />
             </div>
+          </div>
+          <div className="show-password-wrapper">
+            <input
+              type="checkbox"
+              id="showPassword"
+              className="show-password-checkbox"
+              onChange={() => setShowPassword(!showPassword)}
+            />
+            <label htmlFor="showPassword" className="show-password-label">
+              Show password
+            </label>
           </div>
           <button type="submit" className="login-button">
             Login
