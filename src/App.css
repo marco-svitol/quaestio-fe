@@ -916,7 +916,7 @@ body {
   }
 
   .search-button-container {
-    width: 100%;
+    width: 30%;
     margin-top: 1rem;
     margin-bottom: 1rem;
   }
@@ -935,6 +935,12 @@ body {
     width: 60%;
     margin-left: auto;
     margin-right: auto;
+  }
+}
+
+@media (min-width: 1077px) and (max-width: 1455px) {
+  .search-container {
+    width: 860px;
   }
 }
 
