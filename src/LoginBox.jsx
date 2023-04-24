@@ -38,7 +38,7 @@ const LoginBox = ({ setIsLoggedIn }) => {
       sessionStorage.setItem("reftoken", response.refreshtoken);
       sessionStorage.setItem("uid", response.uid);
       setIsLoggedIn(true);
-      toggleDisplay();
+      //toggleDisplay();
       //navigate("/search");
     } catch (error) {
       console.error("Error:", error); // Log any errors
