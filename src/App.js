@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from "react";
 import {
   BrowserRouter as Router,
@@ -91,7 +92,7 @@ function App() {
 
     return (
       <Routes>
-        <Route path="/" element={<Navigate to="/search" />} />
+        {/* <Route path="/" element={<Navigate to="/search" />} /> */}
         <Route
           path="/login"
           element={<LoginBox setIsLoggedIn={setIsLoggedIn} />}
@@ -120,7 +121,7 @@ function App() {
             )
           }
         />
-        {/* <Route
+        <Route
           path="/account"
           element={
             isLoggedIn ? (
@@ -138,7 +139,7 @@ function App() {
               <Navigate to="/login" />
             )
           }
-        /> */}
+        />
       </Routes>
     );
   }
