@@ -38,7 +38,8 @@ const LoginBox = ({ setIsLoggedIn }) => {
       sessionStorage.setItem("reftoken", response.refreshtoken);
       sessionStorage.setItem("uid", response.uid);
       setIsLoggedIn(true);
-      navigate("/search");
+      toggleDisplay();
+      //navigate("/search");
     } catch (error) {
       console.error("Error:", error); // Log any errors
       alert("Invalid username or password");
