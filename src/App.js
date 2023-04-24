@@ -120,7 +120,7 @@ function App() {
             )
           }
         />
-        <Route
+        {/* <Route
           path="/account"
           element={
             isLoggedIn ? (
@@ -138,7 +138,7 @@ function App() {
               <Navigate to="/login" />
             )
           }
-        />
+        /> */}
       </Routes>
     );
   }

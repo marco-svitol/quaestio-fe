@@ -1,12 +1,12 @@
 import React, { useState } from "react";
-//import { useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import "./App.css";
 
 const LoginBox = ({ setIsLoggedIn }) => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
-  //const navigate = useNavigate();
+  const navigate = useNavigate();
 
   async function loginUser(username, password) {
     const url = new URL(
@@ -38,8 +38,7 @@ const LoginBox = ({ setIsLoggedIn }) => {
       sessionStorage.setItem("reftoken", response.refreshtoken);
       sessionStorage.setItem("uid", response.uid);
       setIsLoggedIn(true);
-      //toggleDisplay();
-      //navigate("/search");
+      navigate("/search");
     } catch (error) {
       console.error("Error:", error); // Log any errors
       alert("Invalid username or password");
