@@ -83,20 +83,20 @@ function App() {
     const location = useLocation();
     const isLoggedIn = isAuthenticated();
 
-    // useEffect(() => {
-    //   if (location.pathname !== "/login" && !isLoggedIn) {
-    //     window.location.replace("/login");
-    //   }
-    // }, [location, isLoggedIn]);
+    useEffect(() => {
+      if (location.pathname !== "/login" && !isLoggedIn) {
+        window.location.replace("/login");
+      }
+    }, [location, isLoggedIn]);
 
     return (
       <Routes>
-        {/* <Route path="/" element={<Navigate to="/search" />} /> */}
+        <Route path="/" element={<Navigate to="/search" />} />
         <Route
           path="/login"
           element={<LoginBox setIsLoggedIn={setIsLoggedIn} />}
         />
-        {/* <Route
+        <Route
           path="/search"
           element={
             isLoggedIn ? (
@@ -138,7 +138,7 @@ function App() {
               <Navigate to="/login" />
             )
           }
-        /> */}
+        />
       </Routes>
     );
   }
