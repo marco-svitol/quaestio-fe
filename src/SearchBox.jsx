@@ -97,6 +97,7 @@ function SearchBox({ setData, setError, refreshToken }) {
     fromDate.setDate(now.getDate() - days);
     setDataFrom(fromDate);
     setDataTo(now);
+    setIncludeDates(true);
   };
 
   const handleSubmit = async (e) => {
@@ -269,7 +270,7 @@ function SearchBox({ setData, setError, refreshToken }) {
                 type="checkbox"
                 className="custom-control-input"
                 id="include-dates"
-                value={includeDates}
+                checked={includeDates}
                 onChange={(e) => setIncludeDates(!includeDates)}
               />
               <label className="custom-control-label" htmlFor="include-dates">

@@ -957,6 +957,7 @@ body {
 
   .search-form {
     justify-content: center;
+    margin-left: 1rem;
   }
 
   .results-table-grid-container {
@@ -964,7 +965,7 @@ body {
   }
 
   .page-selector-container {
-    margin-left: 3.8rem;
+    margin-left: 4.5rem;
   }
 
   .account-page {
