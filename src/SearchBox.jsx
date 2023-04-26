@@ -17,19 +17,33 @@ function isTokenExpired(token) {
 
   return currentTime >= tokenExp;
 }
-
-function SearchBox({ setData, setError, refreshToken }) {
-  const [richiedente, setRichiedente] = useState("");
-  const [areaTecnica, setAreaTecnica] = useState("");
-  const [dataFrom, setDataFrom] = useState(null);
-  const [dataTo, setDataTo] = useState(null);
-  const [testo, setTesto] = useState("");
-  const [selectedOption, setSelectedOption] = useState("richiedente");
-  const [includeDates, setIncludeDates] = useState(false);
+function SearchBox({
+  setData,
+  setError,
+  refreshToken,
+  searchParams,
+  setSearchParams,
+}) {
+  const [richiedente, setRichiedente] = useState(
+    searchParams.richiedente || ""
+  );
+  const [areaTecnica, setAreaTecnica] = useState(
+    searchParams.areaTecnica || ""
+  );
+  const [dataFrom, setDataFrom] = useState(searchParams.dataFrom || null);
+  const [dataTo, setDataTo] = useState(searchParams.dataTo || null);
+  const [testo, setTesto] = useState(searchParams.testo || "");
+  const [selectedOption, setSelectedOption] = useState(
+    searchParams.selectedOption || "richiedente"
+  );
+  const [includeDates, setIncludeDates] = useState(
+    searchParams.includeDates || false
+  );
   const [applicants, setApplicants] = useState([]);
   const [tecareas, setTecareas] = useState([]);
   const [applicantsLoading, setApplicantsLoading] = useState(true);
   const [tecareasLoading, setTecareasLoading] = useState(true);
+  const [isButtonDisabled, setIsButtonDisabled] = useState(true);
 
   useEffect(() => {
     (async function () {
@@ -46,12 +60,22 @@ function SearchBox({ setData, setError, refreshToken }) {
       } catch (error) {
         setError(error.message);
       } finally {
-        // Set the loading states to false when the data is fetched or an error occurs
         setApplicantsLoading(false);
         setTecareasLoading(false);
       }
     })();
   }, [setError]);
+
+  useEffect(() => {
+    if (
+      (selectedOption === "richiedente" && richiedente !== "") ||
+      (selectedOption === "area-tecnica" && areaTecnica !== "")
+    ) {
+      setIsButtonDisabled(false);
+    } else {
+      setIsButtonDisabled(true);
+    }
+  }, [selectedOption, richiedente, areaTecnica]);
 
   async function getUserProfile(uid, token) {
     const url = new URL(
@@ -74,7 +98,6 @@ function SearchBox({ setData, setError, refreshToken }) {
     }
     const data = await response.json();
 
-    // Add console.log statements here to check the response and data
     console.log("Response:", response);
     console.log("Data:", data);
 
@@ -87,6 +110,7 @@ function SearchBox({ setData, setError, refreshToken }) {
     fromDate.setDate(now.getDate() - days);
     setDataFrom(fromDate);
     setDataTo(now);
+    setIncludeDates(true);
   };
 
   const handleSubmit = async (e) => {
@@ -103,6 +127,15 @@ function SearchBox({ setData, setError, refreshToken }) {
       );
 
       setData(response);
+      setSearchParams({
+        richiedente,
+        areaTecnica,
+        dataFrom,
+        dataTo,
+        testo,
+        selectedOption,
+        includeDates,
+      });
     } catch (error) {
       setError(error.message);
     } finally {
@@ -228,7 +261,7 @@ function SearchBox({ setData, setError, refreshToken }) {
                 className="custom-control-label area-label"
                 htmlFor="area-tecnica"
               >
-                Area
+                Area Tecnica
               </label>
             </div>
             <div className="col-sm-8">
@@ -259,7 +292,7 @@ function SearchBox({ setData, setError, refreshToken }) {
                 type="checkbox"
                 className="custom-control-input"
                 id="include-dates"
-                value={includeDates}
+                checked={includeDates}
                 onChange={(e) => setIncludeDates(!includeDates)}
               />
               <label className="custom-control-label" htmlFor="include-dates">
@@ -337,7 +370,11 @@ function SearchBox({ setData, setError, refreshToken }) {
             </div>
           </div>
           <div className="form-group text-center search-button-container">
-            <button type="submit" className="btn btn-primary search-button">
+            <button
+              type="submit"
+              className="btn btn-primary search-button"
+              disabled={isButtonDisabled}
+            >
               Ricerca
             </button>
           </div>

@@ -259,7 +259,7 @@ label {
 }
 
 .area-label {
-  padding-right: 5px;
+  padding-left: 72px;
 }
 
 .testo-label {
@@ -928,7 +928,7 @@ body {
   .page-selector-container {
     display: flex;
     justify-content: center;
-    margin: 0;
+    margin-left: 1.9rem;
   }
 
   .date-picker-div {
@@ -957,6 +957,7 @@ body {
 
   .search-form {
     justify-content: center;
+    margin-left: 1rem;
   }
 
   .results-table-grid-container {
@@ -964,7 +965,7 @@ body {
   }
 
   .page-selector-container {
-    margin-left: 2.5rem;
+    margin-left: 3rem;
   }
 
   .account-page {
