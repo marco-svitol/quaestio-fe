@@ -17,15 +17,28 @@ function isTokenExpired(token) {
 
   return currentTime >= tokenExp;
 }
-
-function SearchBox({ setData, setError, refreshToken }) {
-  const [richiedente, setRichiedente] = useState("");
-  const [areaTecnica, setAreaTecnica] = useState("");
-  const [dataFrom, setDataFrom] = useState(null);
-  const [dataTo, setDataTo] = useState(null);
-  const [testo, setTesto] = useState("");
-  const [selectedOption, setSelectedOption] = useState("richiedente");
-  const [includeDates, setIncludeDates] = useState(false);
+function SearchBox({
+  setData,
+  setError,
+  refreshToken,
+  searchParams,
+  setSearchParams,
+}) {
+  const [richiedente, setRichiedente] = useState(
+    searchParams.richiedente || ""
+  );
+  const [areaTecnica, setAreaTecnica] = useState(
+    searchParams.areaTecnica || ""
+  );
+  const [dataFrom, setDataFrom] = useState(searchParams.dataFrom || null);
+  const [dataTo, setDataTo] = useState(searchParams.dataTo || null);
+  const [testo, setTesto] = useState(searchParams.testo || "");
+  const [selectedOption, setSelectedOption] = useState(
+    searchParams.selectedOption || "richiedente"
+  );
+  const [includeDates, setIncludeDates] = useState(
+    searchParams.includeDates || false
+  );
   const [applicants, setApplicants] = useState([]);
   const [tecareas, setTecareas] = useState([]);
   const [applicantsLoading, setApplicantsLoading] = useState(true);
@@ -114,6 +127,15 @@ function SearchBox({ setData, setError, refreshToken }) {
       );
 
       setData(response);
+      setSearchParams({
+        richiedente,
+        areaTecnica,
+        dataFrom,
+        dataTo,
+        testo,
+        selectedOption,
+        includeDates,
+      });
     } catch (error) {
       setError(error.message);
     } finally {

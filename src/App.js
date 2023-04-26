@@ -61,6 +61,7 @@ function App() {
   const [data, setData] = useState([]);
   const [, setError] = useState(null);
   const [, setIsLoggedIn] = useState(false);
+  const [searchParams, setSearchParams] = useState({});
 
   const isAuthenticated = () => {
     const token = sessionStorage.getItem("token");
@@ -107,6 +108,8 @@ function App() {
                     setData={setData}
                     setError={setError}
                     refreshToken={refreshToken}
+                    searchParams={searchParams}
+                    setSearchParams={setSearchParams}
                   />
                   <ReactGrid data={data} />
                 </div>
