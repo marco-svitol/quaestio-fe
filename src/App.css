@@ -350,7 +350,7 @@ label {
   padding-right: 0 !important;
 }
 
-.results-table-grid-container:hover {
+.MuiDataGrid-row:hover {
   cursor: pointer;
 }
 
@@ -896,6 +896,14 @@ body {
     margin-right: 87%;
   }
 
+  .form-group .custom-control-label.data {
+    margin-right: 89.6%;
+  }
+
+  .form-group .custom-control-label.testo-label {
+    margin-right: 89%;
+  }
+
   .form-group .col-sm-12 .form-control {
     margin-right: 0px;
     margin-bottom: 0.5rem;
@@ -934,13 +942,13 @@ body {
   .page-selector-container {
     display: flex;
     justify-content: center;
-    margin-left: 1.9rem;
+    align-items: center;
+    margin-left: 2rem;
   }
 
   .date-picker-div {
     width: 60%;
     min-width: 115px;
-    max-width: 115px;
     margin-left: auto;
     margin-right: auto;
   }
@@ -973,7 +981,15 @@ body {
   }
 
   .page-selector-container {
-    margin-left: 3rem;
+    margin-left: 4.8rem;
+  }
+
+  .form-group .custom-control-label.data {
+    margin-right: 87%;
+  }
+
+  .form-group .custom-control-label.testo-label {
+    margin-right: 87%;
   }
 
   .pop-up {
