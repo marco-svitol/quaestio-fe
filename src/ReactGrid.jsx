@@ -118,6 +118,9 @@ function ReactGrid({ data, error }) {
       </div>
       <DataGrid
         className="main-table no-vertical-lines"
+        localeText={{
+          noRowsLabel: "No results",
+        }}
         autoHeight
         disableColumnMenu
         disableSelectionOnClick

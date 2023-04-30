@@ -295,7 +295,10 @@ function SearchBox({
                 checked={includeDates}
                 onChange={(e) => setIncludeDates(!includeDates)}
               />
-              <label className="custom-control-label" htmlFor="include-dates">
+              <label
+                className="custom-control-label data"
+                htmlFor="include-dates"
+              >
                 Data:
               </label>
             </div>
@@ -352,6 +355,8 @@ function SearchBox({
                 type="checkbox"
                 className="custom-control-input"
                 id="testo-checkbox"
+                checked={testo !== ""}
+                onChange={() => {}}
               />
               <label
                 className="custom-control-label testo-label"
@@ -366,6 +371,9 @@ function SearchBox({
                 className="form-control"
                 value={testo}
                 onChange={(e) => setTesto(e.target.value)}
+                onClick={() => {
+                  document.getElementById("testo-checkbox").checked = true;
+                }}
               />
             </div>
           </div>
