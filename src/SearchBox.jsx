@@ -33,6 +33,7 @@ function SearchBox({
   const [dataFrom, setDataFrom] = useState(searchParams.dataFrom || null);
   const [dataTo, setDataTo] = useState(searchParams.dataTo || null);
   const [testo, setTesto] = useState(searchParams.testo || "");
+  const [testoCheckbox, setTestoCheckbox] = useState(false);
   const [selectedOption, setSelectedOption] = useState(
     searchParams.selectedOption || "richiedente"
   );
@@ -355,8 +356,8 @@ function SearchBox({
                 type="checkbox"
                 className="custom-control-input"
                 id="testo-checkbox"
-                checked={testo !== ""}
-                onChange={() => {}}
+                checked={testo !== "" || testoCheckbox}
+                onChange={(e) => setTestoCheckbox(e.target.checked)}
               />
               <label
                 className="custom-control-label testo-label"
@@ -371,9 +372,6 @@ function SearchBox({
                 className="form-control"
                 value={testo}
                 onChange={(e) => setTesto(e.target.value)}
-                onClick={() => {
-                  document.getElementById("testo-checkbox").checked = true;
-                }}
               />
             </div>
           </div>
