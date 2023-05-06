@@ -357,7 +357,12 @@ function SearchBox({
                 className="custom-control-input"
                 id="testo-checkbox"
                 checked={testo !== "" || testoCheckbox}
-                onChange={(e) => setTestoCheckbox(e.target.checked)}
+                onChange={(e) => {
+                  setTestoCheckbox(e.target.checked);
+                  if (!e.target.checked && testo !== "") {
+                    setTesto("");
+                  }
+                }}
               />
               <label
                 className="custom-control-label testo-label"
