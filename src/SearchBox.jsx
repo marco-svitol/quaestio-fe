@@ -178,7 +178,6 @@ function SearchBox({
 
     const data = await response.json();
 
-    // Log throttling control information
     if (data.userinfo && data.userinfo["throttling-control"]) {
       const throttlingControl = data.userinfo["throttling-control"];
       const throttlingInfo = throttlingControl
