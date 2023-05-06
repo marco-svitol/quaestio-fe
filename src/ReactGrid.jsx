@@ -38,11 +38,13 @@ function ReactGrid({ data, error }) {
       if (response.status === 200) {
         return response.data.url;
       } else {
-        console.error("Error while fetching OPS document link");
+        console.error("Error while fetching document link");
+
         return null;
       }
     } catch (error) {
-      console.error("Error while fetching OPS document link:", error);
+      console.error("Error while fetching document link:", error.message);
+
       return null;
     }
   };

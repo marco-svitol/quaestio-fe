@@ -29,18 +29,18 @@ const LoginBox = ({ setIsLoggedIn }) => {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-    console.log("Username:", username, "Password:", password);
+    //console.log("Username:", username, "Password:", password);
 
     try {
       const response = await loginUser(username, password);
-      console.log("API response:", response); // Log the response
+      //console.log("API response:", response); // Log the response
       sessionStorage.setItem("token", response.token);
       sessionStorage.setItem("reftoken", response.refreshtoken);
       sessionStorage.setItem("uid", response.uid);
       setIsLoggedIn(true);
       navigate("/search");
     } catch (error) {
-      console.error("Error:", error); // Log any errors
+      //console.error("Error:", error); // Log any errors
       alert("Invalid username or password");
     }
   };

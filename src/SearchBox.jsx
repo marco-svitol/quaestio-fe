@@ -99,8 +99,8 @@ function SearchBox({
     }
     const data = await response.json();
 
-    console.log("Response:", response);
-    console.log("Data:", data);
+    // console.log("Response:", response);
+    // console.log("Data:", data);
 
     return data;
   }
@@ -145,7 +145,7 @@ function SearchBox({
   };
 
   async function searchPatents(pa, areaTecnica, pdfrom, pdto, txt, token) {
-    console.log("searchPatents: token", token);
+    // console.log("searchPatents: token", token);
 
     const url = new URL("https://quaestio-be.azurewebsites.net/api/v1/search");
 

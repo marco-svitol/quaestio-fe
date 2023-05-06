@@ -30,8 +30,8 @@ function isTokenExpired(token) {
 async function refreshToken() {
   const uid = sessionStorage.getItem("uid");
   const refToken = sessionStorage.getItem("reftoken");
-  console.log("UID:", uid);
-  console.log("RefToken:", refToken);
+  //console.log("UID:", uid);
+  //console.log("RefToken:", refToken);
 
   if (isTokenExpired(refToken)) {
     console.log("Refresh token has expired");
