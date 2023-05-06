@@ -145,8 +145,6 @@ function SearchBox({
   };
 
   async function searchPatents(pa, areaTecnica, pdfrom, pdto, txt, token) {
-    // console.log("searchPatents: token", token);
-
     const url = new URL("https://quaestio-be.azurewebsites.net/api/v1/search");
 
     const decodedToken = JSON.parse(atob(token.split(".")[1]));
@@ -179,6 +177,22 @@ function SearchBox({
     }
 
     const data = await response.json();
+
+    // Log throttling control information
+    if (data.userinfo && data.userinfo["throttling-control"]) {
+      const throttlingControl = data.userinfo["throttling-control"];
+      const throttlingInfo = throttlingControl
+        .map((item) => item.join(":"))
+        .join(",");
+
+      const individualQuota = data.userinfo["individualquotaperhour-used"];
+      const registeredQuota = data.userinfo["registeredquotaperweek-used"];
+
+      console.log(
+        `${throttlingInfo},individualquotaperhour-used:${individualQuota},registeredquotaperweek-used:${registeredQuota}`
+      );
+    }
+
     return data;
   }
 
