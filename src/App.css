@@ -187,13 +187,12 @@ label {
   border-radius: 0;
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
   height: 100%;
-  width: auto;
   left: 0;
   z-index: 1000;
   margin-left: 0;
-  width: 32%;
+  width: 100%;
   max-width: 500px;
-  min-width: 499px;
+  min-width: 320px;
   transition: width 0.3s ease;
 }
 
@@ -852,7 +851,7 @@ body {
 }
 
 /* media query for small screens */
-@media (max-width: 1456px) {
+@media (max-width: 1460px) {
   .app-container {
     flex-direction: column;
     width: 100%;
@@ -862,70 +861,27 @@ body {
     margin-right: auto;
     max-width: 100%;
     margin-left: auto;
+    padding-right: 2rem;
   }
 
   .search-container {
     margin-left: auto;
     margin-right: auto;
     width: 100%;
-    max-width: 80%;
+    max-width: 800px;
     max-height: 750px;
     padding-top: 2rem;
   }
+
   .search-form {
     padding-left: 1rem;
-    padding-right: 0.5rem;
-    width: calc(100% - 1.5rem);
-    max-width: 800px;
+    padding-right: 1rem;
+    max-width: 500px;
     min-width: 320px;
     margin-right: auto;
     margin-left: auto;
     margin-top: 3rem;
     justify-content: center;
-  }
-
-  .form-group .col-sm-12 label {
-    margin-right: 0px;
-    margin-bottom: 0.5rem;
-  }
-
-  .form-group .custom-control-label {
-    white-space: nowrap;
-    margin-left: auto;
-    margin-right: 87%;
-  }
-
-  .form-group .custom-control-label.data {
-    margin-right: 89.6%;
-  }
-
-  .form-group .custom-control-label.testo-label {
-    margin-right: 89%;
-  }
-
-  .form-group .col-sm-12 .form-control {
-    margin-right: 0px;
-    margin-bottom: 0.5rem;
-    min-width: unset;
-    width: 100%;
-    max-width: 100%;
-  }
-
-  .form-group .col-sm-12 .radio-btn {
-    margin-right: 0px;
-    margin-bottom: 0.5rem;
-  }
-
-  .form-group .col-sm-12 .select-titolo,
-  .form-group .col-sm-12 .select-tecnica {
-    width: 100%;
-    margin-bottom: 0.5rem;
-  }
-
-  .form-group .col-sm-12 .date-picker {
-    width: 100%;
-    margin-right: 0px;
-    margin-bottom: 0.5rem;
   }
 
   .search-button-container {
@@ -942,7 +898,9 @@ body {
     display: flex;
     justify-content: center;
     align-items: center;
-    margin-left: 2rem;
+    margin-left: auto;
+    margin-right: auto;
+    padding-left: 5rem;
   }
 
   .date-picker-div {
@@ -953,79 +911,16 @@ body {
   }
 }
 
-@media (min-width: 1077px) and (max-width: 1455px) {
-  .search-container {
-    width: 1000px;
-  }
-}
-
 /* media query for medium small screens */
-@media (max-width: 767px) {
-  .search-container {
-    margin-left: 0rem;
-    margin-right: auto;
-    width: 100%;
-    max-width: none;
-    min-width: 0;
-  }
-
-  .search-form {
-    justify-content: center;
-    margin-left: 1rem;
-  }
-
+@media (max-width: 780px) {
   .results-table-grid-container {
     margin-left: -2rem;
   }
 
   .page-selector-container {
-    margin-left: 4.8rem;
-  }
-
-  .form-group .custom-control-label.data {
-    margin-right: 87%;
-  }
-
-  .form-group .custom-control-label.testo-label {
-    margin-right: 87%;
-  }
-
-  .pop-up {
-    height: 70%;
-    width: 80%;
-  }
-
-  .account-page {
-    flex-direction: column;
-    align-items: center;
-  }
-
-  .user-profile {
-    width: 100%;
-  }
-
-  .account-settings {
-    width: 100%;
-  }
-
-  .subscription-info {
-    width: 100%;
-  }
-
-  .usage-analytics {
-    width: 100%;
-  }
-
-  .access-controls {
-    width: 100%;
-  }
-
-  .help-support {
-    width: 100%;
-  }
-
-  .date-button-container {
-    white-space: nowrap;
+    display: flex;
+    justify-content: center;
+    margin-left: 2.5rem;
   }
 }
 
@@ -1049,11 +944,6 @@ body {
     justify-content: center;
   }
 
-  .page-selector-container {
-    display: flex;
-    justify-content: center;
-  }
-
   .form-group .custom-control-label {
     white-space: nowrap;
     margin-left: auto;
@@ -1063,11 +953,14 @@ body {
   .results-table-grid-container {
     margin-right: auto;
     max-width: 100%;
-    margin-left: -2rem;
   }
 
   .date-button-container {
     white-space: nowrap;
     margin-left: -2.5rem;
+  }
+
+  .page-selector-container {
+    margin-left: 2rem;
   }
 }
