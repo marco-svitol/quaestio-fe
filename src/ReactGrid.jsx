@@ -17,9 +17,19 @@ function ReactGrid({ data, error }) {
   const totalPages = Math.ceil(data.length / itemsPerPage);
 
   useEffect(() => {
-    const filteredData = data.filter((row) => row.doc_num);
+    const filteredData = data
+      .filter((row) => row.doc_num)
+      .map((row) => {
+        const isRead =
+          localStorage.getItem(`read-document-${row.doc_num}`) === "true";
+        return { ...row, read_history: isRead ? "read" : row.read_history };
+      });
     setUpdatedRows(filteredData);
   }, [data]);
+
+  const updateReadStatus = (docNum) => {
+    localStorage.setItem(`read-document-${docNum}`, true);
+  };
 
   const handlePageChange = (newPage) => {
     setCurrentPage(newPage);
@@ -38,11 +48,13 @@ function ReactGrid({ data, error }) {
       if (response.status === 200) {
         return response.data.url;
       } else {
-        console.error("Error while fetching OPS document link");
+        console.error("Error while fetching document link");
+
         return null;
       }
     } catch (error) {
-      console.error("Error while fetching OPS document link:", error);
+      console.error("Error while fetching document link:", error.message);
+
       return null;
     }
   };
@@ -61,6 +73,8 @@ function ReactGrid({ data, error }) {
     setSelectedOpsLink(updatedOpsLink || opsLink);
 
     setShowPopUp(true);
+
+    updateReadStatus(docNum);
 
     setUpdatedRows((prevRows) =>
       prevRows.map((row) =>
