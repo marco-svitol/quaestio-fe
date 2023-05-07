@@ -203,7 +203,7 @@ label {
   align-items: center;
   gap: 1rem;
   margin-top: 4rem;
-  margin-left: 2rem;
+  margin-left: 1rem;
 }
 
 .form-group {
@@ -900,7 +900,6 @@ body {
     align-items: center;
     margin-left: auto;
     margin-right: auto;
-    padding-left: 5rem;
   }
 
   .date-picker-div {
@@ -917,14 +916,9 @@ body {
 
 /* media query for medium small screens */
 @media (max-width: 780px) {
-  .results-table-grid-container {
-    margin-left: -2rem;
-  }
-
   .page-selector-container {
     display: flex;
     justify-content: center;
-    margin-left: 4rem;
   }
 }
 
@@ -942,7 +936,7 @@ body {
   }
 
   .search-form {
-    margin-left: auto;
+    margin-left: -0.5rem;
     margin-right: auto;
     width: 90%;
     justify-content: center;
@@ -962,9 +956,5 @@ body {
   .date-button-container {
     white-space: nowrap;
     margin-left: -2.5rem;
-  }
-
-  .page-selector-container {
-    margin-left: 3.7rem;
   }
 }
