@@ -25,7 +25,7 @@ const axiosInstance = axios.create({
 axiosInstance.interceptors.response.use(undefined, async (error) => {
   if (error.config && error.response && error.response.status === 401) {
     try {
-      const response = await refreshToken(); // Assumes refreshToken is an async function that refreshes the token and returns the new token.
+      const response = await refreshToken();
       sessionStorage.setItem("token", response.data.token);
       error.config.headers["Authorization"] = "Bearer " + response.data.token;
       return axiosInstance(error.config);
@@ -74,7 +74,7 @@ async function refreshToken() {
     }
   } catch (error) {
     console.error("Error refreshing token:", error);
-    throw error; // Propagate the error up the stack for handling elsewhere
+    throw error;
   }
 }
 function App() {
