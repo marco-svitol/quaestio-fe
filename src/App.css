@@ -918,16 +918,16 @@ body {
   }
 }
 
-/* media query for medium small screens 
-@media (max-width: 780px) {
-  .page-selector-container {
-    display: flex;
-    justify-content: center;
-    margin-left: 0;
-    margin-right: 0;
-    padding-right: 2rem;
+/* media query for medium small screens */
+@media (max-width: 750px) {
+  .search-form {
+    margin-left: -2rem;
   }
-}*/
+
+  .page-selector-container {
+    margin-left: 2.3rem;
+  }
+}
 
 /* media query for very small screens */
 @media (max-width: 460px) {
@@ -970,6 +970,6 @@ body {
     justify-content: center;
     margin-left: 0;
     margin-right: 0;
-    padding-left: 4.5rem;
+    padding-left: 4.8rem;
   }
 }
