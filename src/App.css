@@ -902,6 +902,10 @@ body {
     margin-right: auto;
   }
 
+  .page-selector-container.with-numbers {
+    padding-right: 3rem;
+  }
+
   .date-picker-div {
     width: 60%;
     min-width: 115px;
@@ -914,13 +918,16 @@ body {
   }
 }
 
-/* media query for medium small screens */
+/* media query for medium small screens 
 @media (max-width: 780px) {
   .page-selector-container {
     display: flex;
     justify-content: center;
+    margin-left: 0;
+    margin-right: 0;
+    padding-right: 2rem;
   }
-}
+}*/
 
 /* media query for very small screens */
 @media (max-width: 460px) {
@@ -956,5 +963,13 @@ body {
   .date-button-container {
     white-space: nowrap;
     margin-left: -2.5rem;
+  }
+
+  .page-selector-container {
+    display: flex;
+    justify-content: center;
+    margin-left: 0;
+    margin-right: 0;
+    padding-left: 4.5rem;
   }
 }
