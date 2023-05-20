@@ -12,6 +12,7 @@ function ReactGrid({ data, error }) {
   const [selectedInventionAbstract, setSelectedInventionAbstract] =
     useState(null);
   const [selectedOpsLink, setSelectedOpsLink] = useState(null);
+  const [selectedImageLinks, setSelectedImageLinks] = useState([]);
   const [updatedRows, setUpdatedRows] = useState([]);
   const itemsPerPage = 12;
   const totalPages = Math.ceil(data.length / itemsPerPage);
@@ -31,10 +32,6 @@ function ReactGrid({ data, error }) {
     localStorage.setItem(`read-document-${docNum}`, true);
   };
 
-  const handlePageChange = (newPage) => {
-    setCurrentPage(newPage);
-  };
-
   const openDoc = async (uid, doc_num) => {
     const token = sessionStorage.getItem("token");
     try {
@@ -46,15 +43,14 @@ function ReactGrid({ data, error }) {
         }
       );
       if (response.status === 200) {
-        return response.data.url;
+        setSelectedImageLinks(response.data.images_links || []);
+        return response.data.ops_link;
       } else {
         console.error("Error while fetching document link");
-
         return null;
       }
     } catch (error) {
       console.error("Error while fetching document link:", error.message);
-
       return null;
     }
   };
@@ -62,25 +58,24 @@ function ReactGrid({ data, error }) {
   const handleClick = async (
     inventionTitle,
     inventionAbstract,
-    opsLink,
     uid,
     docNum
   ) => {
     setSelectedInventionTitle(inventionTitle);
     setSelectedInventionAbstract(inventionAbstract);
-
     const updatedOpsLink = await openDoc(uid, docNum);
-    setSelectedOpsLink(updatedOpsLink || opsLink);
-
+    setSelectedOpsLink(updatedOpsLink);
     setShowPopUp(true);
-
     updateReadStatus(docNum);
-
     setUpdatedRows((prevRows) =>
       prevRows.map((row) =>
         row.doc_num === docNum ? { ...row, read_history: "read" } : row
       )
     );
+  };
+
+  const handlePageChange = (newPage) => {
+    setCurrentPage(newPage);
   };
 
   const handleClose = () => {
@@ -151,7 +146,6 @@ function ReactGrid({ data, error }) {
           handleClick(
             params.row.invention_title,
             params.row.abstract,
-            params.row.ops_link,
             sessionStorage.getItem("uid"),
             params.row.doc_num
           );
@@ -163,6 +157,7 @@ function ReactGrid({ data, error }) {
           selectedInventionTitle={selectedInventionTitle}
           selectedInventionAbstract={selectedInventionAbstract}
           selectedOpsLink={selectedOpsLink}
+          selectedImageLinks={selectedImageLinks}
           handleClose={handleClose}
         />
       )}

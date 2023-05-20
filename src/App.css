@@ -492,7 +492,7 @@ label {
   border: 2rem solid white;
   background-color: rgba(230, 227, 227, 1);
   width: 70%;
-  height: 50%;
+  height: 80%;
 }
 
 .modal-content {
@@ -503,6 +503,17 @@ label {
   text-align: center;
   background-color: #eeeeef;
   font-size: 1rem;
+}
+
+.ops-link {
+  margin-bottom: 20px;
+}
+
+.pdf-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
 }
 
 .modal-button {
@@ -902,6 +913,10 @@ body {
     margin-right: auto;
   }
 
+  .page-selector-container.with-numbers {
+    padding-right: 3rem;
+  }
+
   .date-picker-div {
     width: 60%;
     min-width: 115px;
@@ -915,10 +930,13 @@ body {
 }
 
 /* media query for medium small screens */
-@media (max-width: 780px) {
+@media (max-width: 750px) {
+  .search-form {
+    margin-left: -2rem;
+  }
+
   .page-selector-container {
-    display: flex;
-    justify-content: center;
+    margin-left: 1.7rem;
   }
 }
 
@@ -956,5 +974,13 @@ body {
   .date-button-container {
     white-space: nowrap;
     margin-left: -2.5rem;
+  }
+
+  .page-selector-container {
+    display: flex;
+    justify-content: center;
+    margin-left: 0;
+    margin-right: 0;
+    padding-left: 4.95rem;
   }
 }

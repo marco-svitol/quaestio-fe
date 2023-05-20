@@ -12,8 +12,13 @@ function PageSelector({ currentPage, totalPages, handlePageChange }) {
     }
   };
 
+  const pageSelectorClass =
+    totalPages > 0
+      ? "page-selector-container with-numbers"
+      : "page-selector-container";
+
   return (
-    <div className="page-selector-container">
+    <div className={pageSelectorClass}>
       <div className="page-selector d-flex flex-column">
         <div className="arrows d-flex justify-content-between">
           <FontAwesomeIcon

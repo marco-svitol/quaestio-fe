@@ -16,6 +16,27 @@ import "bootstrap/dist/js/bootstrap.bundle.min.js";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "./App.css";
 import axios from "axios";
+import { API_BASE_URL } from "./constants";
+
+const axiosInstance = axios.create({
+  baseURL: API_BASE_URL,
+});
+
+axiosInstance.interceptors.response.use(undefined, async (error) => {
+  if (error.config && error.response && error.response.status === 401) {
+    try {
+      const response = await refreshToken();
+      sessionStorage.setItem("token", response.data.token);
+      error.config.headers["Authorization"] = "Bearer " + response.data.token;
+      return axiosInstance(error.config);
+    } catch (refreshError) {
+      console.log(refreshError);
+      return Promise.reject(refreshError);
+    }
+  }
+
+  return Promise.reject(error);
+});
 
 function isTokenExpired(token) {
   if (!token) return true;
@@ -30,8 +51,6 @@ function isTokenExpired(token) {
 async function refreshToken() {
   const uid = sessionStorage.getItem("uid");
   const refToken = sessionStorage.getItem("reftoken");
-  //console.log("UID:", uid);
-  //console.log("RefToken:", refToken);
 
   if (isTokenExpired(refToken)) {
     console.log("Refresh token has expired");
@@ -39,27 +58,27 @@ async function refreshToken() {
   }
 
   try {
-    const response = await axios.post(
-      "https://quaestio-be.azurewebsites.net/api/v1/auth/refresh",
-      {
-        uid: uid,
-        token: refToken,
-      }
-    );
+    const response = await axiosInstance.post("auth/refresh", {
+      uid: uid,
+      token: refToken,
+    });
 
     if (response.status === 200) {
       sessionStorage.setItem("token", response.data.token);
       console.log("Token refreshed");
     } else {
-      console.log("Error refreshing token");
+      console.log(
+        "Error refreshing token: unexpected response status",
+        response.status
+      );
     }
   } catch (error) {
-    console.log("Error refreshing token:", error);
+    console.error("Error refreshing token:", error);
+    throw error;
   }
 }
 function App() {
   const [data, setData] = useState([]);
-  const [, setError] = useState(null);
   const [, setIsLoggedIn] = useState(false);
   const [searchParams, setSearchParams] = useState({});
 
@@ -106,7 +125,6 @@ function App() {
                 <div className="big-div">
                   <SearchBox
                     setData={setData}
-                    setError={setError}
                     refreshToken={refreshToken}
                     searchParams={searchParams}
                     setSearchParams={setSearchParams}
