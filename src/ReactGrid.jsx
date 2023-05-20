@@ -135,7 +135,10 @@ function ReactGrid({ data, error }) {
         disableSelectionOnClick
         disableExtendRowFullWidth
         rows={updatedRows}
-        columns={columns}
+        columns={columns.map((column) => ({
+          ...column,
+          flex: 1,
+        }))}
         getRowId={(row, index) => row.doc_num || `row-${index}`}
         pagination
         pageSize={itemsPerPage}
@@ -152,6 +155,7 @@ function ReactGrid({ data, error }) {
         }}
         getRowClassName={getRowClassName}
       />
+
       {showPopUp && (
         <Modal
           selectedInventionTitle={selectedInventionTitle}
