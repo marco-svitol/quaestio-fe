@@ -1,5 +1,10 @@
 import React, { useState, useEffect } from "react";
+import { Document, Page, pdfjs } from "react-pdf";
 import { API_BASE_URL } from "./constants";
+import "react-pdf/dist/esm/Page/AnnotationLayer.css";
+import "react-pdf/dist/esm/Page/TextLayer.css";
+
+pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.js`;
 
 const Modal = ({
   selectedInventionTitle,
@@ -26,15 +31,14 @@ const Modal = ({
         }
       )
         .then((response) => {
-          console.log(response.type);
           if (!response.ok) {
             throw new Error("Network response was not ok");
           }
           return response.blob();
         })
-        .then((images) => {
-          let imgURL = images;
-          setImageData(imgURL);
+        .then((blob) => {
+          let imgURL = URL.createObjectURL(blob);
+          setImageData({ url: imgURL, type: blob.type });
         })
         .catch((error) => console.error("Error:", error));
     }
@@ -46,6 +50,7 @@ const Modal = ({
       handleClose();
     }
   };
+
   return (
     <div>
       {showModal && (
@@ -63,12 +68,24 @@ const Modal = ({
               >
                 Link OPS
               </a>
-              {imageData ? (
-                <img src={imageData} alt="document" />
-              ) : (
-                <img src="https://via.placeholder.com/150" alt="placeholder" />
-              )}
+              <div className="pdf-container">
+                {imageData ? (
+                  imageData.type === "application/pdf" ? (
+                    <Document file={imageData.url}>
+                      <Page pageNumber={1} />
+                    </Document>
+                  ) : (
+                    <img src={imageData.url} alt="document" />
+                  )
+                ) : (
+                  <img
+                    src="https://via.placeholder.com/150"
+                    alt="placeholder"
+                  />
+                )}
+              </div>
             </div>
+
             <button
               className="modal-button"
               onClick={() => {

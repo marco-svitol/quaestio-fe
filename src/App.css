@@ -492,7 +492,7 @@ label {
   border: 2rem solid white;
   background-color: rgba(230, 227, 227, 1);
   width: 70%;
-  height: 50%;
+  height: 80%;
 }
 
 .modal-content {
@@ -503,6 +503,17 @@ label {
   text-align: center;
   background-color: #eeeeef;
   font-size: 1rem;
+}
+
+.ops-link {
+  margin-bottom: 20px;
+}
+
+.pdf-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
 }
 
 .modal-button {
