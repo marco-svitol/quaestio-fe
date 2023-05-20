@@ -19,9 +19,13 @@ const Modal = ({
   useEffect(() => {
     const USER_ID = sessionStorage.getItem("uid");
 
-    if (selectedImageLinks && selectedImageLinks.length > 0) {
+    const firstPageClipping =
+      selectedImageLinks.find((image) => image.desc === "FirstPageClipping") ||
+      selectedImageLinks[0];
+
+    if (firstPageClipping) {
       fetch(
-        `${API_BASE_URL}/firstpageClipping?uid=${USER_ID}&fpcImage=${selectedImageLinks[0].link}&fpcImageFormat=${selectedImageLinks[0].format}`,
+        `${API_BASE_URL}/firstpageClipping?uid=${USER_ID}&fpcImage=${firstPageClipping.link}&fpcImageFormat=${firstPageClipping.format}`,
         {
           method: "GET",
           headers: {
@@ -68,14 +72,21 @@ const Modal = ({
               >
                 Link OPS
               </a>
-              <div className="pdf-container">
+              <div
+                className="pdf-container"
+                style={{ maxWidth: "100%", height: "auto" }}
+              >
                 {imageData ? (
                   imageData.type === "application/pdf" ? (
                     <Document file={imageData.url}>
-                      <Page pageNumber={1} />
+                      <Page pageNumber={1} width={400} />
                     </Document>
                   ) : (
-                    <img src={imageData.url} alt="document" />
+                    <img
+                      src={imageData.url}
+                      alt="document"
+                      style={{ maxWidth: "100%", height: "auto" }}
+                    />
                   )
                 ) : (
                   <img
