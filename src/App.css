@@ -958,12 +958,9 @@ body {
   .main-table {
     margin-left: 0;
   }
-  .search-form {
-    margin-left: -2rem;
-  }
 
   .page-selector-container {
-    margin-left: 1.7rem;
+    margin-left: 3.7rem;
   }
 }
 
