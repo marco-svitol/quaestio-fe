@@ -276,10 +276,11 @@ label {
 .results-table-grid-container {
   margin-top: 1rem;
   text-align: center;
-  margin-left: 1rem;
+  margin-left: 1%;
   background-color: white;
   overflow-x: auto;
   font-size: 12px;
+  transition: margin 0.5s ease-out;
 }
 
 .results-table-grid-container .fixed-height {
@@ -310,10 +311,11 @@ label {
 
 .main-table {
   background-color: white;
-  margin-left: 2rem;
+  margin-left: 1%;
   table-layout: fixed;
   width: calc(375px + 150px + 200px + 100px + 80px);
   min-width: 600px;
+  transition: margin 0.5s ease-out;
 }
 
 .table-cell td {
