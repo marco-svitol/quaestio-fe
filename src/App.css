@@ -930,13 +930,16 @@ body {
 }
 
 /* media query for medium small screens */
-@media (max-width: 750px) {
+@media (max-width: 900px) {
   .results-table-grid-container {
     text-align: left;
     padding-left: 0;
     margin-left: 0;
   }
+}
 
+/* media query for medium small screens */
+@media (max-width: 750px) {
   .main-table {
     margin-left: 0;
   }
