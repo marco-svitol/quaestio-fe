@@ -533,11 +533,9 @@ label {
   border-radius: 5px;
   color: #eeeeef;
   width: 10%;
-  float: center;
   position: relative;
   min-width: 100px;
-  margin-right: auto;
-  margin-left: auto;
+  margin: 0 auto;
   margin-top: 0.08rem;
 }
 
@@ -946,6 +944,12 @@ body {
     text-align: left;
     padding-left: 0;
     margin-left: 0;
+  }
+
+  .modal-button {
+    display: block;
+    margin-left: 0 auto;
+    margin-right: 0 auto;
   }
 }
 
