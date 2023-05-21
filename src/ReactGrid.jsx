@@ -126,6 +126,7 @@ function ReactGrid({ data, error }) {
         />
       </div>
       <DataGrid
+        classes={{ columnHeader: "boldHeader" }}
         className="main-table no-vertical-lines"
         localeText={{
           noRowsLabel: "No results",

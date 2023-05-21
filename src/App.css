@@ -354,6 +354,15 @@ label {
   cursor: pointer;
 }
 
+.boldHeader .MuiDataGrid-columnHeaderTitle {
+  font-weight: bold;
+}
+
+.boldHeader .MuiDataGrid-columnHeaderTitleContainer {
+  display: flex;
+  justify-content: center;
+}
+
 /* PAGE SELECTOR */
 
 .page-selector-container {
