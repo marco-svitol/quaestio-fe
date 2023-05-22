@@ -883,6 +883,8 @@ body {
     max-width: 100%;
     margin-left: auto;
     padding-right: 2rem;
+    padding-left: 1rem;
+    transition: ease 0.5s;
   }
 
   .search-container {
@@ -934,7 +936,8 @@ body {
   }
 
   .page-selector-container {
-    margin-left: 3.2rem;
+    margin-left: 2.7rem;
+    transition: ease 0.5s;
   }
 
   .search-form {
@@ -954,6 +957,10 @@ body {
     display: block;
     margin-left: 0 auto;
     margin-right: 0 auto;
+  }
+  .page-selector-container {
+    margin-left: 3.2rem;
+    transition: ease 0.5s;
   }
 }
 
@@ -983,6 +990,10 @@ body {
     justify-content: center;
   }
 
+  .results-table-grid-container {
+    padding-left: 0;
+    margin-left: 0;
+  }
   .form-group .custom-control-label {
     white-space: nowrap;
     margin-left: auto;
