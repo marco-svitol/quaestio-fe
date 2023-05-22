@@ -475,6 +475,7 @@ label {
   padding: 10px 20px;
   font-size: 14px;
   cursor: pointer;
+  z-index: 9999;
 }
 .logout-button:hover {
   background-color: #e9ecef;
@@ -502,8 +503,8 @@ label {
 .pop-up {
   border: 2rem solid white;
   background-color: rgba(230, 227, 227, 1);
-  width: 70%;
-  height: 80%;
+  width: 90%;
+  height: 90%;
 }
 
 .modal-content {
@@ -895,12 +896,11 @@ body {
 
   .search-form {
     padding-left: 4rem;
-    padding-right: 1rem;
     max-width: 500px;
     min-width: 320px;
     margin-right: auto;
     margin-left: auto;
-    margin-top: 3rem;
+    margin-top: 0rem;
     justify-content: center;
   }
 
@@ -934,7 +934,7 @@ body {
   }
 
   .page-selector-container {
-    margin-left: 2.7rem;
+    margin-left: 3.2rem;
   }
 
   .search-form {
@@ -962,12 +962,7 @@ body {
   .main-table {
     margin-left: 0;
   }
-
-  .page-selector-container {
-    margin-left: 2.7rem;
-  }
 }
-
 /* media query for very small screens */
 @media (max-width: 460px) {
   .app-container {
@@ -982,7 +977,7 @@ body {
   }
 
   .search-form {
-    margin-left: -0.5rem;
+    margin-left: 1rem;
     margin-right: auto;
     width: 90%;
     justify-content: center;
@@ -1001,7 +996,6 @@ body {
 
   .date-button-container {
     white-space: nowrap;
-    margin-left: -2.5rem;
   }
 
   .page-selector-container {
@@ -1009,6 +1003,10 @@ body {
     justify-content: center;
     margin-left: 0;
     margin-right: 0;
-    padding-left: 4.95rem;
+    padding-left: 6rem;
+  }
+  .pop-up {
+    width: 90%;
+    height: 90%;
   }
 }
