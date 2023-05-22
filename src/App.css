@@ -934,7 +934,11 @@ body {
   }
 
   .page-selector-container {
-    margin-left: 4rem;
+    margin-left: 2.7rem;
+  }
+
+  .search-form {
+    padding-left: 1rem;
   }
 }
 
@@ -960,7 +964,7 @@ body {
   }
 
   .page-selector-container {
-    margin-left: 4rem;
+    margin-left: 2.7rem;
   }
 }
 
