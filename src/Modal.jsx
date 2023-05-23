@@ -74,7 +74,7 @@ const Modal = ({
               </a>
               <div
                 className="pdf-container"
-                style={{ maxWidth: "100%", height: "auto" }}
+                style={{ maxWidth: "100%", maxHeight: "100%", height: "auto" }}
               >
                 {imageData ? (
                   imageData.type === "application/pdf" ? (
@@ -85,7 +85,11 @@ const Modal = ({
                     <img
                       src={imageData.url}
                       alt="document"
-                      style={{ maxWidth: "100%", height: "auto" }}
+                      style={{
+                        maxWidth: "100%",
+                        maxHeight: "100%",
+                        height: "auto",
+                      }}
                     />
                   )
                 ) : (

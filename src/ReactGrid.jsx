@@ -126,6 +126,7 @@ function ReactGrid({ data, error }) {
         />
       </div>
       <DataGrid
+        classes={{ columnHeader: "boldHeader" }}
         className="main-table no-vertical-lines"
         localeText={{
           noRowsLabel: "No results",
@@ -135,7 +136,10 @@ function ReactGrid({ data, error }) {
         disableSelectionOnClick
         disableExtendRowFullWidth
         rows={updatedRows}
-        columns={columns}
+        columns={columns.map((column) => ({
+          ...column,
+          flex: 1,
+        }))}
         getRowId={(row, index) => row.doc_num || `row-${index}`}
         pagination
         pageSize={itemsPerPage}
@@ -152,6 +156,7 @@ function ReactGrid({ data, error }) {
         }}
         getRowClassName={getRowClassName}
       />
+
       {showPopUp && (
         <Modal
           selectedInventionTitle={selectedInventionTitle}
