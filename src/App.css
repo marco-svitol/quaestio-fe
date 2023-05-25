@@ -278,9 +278,10 @@ label {
   text-align: center;
   margin-left: 1%;
   background-color: white;
-  overflow-x: auto;
   font-size: 12px;
   transition: margin 0.5s ease-out;
+  overflow-x: hidden;
+  padding-right: 0.6rem;
 }
 
 .results-table-grid-container .fixed-height {
@@ -922,7 +923,7 @@ body {
     align-items: center;
     margin: auto;
     transition: ease 0.5s;
-    transform: translateX(55px);
+    transform: translateX(44px);
   }
 
   .page-selector-container.with-numbers {
@@ -947,6 +948,7 @@ body {
     text-align: left;
     padding-left: 0;
     margin-left: 0;
+    overflow-x: auto;
   }
 
   .modal-button {
@@ -955,6 +957,7 @@ body {
     margin-right: 0 auto;
   }
   .page-selector-container {
+    margin-left: 0.5rem;
     transition: ease 0.5s;
   }
 }
@@ -1014,7 +1017,6 @@ body {
     display: flex;
     justify-content: center;
     margin: auto;
-    transform: translateX(47px);
   }
   .pop-up {
     width: 90%;
