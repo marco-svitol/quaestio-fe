@@ -957,7 +957,6 @@ body {
     margin-right: 0 auto;
   }
   .page-selector-container {
-    margin-left: 0.5rem;
     transition: ease 0.5s;
   }
 }

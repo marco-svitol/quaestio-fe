@@ -170,7 +170,6 @@ function SearchBox({
           "application/json, application/pdf, application/jpeg, application/gif",
       },
     };
-
     const response = await fetch(url, requestOptions);
 
     if (!response.ok) {
@@ -179,24 +178,18 @@ function SearchBox({
 
     const data = await response.json();
 
-    if (Array.isArray(data) && data.length > 0) {
-      const lastItem = data[data.length - 1];
+    if (data.userinfo && data.userinfo["throttling-control"]) {
+      const throttlingControl = data.userinfo["throttling-control"];
+      const throttlingInfo = throttlingControl
+        .map((item) => item.join(":"))
+        .join(",");
 
-      if (lastItem.userinfo && lastItem.userinfo["throttling-control"]) {
-        const throttlingControl = lastItem.userinfo["throttling-control"];
-        const throttlingInfo = throttlingControl
-          .map((item) => item.join(":"))
-          .join(",");
+      const individualQuota = data.userinfo["individualquotaperhour-used"];
+      const registeredQuota = data.userinfo["registeredquotaperweek-used"];
 
-        const individualQuota =
-          lastItem.userinfo["individualquotaperhour-used"];
-        const registeredQuota =
-          lastItem.userinfo["registeredquotaperweek-used"];
-
-        console.log(
-          `${throttlingInfo},individualquotaperhour-used:${individualQuota},registeredquotaperweek-used:${registeredQuota}`
-        );
-      }
+      console.log(
+        `${throttlingInfo},individualquotaperhour-used:${individualQuota},registeredquotaperweek-used:${registeredQuota}`
+      );
     }
 
     return data;
