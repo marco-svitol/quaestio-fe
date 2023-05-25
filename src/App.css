@@ -920,8 +920,9 @@ body {
     display: flex;
     justify-content: center;
     align-items: center;
-    margin-left: auto;
-    margin-right: auto;
+    margin: auto;
+    transition: ease 0.5s;
+    transform: translateX(55px);
   }
 
   .page-selector-container.with-numbers {
@@ -933,11 +934,6 @@ body {
     min-width: 115px;
     margin-left: auto;
     margin-right: auto;
-  }
-
-  .page-selector-container {
-    margin-left: 2.7rem;
-    transition: ease 0.5s;
   }
 
   .search-form {
@@ -959,7 +955,6 @@ body {
     margin-right: 0 auto;
   }
   .page-selector-container {
-    margin-left: 3.2rem;
     transition: ease 0.5s;
   }
 }
@@ -984,8 +979,8 @@ body {
   }
 
   .search-form {
-    margin-left: 1rem;
-    margin-right: auto;
+    margin-left: 0.5rem;
+    margin-right: 1rem;
     width: 90%;
     justify-content: center;
   }
@@ -1006,15 +1001,20 @@ body {
   }
 
   .date-button-container {
-    white-space: nowrap;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+
+  .date-button-container .btn {
+    margin-bottom: 0.5rem;
   }
 
   .page-selector-container {
     display: flex;
     justify-content: center;
-    margin-left: 0;
-    margin-right: 0;
-    padding-left: 6rem;
+    margin: auto;
+    transform: translateX(47px);
   }
   .pop-up {
     width: 90%;
