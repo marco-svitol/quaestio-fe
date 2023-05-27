@@ -157,6 +157,13 @@ label {
   justify-content: space-between;
   background-color: #ddddde;
   height: 50px;
+  position: relative; /* Add this */
+}
+
+.navbar-links {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
 }
 
 .navbar-tab {
@@ -185,14 +192,16 @@ label {
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 50px;
-  margin-top: 0px;
-  margin-bottom: 15px;
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 100%;
 }
 
 .logo {
-  max-width: 100%;
-  max-height: 100%;
+  width: 110px;
+  height: 110px;
+  object-fit: contain;
 }
 
 /* SEARCHBOX */
@@ -994,8 +1003,7 @@ body {
     width: 100%;
     margin-right: auto;
     margin-left: auto;
-    min-height: 100%; /* added min-height instead of height */
-    overflow: auto; /* added overflow property */
+    min-height: 100%;
   }
 
   .search-form {
