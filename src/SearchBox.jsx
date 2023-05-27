@@ -45,6 +45,7 @@ function SearchBox({
   const [applicantsLoading, setApplicantsLoading] = useState(true);
   const [tecareasLoading, setTecareasLoading] = useState(true);
   const [isButtonDisabled, setIsButtonDisabled] = useState(true);
+  const [logoPath, setLogoPath] = useState("");
 
   useEffect(() => {
     (async function () {
@@ -58,6 +59,7 @@ function SearchBox({
 
         setApplicants(profile.searchvalues.applicants);
         setTecareas(profile.searchvalues.tecareas);
+        setLogoPath(profile.userinfo.logopath);
       } catch (error) {
         setError(error.message);
       } finally {
@@ -218,6 +220,9 @@ function SearchBox({
 
   return (
     <div className="search-container">
+      <div className="logo-container">
+        <img className="logo" src={logoPath} alt="Logo" />
+      </div>
       <div className="container">
         <form className="search-form" onSubmit={handleSubmit}>
           <div className="form-group row">
