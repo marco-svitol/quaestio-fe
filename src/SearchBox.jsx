@@ -80,7 +80,7 @@ function SearchBox({
 
   async function getUserProfile(uid, token) {
     const url = new URL(
-      "https://quaestio-be.azurewebsites.net/api/v1/userprofile"
+      "https://quaestio-be.azurewebsites.net/api/v2/userprofile"
     );
 
     url.search = new URLSearchParams({ uid });
@@ -145,7 +145,7 @@ function SearchBox({
   };
 
   async function searchPatents(pa, areaTecnica, pdfrom, pdto, txt, token) {
-    const url = new URL("https://quaestio-be.azurewebsites.net/api/v1/search");
+    const url = new URL("https://quaestio-be.azurewebsites.net/api/v2/search");
 
     const decodedToken = JSON.parse(atob(token.split(".")[1]));
     const uid = decodedToken.uid;
@@ -250,8 +250,8 @@ function SearchBox({
                   <>
                     <option value="">Selezionare il richiedente</option>
                     {applicants.map((applicant) => (
-                      <option key={applicant} value={applicant}>
-                        {applicant}
+                      <option key={applicant.id} value={applicant.id}>
+                        {applicant.name}
                       </option>
                     ))}
                   </>
