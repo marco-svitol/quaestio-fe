@@ -179,6 +179,22 @@ label {
   background-color: rgb(230, 227, 227);
 }
 
+/* LOGO */
+
+.logo-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 50px;
+  margin-top: 0px;
+  margin-bottom: 15px;
+}
+
+.logo {
+  max-width: 100%;
+  max-height: 100%;
+}
+
 /* SEARCHBOX */
 
 .search-container {
@@ -202,7 +218,7 @@ label {
   justify-content: center;
   align-items: center;
   gap: 1rem;
-  margin-top: 4rem;
+  margin-top: 1rem;
   margin-left: 1rem;
 }
 
@@ -978,6 +994,8 @@ body {
     width: 100%;
     margin-right: auto;
     margin-left: auto;
+    min-height: 100%; /* added min-height instead of height */
+    overflow: auto; /* added overflow property */
   }
 
   .search-form {
@@ -991,6 +1009,7 @@ body {
     padding-left: 0;
     margin-left: 0;
   }
+
   .form-group .custom-control-label {
     white-space: nowrap;
     margin-left: auto;
@@ -1017,6 +1036,7 @@ body {
     justify-content: center;
     margin: auto;
   }
+
   .pop-up {
     width: 90%;
     height: 90%;
