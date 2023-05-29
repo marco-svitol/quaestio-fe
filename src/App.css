@@ -157,6 +157,13 @@ label {
   justify-content: space-between;
   background-color: #ddddde;
   height: 50px;
+  position: relative; /* Add this */
+}
+
+.navbar-links {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
 }
 
 .navbar-tab {
@@ -177,6 +184,24 @@ label {
 
 .navbar-tab:hover {
   background-color: rgb(230, 227, 227);
+}
+
+/* LOGO */
+
+.logo-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 100%;
+}
+
+.logo {
+  width: 110px;
+  height: 110px;
+  object-fit: contain;
 }
 
 /* SEARCHBOX */
@@ -202,7 +227,7 @@ label {
   justify-content: center;
   align-items: center;
   gap: 1rem;
-  margin-top: 4rem;
+  margin-top: 1rem;
   margin-left: 1rem;
 }
 
@@ -278,9 +303,10 @@ label {
   text-align: center;
   margin-left: 1%;
   background-color: white;
-  overflow-x: auto;
   font-size: 12px;
   transition: margin 0.5s ease-out;
+  overflow-x: hidden;
+  padding-right: 0.6rem;
 }
 
 .results-table-grid-container .fixed-height {
@@ -920,8 +946,9 @@ body {
     display: flex;
     justify-content: center;
     align-items: center;
-    margin-left: auto;
-    margin-right: auto;
+    margin: auto;
+    transition: ease 0.5s;
+    transform: translateX(44px);
   }
 
   .page-selector-container.with-numbers {
@@ -935,11 +962,6 @@ body {
     margin-right: auto;
   }
 
-  .page-selector-container {
-    margin-left: 2.7rem;
-    transition: ease 0.5s;
-  }
-
   .search-form {
     padding-left: 1rem;
   }
@@ -951,6 +973,7 @@ body {
     text-align: left;
     padding-left: 0;
     margin-left: 0;
+    overflow-x: auto;
   }
 
   .modal-button {
@@ -959,7 +982,6 @@ body {
     margin-right: 0 auto;
   }
   .page-selector-container {
-    margin-left: 3.2rem;
     transition: ease 0.5s;
   }
 }
@@ -981,11 +1003,12 @@ body {
     width: 100%;
     margin-right: auto;
     margin-left: auto;
+    min-height: 100%;
   }
 
   .search-form {
-    margin-left: 1rem;
-    margin-right: auto;
+    margin-left: 0.5rem;
+    margin-right: 1rem;
     width: 90%;
     justify-content: center;
   }
@@ -994,6 +1017,7 @@ body {
     padding-left: 0;
     margin-left: 0;
   }
+
   .form-group .custom-control-label {
     white-space: nowrap;
     margin-left: auto;
@@ -1006,16 +1030,21 @@ body {
   }
 
   .date-button-container {
-    white-space: nowrap;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+
+  .date-button-container .btn {
+    margin-bottom: 0.5rem;
   }
 
   .page-selector-container {
     display: flex;
     justify-content: center;
-    margin-left: 0;
-    margin-right: 0;
-    padding-left: 6rem;
+    margin: auto;
   }
+
   .pop-up {
     width: 90%;
     height: 90%;

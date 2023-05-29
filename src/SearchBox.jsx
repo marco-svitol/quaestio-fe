@@ -80,7 +80,7 @@ function SearchBox({
 
   async function getUserProfile(uid, token) {
     const url = new URL(
-      "https://quaestio-be.azurewebsites.net/api/v1/userprofile"
+      "https://quaestio-be.azurewebsites.net/api/v2/userprofile"
     );
 
     url.search = new URLSearchParams({ uid });
@@ -145,7 +145,7 @@ function SearchBox({
   };
 
   async function searchPatents(pa, areaTecnica, pdfrom, pdto, txt, token) {
-    const url = new URL("https://quaestio-be.azurewebsites.net/api/v1/search");
+    const url = new URL("https://quaestio-be.azurewebsites.net/api/v2/search");
 
     const decodedToken = JSON.parse(atob(token.split(".")[1]));
     const uid = decodedToken.uid;
@@ -170,7 +170,6 @@ function SearchBox({
           "application/json, application/pdf, application/jpeg, application/gif",
       },
     };
-
     const response = await fetch(url, requestOptions);
 
     if (!response.ok) {
@@ -179,24 +178,18 @@ function SearchBox({
 
     const data = await response.json();
 
-    if (Array.isArray(data) && data.length > 0) {
-      const lastItem = data[data.length - 1];
+    if (data.userinfo && data.userinfo["throttling-control"]) {
+      const throttlingControl = data.userinfo["throttling-control"];
+      const throttlingInfo = throttlingControl
+        .map((item) => item.join(":"))
+        .join(",");
 
-      if (lastItem.userinfo && lastItem.userinfo["throttling-control"]) {
-        const throttlingControl = lastItem.userinfo["throttling-control"];
-        const throttlingInfo = throttlingControl
-          .map((item) => item.join(":"))
-          .join(",");
+      const individualQuota = data.userinfo["individualquotaperhour-used"];
+      const registeredQuota = data.userinfo["registeredquotaperweek-used"];
 
-        const individualQuota =
-          lastItem.userinfo["individualquotaperhour-used"];
-        const registeredQuota =
-          lastItem.userinfo["registeredquotaperweek-used"];
-
-        console.log(
-          `${throttlingInfo},individualquotaperhour-used:${individualQuota},registeredquotaperweek-used:${registeredQuota}`
-        );
-      }
+      console.log(
+        `${throttlingInfo},individualquotaperhour-used:${individualQuota},registeredquotaperweek-used:${registeredQuota}`
+      );
     }
 
     return data;
@@ -257,8 +250,8 @@ function SearchBox({
                   <>
                     <option value="">Selezionare il richiedente</option>
                     {applicants.map((applicant) => (
-                      <option key={applicant} value={applicant}>
-                        {applicant}
+                      <option key={applicant.id} value={applicant.id}>
+                        {applicant.name}
                       </option>
                     ))}
                   </>
