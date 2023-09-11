@@ -1,2 +1,3 @@
 // src/constants.js
-export const API_BASE_URL = "https://quaestio-be.azurewebsites.net/api/v1";
+//export const API_BASE_URL = "https://quaestio-be.azurewebsites.net/api/";
+export const API_BASE_URL = process.env.REACT_API_BASE_URL
