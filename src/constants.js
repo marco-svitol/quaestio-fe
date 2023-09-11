@@ -1,3 +1,9 @@
 // src/constants.js
-//export const API_BASE_URL = "https://quaestio-be.azurewebsites.net/api/";
-export const API_BASE_URL = process.env.REACT_API_BASE_URL
+let apiBaseUrl = ""
+if (process.env.NODE_ENV === "development") {
+    apiBaseUrl = "http://localhost:8080";
+}else{
+    apiBaseUrl = "https://quaestio-be.azurewebsites.net";
+}
+console.log (`APIBASEURL: ${process.env.NODE_ENV}`);
+export const API_BASE_URL = apiBaseUrl;

@@ -81,7 +81,7 @@ function SearchBox({
 
   async function getUserProfile(uid, token) {
     const url = new URL(
-      `${API_BASE_URL}/v2/userprofile`
+      `${API_BASE_URL}/api/v2/userprofile`
     );
 
     url.search = new URLSearchParams({ uid });
@@ -146,7 +146,7 @@ function SearchBox({
   };
 
   async function searchPatents(pa, areaTecnica, pdfrom, pdto, txt, token) {
-    const url = new URL(`${API_BASE_URL}/v2/search`);
+    const url = new URL(`${API_BASE_URL}/api/v2/search`);
 
     const decodedToken = JSON.parse(atob(token.split(".")[1]));
     const uid = decodedToken.uid;

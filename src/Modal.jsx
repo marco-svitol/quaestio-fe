@@ -25,7 +25,7 @@ const Modal = ({
 
     if (firstPageClipping) {
       fetch(
-        `${API_BASE_URL}/v1/firstpageClipping?uid=${USER_ID}&fpcImage=${firstPageClipping.link}&fpcImageFormat=${firstPageClipping.format}`,
+        `${API_BASE_URL}/api/v1/firstpageClipping?uid=${USER_ID}&fpcImage=${firstPageClipping.link}&fpcImageFormat=${firstPageClipping.format}`,
         {
           method: "GET",
           headers: {
