@@ -9,10 +9,7 @@
             "request": "launch",
             "name": "Launch Chrome against localhost",
             "url": "http://localhost:8080",
-            "webRoot": "${workspaceFolder}",
-            "env" : {
-                "REACT_API_BASE_URL" : "http://localhost:8080/api/"
-            }
+            "webRoot": "${workspaceFolder}"
         }
     ]
 }

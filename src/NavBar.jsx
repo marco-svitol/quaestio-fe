@@ -25,7 +25,7 @@ function NavBar() {
 
   async function getUserProfile(uid, token) {
     const url = new URL(
-      `${API_BASE_URL}/v2/userprofile`
+      `${API_BASE_URL}/api/v2/userprofile`
     );
 
     url.search = new URLSearchParams({ uid });

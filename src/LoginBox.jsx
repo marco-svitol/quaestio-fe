@@ -10,15 +10,16 @@ const LoginBox = ({ setIsLoggedIn }) => {
   const navigate = useNavigate();
 
   async function loginUser(username, password) {
-    const url = new URL(
-      "/v1/auth/login",
-      "http://localhost:8080/api/"
+    const baseUrl = new URL ("/", API_BASE_URL);
+    const loginUrl = new URL(
+      "api/v1/auth/login",
+      baseUrl
     );
     console.log(`url : ${API_BASE_URL}`);
-    url.searchParams.append("username", username);
-    url.searchParams.append("password", password);
+    loginUrl.searchParams.append("username", username);
+    loginUrl.searchParams.append("password", password);
 
-    const response = await fetch(url, {
+    const response = await fetch(loginUrl, {
       method: "GET",
     });
 
