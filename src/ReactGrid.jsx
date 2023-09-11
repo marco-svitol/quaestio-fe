@@ -4,6 +4,7 @@ import PageSelector from "./PageSelector";
 import Modal from "./Modal";
 import { DataGrid } from "@mui/x-data-grid";
 import axios from "axios";
+import { API_BASE_URL } from "./constants";
 
 function ReactGrid({ data, error }) {
   const [currentPage, setCurrentPage] = useState(1);
@@ -36,7 +37,7 @@ function ReactGrid({ data, error }) {
     const token = sessionStorage.getItem("token");
     try {
       const response = await axios.get(
-        `https://quaestio-be.azurewebsites.net/api/v1/opendoc`,
+        `${API_BASE_URL}/v1/opendoc`,
         {
           params: { uid, doc_num },
           headers: { Authorization: `Bearer ${token}` },

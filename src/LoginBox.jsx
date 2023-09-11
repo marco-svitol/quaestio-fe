@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "./App.css";
+import { API_BASE_URL } from "./constants";
 
 const LoginBox = ({ setIsLoggedIn }) => {
   const [username, setUsername] = useState("");
@@ -10,9 +11,10 @@ const LoginBox = ({ setIsLoggedIn }) => {
 
   async function loginUser(username, password) {
     const url = new URL(
-      "/api/v1/auth/login",
-      "https://quaestio-be.azurewebsites.net"
+      "/v1/auth/login",
+      "http://localhost:8080/api/"
     );
+    console.log(`url : ${API_BASE_URL}`);
     url.searchParams.append("username", username);
     url.searchParams.append("password", password);
 
@@ -29,18 +31,18 @@ const LoginBox = ({ setIsLoggedIn }) => {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-    //console.log("Username:", username, "Password:", password);
+    console.log("Username:", username, "Password:", password);
 
     try {
       const response = await loginUser(username, password);
-      //console.log("API response:", response); // Log the response
+      console.log("API response:", response); // Log the response
       sessionStorage.setItem("token", response.token);
       sessionStorage.setItem("reftoken", response.refreshtoken);
       sessionStorage.setItem("uid", response.uid);
       setIsLoggedIn(true);
       navigate("/search");
     } catch (error) {
-      //console.error("Error:", error); // Log any errors
+      console.error("Error:", error); // Log any errors
       alert("Invalid username or password");
     }
   };

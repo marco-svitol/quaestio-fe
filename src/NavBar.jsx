@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Link, useLocation } from "react-router-dom";
+import { API_BASE_URL } from "./constants";
 
 function NavBar() {
   const [logoPath, setLogoPath] = useState("");
@@ -24,7 +25,7 @@ function NavBar() {
 
   async function getUserProfile(uid, token) {
     const url = new URL(
-      "https://quaestio-be.azurewebsites.net/api/v2/userprofile"
+      `${API_BASE_URL}/v2/userprofile`
     );
 
     url.search = new URLSearchParams({ uid });

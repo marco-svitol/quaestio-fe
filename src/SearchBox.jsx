@@ -7,6 +7,7 @@ import "moment/locale/it";
 import "bootstrap/dist/js/bootstrap.bundle.min.js";
 import "bootstrap/dist/css/bootstrap.min.css";
 import { showLoading, hideLoading } from "./LoadingUtils.jsx";
+import { API_BASE_URL } from "./constants";
 
 function isTokenExpired(token) {
   if (!token) return true;
@@ -80,7 +81,7 @@ function SearchBox({
 
   async function getUserProfile(uid, token) {
     const url = new URL(
-      "https://quaestio-be.azurewebsites.net/api/v2/userprofile"
+      `${API_BASE_URL}/v2/userprofile`
     );
 
     url.search = new URLSearchParams({ uid });
@@ -145,7 +146,7 @@ function SearchBox({
   };
 
   async function searchPatents(pa, areaTecnica, pdfrom, pdto, txt, token) {
-    const url = new URL("https://quaestio-be.azurewebsites.net/api/v2/search");
+    const url = new URL(`${API_BASE_URL}/v2/search`);
 
     const decodedToken = JSON.parse(atob(token.split(".")[1]));
     const uid = decodedToken.uid;
