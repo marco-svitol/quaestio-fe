@@ -363,23 +363,23 @@ function SearchBox({
                 <button
                   type="button"
                   className="btn btn-outline-primary btn-sm mr-1"
-                  onClick={() => setQuickDate(1)}
+                  onClick={() => setQuickDate(30)}
                 >
-                  ultime 24 ore
+                  ultimo mese
                 </button>
                 <button
                   type="button"
                   className="btn btn-outline-primary btn-sm mr-1"
-                  onClick={() => setQuickDate(7)}
+                  onClick={() => setQuickDate(90)}
                 >
-                  ultima settimana
+                  ultimo trimestre
                 </button>
                 <button
                   type="button"
                   className="btn btn-outline-primary btn-sm"
-                  onClick={() => setQuickDate(30)}
+                  onClick={() => setQuickDate(365)}
                 >
-                  ultimo mese
+                  ultimo anno
                 </button>
               </div>
             </div>
