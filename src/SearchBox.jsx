@@ -35,8 +35,11 @@ function SearchBox({
   const [dataTo, setDataTo] = useState(searchParams.dataTo || null);
   const [testo, setTesto] = useState(searchParams.testo || "");
   const [testoCheckbox, setTestoCheckbox] = useState(false);
-  const [selectedOption, setSelectedOption] = useState(
-    searchParams.selectedOption || "richiedente"
+  const [includeRichiedente, setIncludeRichiedente] = useState(
+    searchParams.includeRichiedente || false
+  );
+  const [includeAreaTecnica, setIncludeAreaTecnica] = useState(
+    searchParams.includeAreaTecnica || false
   );
   const [includeDates, setIncludeDates] = useState(
     searchParams.includeDates || false
@@ -69,15 +72,13 @@ function SearchBox({
   }, [setError]);
 
   useEffect(() => {
-    if (
-      (selectedOption === "richiedente" && richiedente !== "") ||
-      (selectedOption === "area-tecnica" && areaTecnica !== "")
-    ) {
-      setIsButtonDisabled(false);
-    } else {
+    if (richiedente !== "" &&( (includeAreaTecnica && (areaTecnica !== "")) || !includeAreaTecnica ) ) { 
+      setIsButtonDisabled(false); 
+    } 
+    else {
       setIsButtonDisabled(true);
     }
-  }, [selectedOption, richiedente, areaTecnica]);
+  },[richiedente, includeAreaTecnica, areaTecnica]);
 
   async function getUserProfile(uid, token) {
     const url = new URL(
@@ -121,8 +122,8 @@ function SearchBox({
     try {
       showLoading();
       const response = await withTokenRefresh(searchPatents)(
-        selectedOption === "richiedente" ? richiedente : "",
-        selectedOption === "area-tecnica" ? areaTecnica : "",
+        includeRichiedente ? richiedente : "",
+        includeAreaTecnica ? areaTecnica : "",
         includeDates && dataFrom ? moment(dataFrom).format("YYYYMMDD") : "",
         includeDates && dataTo ? moment(dataTo).format("YYYYMMDD") : "",
         testo
@@ -135,7 +136,8 @@ function SearchBox({
         dataFrom,
         dataTo,
         testo,
-        selectedOption,
+        includeRichiedente,
+        includeAreaTecnica,
         includeDates,
       });
     } catch (error) {
@@ -213,8 +215,19 @@ function SearchBox({
     };
   }
 
-  const handleChange = (e) => {
-    setSelectedOption(e.target.value);
+  const handleChangeRichiedente = (e) => {
+    setIncludeRichiedente(e.target.checked);
+    if (!e.target.checked) {
+      setRichiedente("");
+      setAreaTecnica("");
+    }
+  };
+
+  const handleChangeAreaTecnica = (e) => {
+    setIncludeAreaTecnica(e.target.checked);
+    if (!e.target.checked) {
+      setAreaTecnica("");
+    }
   };
 
   return (
@@ -222,15 +235,15 @@ function SearchBox({
       <div className="container">
         <form className="search-form" onSubmit={handleSubmit}>
           <div className="form-group row">
-            <div className="custom-control custom-radio custom-control-inline">
+            <div className="custom-control custom-checkbox">
               <input
-                type="radio"
+                type="checkbox"
                 id="richiedente"
                 name="search-option"
                 className="custom-control-input"
                 value="richiedente"
-                checked={selectedOption === "richiedente"}
-                onChange={handleChange}
+                checked={(richiedente !== "")}
+                onChange={handleChangeRichiedente}
               />
               <label
                 className="custom-control-label richiedente-label"
@@ -243,7 +256,11 @@ function SearchBox({
               <select
                 className="form-control"
                 value={richiedente}
-                onChange={(e) => setRichiedente(e.target.value)}
+                onChange={(e) => { 
+                    setRichiedente(e.target.value);
+                    setIncludeRichiedente(e.target.value !== "");
+                  }
+                }
               >
                 {applicantsLoading ? (
                   <option>Caricamento richiedente...</option>
@@ -262,15 +279,15 @@ function SearchBox({
           </div>
 
           <div className="form-group row">
-            <div className="custom-control custom-radio custom-control-inline">
+            <div className="custom-control custom-checkbox">
               <input
-                type="radio"
+                type="checkbox"
                 id="area-tecnica"
                 name="search-option"
                 className="custom-control-input"
                 value="area-tecnica"
-                checked={selectedOption === "area-tecnica"}
-                onChange={handleChange}
+                checked={areaTecnica !== "" && richiedente !== ""}
+                onChange={handleChangeAreaTecnica}
               />
               <label
                 className="custom-control-label area-label"
@@ -283,10 +300,14 @@ function SearchBox({
               <select
                 className="form-control"
                 value={areaTecnica}
-                onChange={(e) => setAreaTecnica(e.target.value)}
+                onChange={(e) => {
+                    setAreaTecnica(e.target.value);
+                    setIncludeAreaTecnica(e.target.value !== "");
+                  }
+                }
               >
                 {tecareasLoading ? (
-                  <option>Caricamento l'area tecnica...</option>
+                  <option>Caricamento aree tecniche...</option>
                 ) : (
                   <>
                     <option value="">Selezionare l'area tecnica</option>
