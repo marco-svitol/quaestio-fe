@@ -37,7 +37,7 @@ function ReactGrid({ data, error }) {
     const token = sessionStorage.getItem("token");
     try {
       const response = await axios.get(
-        `${API_BASE_URL}/api/v1/opendoc`,
+        `${API_BASE_URL}/api/v2/opendoc`,
         {
           params: { uid, doc_num },
           headers: { Authorization: `Bearer ${token}` },
