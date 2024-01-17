@@ -70,9 +70,5 @@ const favouritesSlice = createSlice({
     }
 })
 
-<<<<<<< HEAD
 export const { setFavPage, updateFavourite } = favouritesSlice.actions;
-=======
-export const { setFavPage } = favouritesSlice.actions;
->>>>>>> a8ca9c17a8ab5bc9c99b9dcaa2072a9d366f9dab
 export default favouritesSlice.reducer;

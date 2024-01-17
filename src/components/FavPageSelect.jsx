@@ -2,18 +2,8 @@ import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 
 const PageSelect = ({ page, selectPage }) => {
-<<<<<<< HEAD
     const favPagedData = useSelector((state) => state.favourites.favPagedData);
     const totalPages = favPagedData.length;
-=======
-    const favPagedData = useSelector((state) => state.search.favPagedData);
-    const [totalPages, setTotalPages] = useState(null)
-    useEffect(() => {
-        if (favPagedData) {
-            setTotalPages(favPagedData.length);
-        }
-    }, [favPagedData])
->>>>>>> a8ca9c17a8ab5bc9c99b9dcaa2072a9d366f9dab
 
     const [elements, setElements] = useState([]);
 
@@ -28,10 +18,6 @@ const PageSelect = ({ page, selectPage }) => {
             setElements(newElements);
         }
     }, [totalPages, page])
-<<<<<<< HEAD
-
-=======
->>>>>>> a8ca9c17a8ab5bc9c99b9dcaa2072a9d366f9dab
     return (
 
         <div className="flex items-center gap-4 mt-4">

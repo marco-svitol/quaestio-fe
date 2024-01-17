@@ -1,14 +1,9 @@
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from 'react-redux';
 import { updateFavouriteElement } from "../redux/searchSlice";
-<<<<<<< HEAD
 import { updateFavourite } from "../redux/favouritesSlice";
 
 const DataCard = ({ panel, index, data, token, isEven, click }) => {
-=======
-
-const DataCard = ({ index, data, token, isEven, click }) => {
->>>>>>> a8ca9c17a8ab5bc9c99b9dcaa2072a9d366f9dab
     const [formattedDate, setFormattedDate] = useState(null);
     useEffect(() => {
         if (data.date) {

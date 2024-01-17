@@ -4,10 +4,7 @@ import FavPageSelect from "./FavPageSelect.jsx";
 import DetailsModal from "./DetailsModal.jsx";
 import DataCard from "./DataCard.jsx";
 import { setFavPage } from "../redux/favouritesSlice";
-<<<<<<< HEAD
 import { getFavourites } from "../redux/favouritesSlice";
-=======
->>>>>>> a8ca9c17a8ab5bc9c99b9dcaa2072a9d366f9dab
 
 const DataPanel = () => {
     const { favPagedData, favError, favPage } = useSelector((state) => state.favourites);

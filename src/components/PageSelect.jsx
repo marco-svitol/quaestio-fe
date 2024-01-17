@@ -5,10 +5,6 @@ const PageSelect = ({ page, selectPage }) => {
     const pagedData = useSelector((state) => state.search.pagedData);
     const totalPages = pagedData.length;
 
-<<<<<<< HEAD
-=======
-
->>>>>>> a8ca9c17a8ab5bc9c99b9dcaa2072a9d366f9dab
     const [elements, setElements] = useState([]);
 
     useEffect(() => {
