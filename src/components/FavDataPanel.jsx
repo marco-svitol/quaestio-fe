@@ -32,7 +32,7 @@ const DataPanel = () => {
                 ) : (
                     <>
                     {
-                        favPagedData[0] === '{}' ? (
+                        favPagedData && favPagedData[0] === '{}' ? (
                             <h4>0 elementi trovati</h4>
                         ) : (
                             favPagedData && <h4>{(8 * (favPagedData.length - 1)) + (favPagedData[favPagedData.length - 1].length)} elementi trovati.</h4> /* -1 finale per togliere userinfo */
