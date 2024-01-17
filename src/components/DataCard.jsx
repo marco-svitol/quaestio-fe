@@ -1,9 +1,14 @@
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from 'react-redux';
 import { updateFavouriteElement } from "../redux/searchSlice";
+<<<<<<< HEAD
 import { updateFavourite } from "../redux/favouritesSlice";
 
 const DataCard = ({ panel, index, data, token, isEven, click }) => {
+=======
+
+const DataCard = ({ index, data, token, isEven, click }) => {
+>>>>>>> a8ca9c17a8ab5bc9c99b9dcaa2072a9d366f9dab
     const [formattedDate, setFormattedDate] = useState(null);
     useEffect(() => {
         if (data.date) {
@@ -68,7 +73,7 @@ const DataCard = ({ panel, index, data, token, isEven, click }) => {
 
             {/* Numero documento */}
             <div className="w-full sm:w-[200px]">
-                <h6>{index}</h6>
+                {/* <h6>{index}</h6> */}
                 <h4 className="text-xs md:text-left text-stone-400">Numero</h4>
                 <div className="border rounded-lg border-stone-300 p-2 h-11 flex gap-2 items-center">
                     <i className="fi fi-rr-file-circle-info text-red-800 text-lg cursor-pointer" onClick={clickAndReturnState}></i> {data.doc_num}
