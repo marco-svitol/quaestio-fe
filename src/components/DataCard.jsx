@@ -1,8 +1,9 @@
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from 'react-redux';
 import { updateFavouriteElement } from "../redux/searchSlice";
+import { updateFavourite } from "../redux/favouritesSlice";
 
-const DataCard = ({ index, data, token, isEven, click }) => {
+const DataCard = ({ panel, index, data, token, isEven, click }) => {
     const [formattedDate, setFormattedDate] = useState(null);
     useEffect(() => {
         if (data.date) {
@@ -43,9 +44,16 @@ const DataCard = ({ index, data, token, isEven, click }) => {
             });
             if (response.ok) {
                 const result = await response.json();
-                console.log(result)
-                const reduxUpdate = {index: index, bookmark: !localBookmark} // Si passa a Redux l'indice assoluto per l'oggetto e il bookmark aggiornato
-                dispatch(updateFavouriteElement(reduxUpdate));
+                console.log(result) // DA QUESTO PUNTO IN GIù E' BENE ESEGUIRE LA RICERCA DELL'ELEMENTO DA AGGIORNARE IN REDUX NON CON L'ATTRIBUZIONE DI INDEX MA COL NUMERO DOCUMENTO
+                const reduxUpdate = { index: index, bookmark: !localBookmark } // Si passa a Redux l'indice assoluto per l'oggetto e il bookmark aggiornato
+                if (panel === "search") {
+                    console.log('search-panel');
+                    dispatch(updateFavouriteElement(reduxUpdate));
+                    // Aggiorna anche il redux dei favourites
+                } else if (panel === "fav") {
+                    console.log('fav-panel');
+                    dispatch(updateFavourite(reduxUpdate))
+                }
                 setLocalBookmark(!localBookmark);
             } else {
                 const resultError = await response.json();

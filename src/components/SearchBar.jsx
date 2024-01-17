@@ -33,6 +33,10 @@ const SearchBar = () => {
         }
     }
 
+    useEffect(() => {
+        console.log(inputData)
+    }, [inputData])
+
     // Preset date 
     const handleLast = (days) => {
         const todayDate = new Date();
