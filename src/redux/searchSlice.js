@@ -5,8 +5,6 @@ export const getSearch = createAsyncThunk(
     'data/search',
     async ({ searchData, token }) => {
         try {
-            const url = `${process.env.REACT_APP_SERVER_BASE_URL}/v2/search?pa=${searchData.pa}&tecarea=${searchData.tecarea}&doc_num=${searchData.doc_num}&pdfrom=${searchData.pdfrom}&pdto=${searchData.pdto}`;
-            console.log('fetch: ', url);
             const response = await fetch(`${process.env.REACT_APP_SERVER_BASE_URL}/v2/search?pa=${searchData.pa}&tecarea=${searchData.tecarea}&doc_num=${searchData.doc_num}&pdfrom=${searchData.pdfrom}&pdto=${searchData.pdto}`, {
                 method: 'GET',
                 headers: {
