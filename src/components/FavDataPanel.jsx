@@ -31,7 +31,13 @@ const DataPanel = () => {
                     <h3>Qualcosa è andato storto, ricarica la pagina e riprova</h3>
                 ) : (
                     <>
-                        {favPagedData && <h4>{(8 * (favPagedData.length - 1)) + (favPagedData[favPagedData.length - 1].length)} elementi trovati.</h4>} {/* -1 finale per togliere userinfo */}
+                    {
+                        favPagedData[0] === '{}' ? (
+                            <h4>0 elementi trovati</h4>
+                        ) : (
+                            favPagedData && <h4>{(8 * (favPagedData.length - 1)) + (favPagedData[favPagedData.length - 1].length)} elementi trovati.</h4> /* -1 finale per togliere userinfo */
+                        )
+                    }
                         {favPagedData && <FavPageSelect page={favPage} selectPage={handleSelectFavPage} />}
 
                         {

@@ -4,16 +4,14 @@ import { dataPagination } from "./paginationFunction";
 export const getFavourites = createAsyncThunk(
     'favourites/favSearch',
     async ({ favouritesData, token }) => {
-        console.log('favouritesData: ', favouritesData);
         try {
-            const response = await fetch(`${process.env.REACT_APP_SERVER_BASE_URL}/v2/searchbookmark?doc_num=${favouritesData.doc_num}&pdfrom=${favouritesData.pdform}&pdto=${favouritesData.pdto}`, {
+            const response = await fetch(`${process.env.REACT_APP_SERVER_BASE_URL}/v2/searchbookmark?doc_num=${favouritesData.doc_num}&pdfrom=${favouritesData.pdfrom}&pdto=${favouritesData.pdto}`, {
                 method: 'GET',
                 headers: {
                     Authorization: `Bearer ${token}`
                 }
             })
             if (response.ok) {
-                console.log('here 1')
                 const favourites = await response.json();
                 return favourites;
             } else {
@@ -62,6 +60,7 @@ const favouritesSlice = createSlice({
                 state.favPagedData = dataPagination(action.payload);
                 state.favPage = 1;
                 state.favFetchStatus = 'succeeded';
+                console.log('favPagedData: ', state.favPagedData);
             })
             .addCase(getFavourites.rejected, (state, action) => {
                 state.error = action.error.message;

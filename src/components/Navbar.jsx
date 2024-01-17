@@ -43,7 +43,11 @@ const Navbar = () => {
     const handleSection = (number) => {
         dispatch(setSection(number))
         if (number === 1) {
-            dispatch(getFavourites({ favouritesData: '', token: token }));
+            dispatch(getFavourites({ favouritesData: {
+                doc_num: '',
+                pdfrom: '',
+                pdto: ''
+            }, token: token }));
         }
     }
 
