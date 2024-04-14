@@ -1,5 +1,6 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import { dataPagination } from "./paginationFunction";
+import ConsoleLog from "../components/ConsoleLog";
 
 export const getFavourites = createAsyncThunk(
     'favourites/favSearch',
@@ -57,7 +58,7 @@ const favouritesSlice = createSlice({
             .addCase(getFavourites.fulfilled, (state, action) => {
                 console.log('favourites: ', action.payload)
                 state.favError = null;
-                state.favPagedData = dataPagination(action.payload);
+                state.favPagedData = dataPagination(action.payload, 8);
                 state.favPage = 1;
                 state.favFetchStatus = 'succeeded';
                 console.log('favPagedData: ', state.favPagedData);

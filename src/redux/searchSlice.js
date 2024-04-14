@@ -31,10 +31,14 @@ const searchSlice = createSlice({
     initialState: {
         fetchStatus: 'idle',
         error: null,
-        pagedData: null,
-        page: null
+        pageSize: 8,
+        page: null,
+        pagedData: null
     },
     reducers: {
+        setPageSize: (state, action) => {
+            state.pageSize = action.payload;
+        },
         setPage: (state, action) => {
             state.page = action.payload;
         },
@@ -56,10 +60,12 @@ const searchSlice = createSlice({
         [getSearch.fulfilled]: (state, action) => {
             state.error = null;
             const data = action.payload;
+            // Aggiungo index ad ogni elemento
             const numberedData = data.map((element, index) => {
                 return {...element, index: index}
             })
-            state.pagedData = dataPagination(numberedData);
+            // Impagino
+            state.pagedData = dataPagination(numberedData, state.pageSize);
             state.page = 1;
             state.fetchStatus = 'succeeded';
         },
@@ -70,5 +76,5 @@ const searchSlice = createSlice({
     }
 })
 
-export const { setPage, updateFavouriteElement } = searchSlice.actions;
+export const { setPageSize, setPage, updateFavouriteElement } = searchSlice.actions;
 export default searchSlice.reducer;

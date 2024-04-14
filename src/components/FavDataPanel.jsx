@@ -1,12 +1,13 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import FavPageSelect from "./FavPageSelect.jsx";
 import DetailsModal from "./DetailsModal.jsx";
 import DataCard from "./DataCard.jsx";
 import { setFavPage } from "../redux/favouritesSlice";
 import { getFavourites } from "../redux/favouritesSlice";
+import PageBlock from "./PageBlock.jsx";
 
-const DataPanel = () => {
+const FavDataPanel = () => {
     const { favPagedData, favError, favPage } = useSelector((state) => state.favourites);
     const token = useSelector((state) => state.login.token);
 
@@ -25,7 +26,7 @@ const DataPanel = () => {
         setSelectedFavObject(null)
     }
     return (
-        <div className="box w-full">
+        <PageBlock width="full" items="center">
             {
                 favError ? (
                     <h3>Qualcosa è andato storto, ricarica la pagina e riprova</h3>
@@ -54,8 +55,8 @@ const DataPanel = () => {
                     </>
                 )
             }
-        </div>
+        </PageBlock>
     )
 }
 
-export default DataPanel;
+export default FavDataPanel;

@@ -5,10 +5,10 @@ import DetailsModal from "./DetailsModal";
 import DataCard from "./DataCard";
 import { setPage } from "../redux/searchSlice";
 import { setFavPage } from "../redux/favouritesSlice";
-import ConsoleLog from '../components/ConsoleLog.jsx';
+import PageBlock from './PageBlock'
 
 const DataPanel = () => {
-    const { pagedData, error, page } = useSelector((state) => state.search);
+    const { pagedData, error, page, fetchStatus } = useSelector((state) => state.search);
     const token = useSelector((state) => state.login.token);
 
     // Handle pagination
@@ -26,8 +26,8 @@ const DataPanel = () => {
     }
 
     return (
-        <div className="box w-full">
-
+        <PageBlock width="full" items="center">
+            {fetchStatus === 'idle' && <div className="flex gap-2 lg:self-start"><div className="hidden lg:block"><i className="fi fi-sr-angle-circle-left text-2xl text-red-800"></i></div><h4 className="text-black">Seleziona un Richiedente per iniziare la ricerca</h4></div> }
             {
                 error ? (
                     <h3>Qualcosa è andato storto, ricarica la pagina e riprova</h3>
@@ -54,7 +54,7 @@ const DataPanel = () => {
                     </>
                 )
             }
-        </div>
+        </PageBlock>
     )
 }
 

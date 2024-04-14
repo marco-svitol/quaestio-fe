@@ -1,5 +1,6 @@
-export const dataPagination = (dataObject) => {
-    const pageSize = 8;
+export const dataPagination = (dataObject, pageSize) => {
+    console.log('dataObject: ', dataObject);
+    /* const pageSize = 8; */
     const totalPages = Math.ceil(dataObject.length / pageSize); //
     const pagedData = []
     for (let page = 0; page < totalPages; page++) {

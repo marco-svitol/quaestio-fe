@@ -28,7 +28,6 @@ h4 {
 
 input {
   border: 2px solid #e2e8f0;
-  min-width: 300px;
   border-radius: 4px;
   padding: 12px;
 }
@@ -36,6 +35,10 @@ input {
 input:focus {
   outline: none;
   border-color: #991b1b;
+}
+
+.settings label {
+  font-size: 14pt;
 }
 
 select {

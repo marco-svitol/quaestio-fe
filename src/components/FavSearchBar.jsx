@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { DisabledButton, MiniSecondaryButton, PrimaryButton } from './Buttons.js';
 import { useDispatch, useSelector } from "react-redux";
 import { getFavourites } from "../redux/favouritesSlice.js";
+import PageBlock from "./PageBlock.jsx";
 
 const FavSearchBar = () => {
     const { fetchStatus } = useSelector((state) => state.search);
@@ -77,7 +78,7 @@ const FavSearchBar = () => {
     }
 
     return (
-        <div className="box w-fit">
+        <PageBlock width="fit" items="center">
 
             <i className="fi fi-sr-star text-red-800 text-3xl"></i>
             <h3>Ricerca tra i preferiti</h3>
@@ -109,7 +110,7 @@ const FavSearchBar = () => {
                 )
             }
 
-        </div>
+        </PageBlock>
     )
 }
 

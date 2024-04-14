@@ -2,12 +2,14 @@ import { useState, useEffect } from "react";
 import { DisabledButton, MiniSecondaryButton, PrimaryButton } from './Buttons.js';
 import { useDispatch, useSelector } from "react-redux";
 import { getSearch } from "../redux/searchSlice.js";
+import PageBlock from "./PageBlock.jsx";
+import { setLastCall } from "../redux/lastCallSlice.js";
+import { useLocation } from 'react-router-dom';
 
 const SearchBar = () => {
     const { fetchStatus } = useSelector((state) => state.search);
 
-    // Handle input data
-    const token = useSelector(state => state.login.token);
+    // Gestione inputData
     const searchValues = useSelector((state) => state.userProfile.searchValues);
     const [inputData, setInputData] = useState({
         pa: '',
@@ -34,8 +36,18 @@ const SearchBar = () => {
     }
 
     useEffect(() => {
-        console.log(inputData)
+        console.log('inputData: ', inputData)
     }, [inputData])
+
+    // Check di lastCall per vedere se c'è una chiamata in memoria da rilanciare
+    const token = useSelector(state => state.login.token);
+    const { needLastCall, pa, tecarea, doc_num, pdfrom, pdto } = useSelector(state => state.lastCall);
+    useEffect(() => {
+        if (needLastCall && token) {
+            setInputData({ pa, tecarea, doc_num, pdfrom, pdto });
+            dispatch(getSearch({ searchData: { pa, tecarea, doc_num, pdfrom, pdto }, token: token }));
+        }
+    }, [needLastCall, token])
 
     // Preset date 
     const handleLast = (days) => {
@@ -79,15 +91,16 @@ const SearchBar = () => {
     // GET SEARCH FETCH
     const dispatch = useDispatch();
     const getReduxSearch = () => {
+        dispatch(setLastCall(inputData))
         dispatch(getSearch({ searchData: inputData, token: token }))
     }
 
     return (
-        <div className="box w-fit">
+        <PageBlock width="fit" items="center">
 
             <h3>Ricerca brevetti</h3>
             <label htmlFor="pa">Richiedente (obbligatorio)</label>
-            <select id="pa" onChange={handleInputData}>
+            <select id="pa" onChange={handleInputData} value={inputData.pa}>
                 <option value="">---</option>
                 {
                     searchValues && searchValues.applicants.map((element, index) => (
@@ -98,7 +111,7 @@ const SearchBar = () => {
 
 
             <label htmlFor="tecarea">Area tecnica (opzionale)</label>
-            <select id="tecarea" onChange={handleInputData}>
+            <select id="tecarea" onChange={handleInputData} value={inputData.tecarea}>
                 <option value="">---</option>
                 {
                     searchValues && searchValues.tecareas.map((element, index) => (
@@ -134,7 +147,7 @@ const SearchBar = () => {
                 )
             }
 
-        </div>
+        </PageBlock>
     )
 }
 
