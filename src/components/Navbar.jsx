@@ -62,7 +62,7 @@ const Navbar = () => {
                                 {userInfo && userInfo.logopath && <img src={userInfo.logopath} alt="avatar" className="rounded-xl" />}
                             </div>
                             {userInfo && userInfo.displayname && <h2>{userInfo.displayname}</h2>}
-                            <Link to="/settings"><div className="border border-red-300 py-1 pt-[10px] px-3 rounded-xl" onClick={() => handleSection(2)}><i class="fi fi-rr-settings-sliders text-2xl"></i></div></Link>
+                            <Link to="/settings"><div className="border border-red-300 py-1 pt-[10px] px-3 rounded-xl" onClick={() => handleSection(2)}><i class="fi fi-rr-user-gear text-2xl"></i></div></Link>
                         </div>
                     ) : (
                         <></>

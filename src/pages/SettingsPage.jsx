@@ -52,7 +52,7 @@ const SettingsPage = () => {
         <div className="main-container settings">
             <PageBlock width="full" items="start">
                 <div><i class="fi fi-rr-settings-sliders text-3xl"></i></div>
-                <h3>Impostazioni</h3>
+                <h3>Gestione utente</h3>
 
                 {/* Page size */}
                 <div className="flex items-center gap-2">
