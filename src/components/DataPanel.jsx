@@ -54,7 +54,7 @@ const DataPanel = () => {
                             })
                         }
 
-                        {pagedData && <h4 className="mt-8">{(8 * (pagedData.length - 1)) + (pagedData[pagedData.length - 1].length - 1)} elementi trovati.</h4>} {/* -1 finale per togliere userinfo */}
+                        {pagedData && <h4 className="mt-8">{(pageSize * (pagedData.length - 1)) + (pagedData[pagedData.length - 1].length - 1)} elementi trovati.</h4>} {/* -1 finale per togliere userinfo */}
                         {pagedData && !pagedData[0][0].userinfo && <PageSelect page={page} selectPage={HandleSelectPage} />}
 
                         {selectedObject && <DetailsModal data={selectedObject} close={resetSelectedObject} />}

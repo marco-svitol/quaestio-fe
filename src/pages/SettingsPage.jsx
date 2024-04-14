@@ -21,8 +21,8 @@ const SettingsPage = () => {
         if (id === "pageSize") {
             let valueNumber = parseInt(value);
             fixedValue = valueNumber;
-            if (valueNumber > 20) {
-                fixedValue = 20
+            if (valueNumber < 0) {
+                fixedValue = 1
             }
         }
         setInputData(prevData => ({
