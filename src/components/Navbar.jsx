@@ -6,6 +6,7 @@ import { getLoggedByAuth0, getUnloggedByAuth0 } from "../redux/loginSlice";
 import { getFavourites } from "../redux/favouritesSlice";
 import { setSection } from "../redux/sectionSlice";
 import { Link } from "react-router-dom";
+import { setNeedTrue } from "../redux/lastCallSlice";
 
 const Navbar = () => {
 
@@ -49,6 +50,9 @@ const Navbar = () => {
                 pdfrom: '',
                 pdto: ''
             }, token: token }));
+        }
+        if (number === 0) {
+            dispatch(setNeedTrue(false))
         }
     }
 

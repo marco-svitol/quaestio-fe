@@ -40,7 +40,7 @@ const SettingsPage = () => {
             setIsError(true);
         }
         dispatch(setSection(0));
-        dispatch(setNeedTrue());
+        dispatch(setNeedTrue(true));
         navigate("/");
     }
 
@@ -57,8 +57,15 @@ const SettingsPage = () => {
                 {/* Page size */}
                 <div className="flex items-center gap-2">
                     <label htmlFor="pageSize">Quantità di elementi per pagina:</label>
-                    {pageSize && <input type="number" id="pageSize" placeholder={inputData.pageSize} className="w-16" onChange={handleInputData} min="0" max="20" />}
+                    {pageSize && <input type="number" id="pageSize" placeholder={inputData.pageSize} className="w-16" onChange={handleInputData} />}
                 </div>
+                
+                {/* Cambio password */}
+                <div className="flex items-center gap-2">
+                    <label htmlFor="changePassword">Modifica password (disabled):</label>
+                    {pageSize && <input type="password" id="changePassword" />}
+                </div>
+
 
                 {/* Save settings */}
                 <PrimaryButton text="Salva impostazioni" click={sendNewSettings} />

@@ -41,10 +41,12 @@ const SearchBar = () => {
 
     // Check di lastCall per vedere se c'è una chiamata in memoria da rilanciare
     const token = useSelector(state => state.login.token);
-    const { needLastCall, pa, tecarea, doc_num, pdfrom, pdto } = useSelector(state => state.lastCall);
+    const { needLastCall, getLastSearch, pa, tecarea, doc_num, pdfrom, pdto } = useSelector(state => state.lastCall);
     useEffect(() => {
         if (needLastCall && token) {
             setInputData({ pa, tecarea, doc_num, pdfrom, pdto });
+        }
+        if (needLastCall && getLastSearch && token) {
             dispatch(getSearch({ searchData: { pa, tecarea, doc_num, pdfrom, pdto }, token: token }));
         }
     }, [needLastCall, token])

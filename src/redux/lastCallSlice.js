@@ -1,9 +1,12 @@
 import { createSlice } from '@reduxjs/toolkit'
 
+// Questo slice gestisce il ritorno in homepage, memorizzando i parametri dell'ultima chiamata,
+// reimpostandoli in SearchBar e, se richiesto, rieffettuando la chiamata
 const lastCallSlice = createSlice({
     name: 'lastCall',
     initialState: {
         needLastCall: false,
+        getLastSearch: false,
         pa: '',
         tecarea: '',
         doc_num: '',
@@ -19,11 +22,13 @@ const lastCallSlice = createSlice({
             state.pdfrom = action.payload.pdfrom;
             state.pdto = action.payload.pdto;
         },
-        setNeedTrue: (state) => {
+        setNeedTrue: (state, action) => {
             state.needLastCall = true;
+            state.getLastSearch = action.payload;
         },
-        setNeedFalse: (state) => {
+        setNeedFalse: (state, action) => {
             state.needLastCall = false;
+            state.getLastSearch = false;
         }
     }
 })
