@@ -38,10 +38,10 @@ const DataPanel = () => {
                 ) : (
                     <>
                         {fetchStatus === 'pending' && <div className="absolute top-0 right-0 bottom-0 left-0 bg-white bg-opacity-80"></div>}
-                        {pagedData && <h4>{(8 * (pagedData.length - 1)) + (pagedData[pagedData.length - 1].length - 1)} elementi trovati.</h4>} {/* -1 finale per togliere userinfo */}
+                        {pagedData && <h4>{(pageSize * (pagedData.length - 1)) + (pagedData[pagedData.length - 1].length - 1)} elementi trovati.</h4>} {/* -1 finale per togliere userinfo */}
                         {pagedData && !pagedData[0][0].userinfo && <PageSelect page={page} selectPage={HandleSelectPage} />}
 
-                        {pagedData && <Link to="/settings"><div className="border rounded border-red-400 p-1">Elementi per pagina: <span className="font-bold text-red-800">{pageSize}</span></div></Link>}
+                        {pagedData && <Link to="/settings"><div className="border rounded border-red-400 py-1 px-2">Elementi per pagina: <span className="font-bold text-red-800">{pageSize}</span></div></Link>}
 
                         {
                             pagedData && Array.isArray(pagedData[page - 1]) && pagedData[page - 1].map((element, index) => {

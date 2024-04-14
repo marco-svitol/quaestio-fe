@@ -65,7 +65,8 @@ const searchSlice = createSlice({
                 return {...element, index: index}
             })
             // Impagino
-            state.pagedData = dataPagination(numberedData, state.pageSize);
+            const pagedData = dataPagination(numberedData, state.pageSize)
+            state.pagedData = pagedData;
             state.page = 1;
             state.fetchStatus = 'succeeded';
         },
