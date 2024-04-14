@@ -131,7 +131,7 @@ const SearchBar = () => {
             </div>
 
             <label htmlFor="doc_num">Numero di pubblicazione</label>
-            <input type="text" id="doc_num" onChange={handleInputData} />
+            <input type="text" id="doc_num" onChange={handleInputData} value={inputData.doc_num} />
 
             {
                 fetchStatus === 'pending' ? (
