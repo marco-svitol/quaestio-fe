@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from 'react-redux';
 import { updateFavouriteElement } from "../redux/searchSlice";
 import { updateFavourite } from "../redux/favouritesSlice";
+import NoteModal from "./notes/NoteModal";
 
 const DataCard = ({ panel, index, data, token, isEven, click }) => {
     const [formattedDate, setFormattedDate] = useState(null);
@@ -63,8 +64,14 @@ const DataCard = ({ panel, index, data, token, isEven, click }) => {
             console.log('Catch error: ', error)
         }
     }
+
+    // Gestisco la visualizzazione della nota per ogni card
+    const [isNoteShow, setIsNoteShow] = useState(false);
+    useEffect(() => {
+        console.log(isNoteShow)
+    }, [isNoteShow])
     return (
-        <div className={`flex flex-col md:flex-col xl:flex-row text-[8pt] border ${isEven ? 'bg-stone-50 border-red-50' : 'bg-stone-100 border-red-100'} hover:border-red-800 w-full p-4 gap-4 rounded-3xl`}>
+        <div className={`flex flex-col md:flex-col xl:flex-row text-[8pt] border ${isEven ? 'bg-stone-50 border-red-50' : 'bg-stone-100 border-red-100'} hover:border-red-800 w-full p-4 gap-4 rounded-3xl relative`}>
 
             {/* Numero documento */}
             <div className="w-full sm:w-[200px]">
@@ -96,6 +103,13 @@ const DataCard = ({ panel, index, data, token, isEven, click }) => {
                         {localBookmark && <i className="fi fi-sr-star text-red-800 text-lg rounded-lg p-2"></i>}
                     </div>
                 </div>
+                {<div>
+                    <h4 className="text-xs md:text-left text-stone-400">Note</h4>
+                    <div className="flex justify-center items-center h-11 cursor-pointer" onClick={() => setIsNoteShow(true)}>
+                        <i className="fi fi-rr-note-sticky text-red-800 text-lg rounded-lg p-2"></i>
+                        {isNoteShow && <NoteModal docNum={data.doc_num} setIsNoteShow={setIsNoteShow} />}
+                    </div>
+                </div>}
             </div>
         </div>
     )

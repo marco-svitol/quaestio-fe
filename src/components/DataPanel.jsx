@@ -8,6 +8,7 @@ import { setFavPage } from "../redux/favouritesSlice";
 import PageBlock from './PageBlock'
 import { Link } from "react-router-dom";
 import { setStoredPage } from "../redux/lastCallSlice";
+import NoteModal from "./notes/NoteModal";
 
 const DataPanel = () => {
     const { pagedData, error, page, fetchStatus } = useSelector((state) => state.search);
