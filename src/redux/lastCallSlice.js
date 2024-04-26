@@ -6,7 +6,6 @@ const lastCallSlice = createSlice({
     name: 'lastCall',
     initialState: {
         needLastCall: false,
-        getLastSearch: false,
         pa: '',
         tecarea: '',
         doc_num: '',
@@ -22,16 +21,14 @@ const lastCallSlice = createSlice({
             state.pdfrom = action.payload.pdfrom;
             state.pdto = action.payload.pdto;
         },
-        setNeedTrue: (state, action) => {
+        setNeedTrue: (state) => {
             state.needLastCall = true;
-            state.getLastSearch = action.payload;
         },
-        setNeedFalse: (state, action) => {
+        setNeedFalse: (state) => {
             state.needLastCall = false;
-            state.getLastSearch = false;
         }
     }
 })
 
-export const { setLastCall, setNeedTrue, setNeedFalse } = lastCallSlice.actions;
+export const { setLastCall, setStoredPage, setNeedTrue, setNeedFalse } = lastCallSlice.actions;
 export default lastCallSlice.reducer;

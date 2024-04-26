@@ -7,6 +7,7 @@ import { setPage } from "../redux/searchSlice";
 import { setFavPage } from "../redux/favouritesSlice";
 import PageBlock from './PageBlock'
 import { Link } from "react-router-dom";
+import { setStoredPage } from "../redux/lastCallSlice";
 
 const DataPanel = () => {
     const { pagedData, error, page, fetchStatus } = useSelector((state) => state.search);
@@ -15,7 +16,7 @@ const DataPanel = () => {
     // Handle pagination
     const dispatch = useDispatch();
     const HandleSelectPage = (pageNumber) => {
-        dispatch(setPage(pageNumber))
+        dispatch(setPage(pageNumber));
     }
     // Select object
     const [selectedObject, setSelectedObject] = useState(null)

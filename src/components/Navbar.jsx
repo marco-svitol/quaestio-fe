@@ -52,7 +52,7 @@ const Navbar = () => {
             }, token: token }));
         }
         if (number === 0) {
-            dispatch(setNeedTrue(false))
+            dispatch(setNeedTrue())
         }
     }
 

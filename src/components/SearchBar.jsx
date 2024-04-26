@@ -3,7 +3,7 @@ import { DisabledButton, MiniSecondaryButton, PrimaryButton } from './Buttons.js
 import { useDispatch, useSelector } from "react-redux";
 import { getSearch } from "../redux/searchSlice.js";
 import PageBlock from "./PageBlock.jsx";
-import { setLastCall } from "../redux/lastCallSlice.js";
+import { setLastCall, setNeedFalse } from "../redux/lastCallSlice.js";
 import { useLocation } from 'react-router-dom';
 
 const SearchBar = () => {
@@ -40,14 +40,15 @@ const SearchBar = () => {
     }, [inputData])
 
     // Check di lastCall per vedere se c'è una chiamata in memoria da rilanciare
+    // Questo passaggio viene effettuato ad ogni montaggio di SearchBar
     const token = useSelector(state => state.login.token);
-    const { needLastCall, getLastSearch, pa, tecarea, doc_num, pdfrom, pdto } = useSelector(state => state.lastCall);
+    const { needLastCall, pa, tecarea, doc_num, pdfrom, pdto } = useSelector(state => state.lastCall);
     useEffect(() => {
-        if (needLastCall && token) {
-            setInputData({ pa, tecarea, doc_num, pdfrom, pdto });
-        }
-        if (needLastCall && getLastSearch && token) {
+            setInputData({ pa, tecarea, doc_num, pdfrom, pdto }); // needLastCall ricompila i campi ugali all'ultima chiamata
+        if (needLastCall && token) { // getLastSearch fa effettuare l'ultima chiamata
+            console.log('here')
             dispatch(getSearch({ searchData: { pa, tecarea, doc_num, pdfrom, pdto }, token: token }));
+            dispatch(setNeedFalse());
         }
     }, [needLastCall, token])
 

@@ -40,7 +40,7 @@ const SettingsPage = () => {
             setIsError(true);
         }
         dispatch(setSection(0));
-        dispatch(setNeedTrue(true));
+        dispatch(setNeedTrue);
         navigate("/");
     }
 
