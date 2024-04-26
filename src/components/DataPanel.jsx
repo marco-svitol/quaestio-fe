@@ -60,6 +60,7 @@ const DataPanel = () => {
                         {pagedData && !pagedData[0][0].userinfo && <PageSelect page={page} selectPage={HandleSelectPage} />}
 
                         {selectedObject && <DetailsModal data={selectedObject} close={resetSelectedObject} />}
+
                     </>
                 )
             }

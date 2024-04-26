@@ -43,13 +43,9 @@ const searchSlice = createSlice({
             state.page = action.payload;
         },
         updateFavouriteElement: (state, action) => { // Questo reducer va' a pescare l'oggetto relativo alla card che lo richiama, annidando l'index assoluto (che gli viene passato da DataPanel tramite prop)
-            console.log('redux here: ', action.payload);
             const index = action.payload.index;
-            console.log('redux here, index: ', index);
             const pageIndex = Math.floor(index / 8); // 8 è la quantità di oggetti per pagina
-            console.log('redux her, pageIndex: ', pageIndex);
             const internalIndex = index % 8;
-            console.log('redux here, internalIndex: ', internalIndex);
             state.pagedData[pageIndex][internalIndex].bookmark = action.payload.bookmark
         }
     },
