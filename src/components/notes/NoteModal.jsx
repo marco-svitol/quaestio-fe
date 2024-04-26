@@ -39,9 +39,6 @@ const NoteModal = ({ close, docNum, note }) => {
         try {
             const response = await fetch(url, options)
             if (response.ok) {
-                /* console.log('response: ', response)
-                const result = await response.json();
-                console.log('result: ', result) */
                 dispatch(setNeedTrue());
                 close(false);
             } else {

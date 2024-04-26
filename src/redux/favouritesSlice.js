@@ -38,16 +38,6 @@ const favouritesSlice = createSlice({
     reducers: {
         setFavPage: (state, action) => {
             state.favPage = action.payload;
-        },
-        updateFavourite: (state, action) => {
-            console.log('reduxFavourite, action.payload: ', action.payload);
-            const index = action.payload.index;
-            console.log('reduxFavourite, index: ', index);
-            const pageIndex = Math.floor(index / 8); // 8 è la quantità di oggetti per pagina
-            console.log('reduxFavourite, pageIndex: ', pageIndex);
-            const internalIndex = index % 8;
-            console.log('reduxFavourite, internalIndex: ', internalIndex);
-            state.favPagedData[pageIndex][internalIndex].bookmark = action.payload.bookmark
         }
     },
     extraReducers: (builder) => {

@@ -3,8 +3,10 @@ import { useDispatch, useSelector } from 'react-redux';
 import { updateFavouriteElement } from "../redux/searchSlice";
 import { updateFavourite } from "../redux/favouritesSlice";
 import NoteModal from "./notes/NoteModal";
+import { setNeedTrue } from "../redux/lastCallSlice";
+import MiniLoader from "./MiniLoader";
 
-const DataCard = ({ panel, index, data, token, isEven, click }) => {
+const DataCard = ({ panel, data, token, isEven, click }) => {
     const [formattedDate, setFormattedDate] = useState(null);
     useEffect(() => {
         if (data.date) {
@@ -15,6 +17,7 @@ const DataCard = ({ panel, index, data, token, isEven, click }) => {
         }
     }, [data.date])
 
+    // SISTEMARE QUESTO PASSAGGIO, RIFACENDO LA CHIAMATA E ELIMINANDO LA CACHATA IN REDUX DI VIEW
     // handle state and rehydratation
     const [readHistory, setReadHistory] = useState(data.read_history);
     const clickAndReturnState = () => {
@@ -25,18 +28,18 @@ const DataCard = ({ panel, index, data, token, isEven, click }) => {
         setReadHistory(data.read_history)
     }, [data.read_history])
 
-    // handle favourite icon rehydratation
-    const [localBookmark, setLocalBookmark] = useState(data.bookmark);
-
-    useEffect(() => {
-        setLocalBookmark(data.bookmark);
-    }, [data.bookmark])
-
     // favourite fetch
+    const [favouriteFetchStatus, setFavouriteFetchStatus] = useState('idle');
+    const [favouriteError, setFavouriteError] = useState(null)
     const dispatch = useDispatch();
     const setOrRemoveFavourite = async () => {
         try {
-            const response = await fetch(`${process.env.REACT_APP_SERVER_BASE_URL}/v2/bookmark?doc_num=${data.doc_num}&bookmark=${!localBookmark ? 1 : 0}`, {
+            setFavouriteFetchStatus('loading');
+            console.log('data.bookmark: ', data.bookmark);
+            const bookmark = data.bookmark ? 0 : 1;
+            console.log('bookmark: ', bookmark)
+            const url = `${process.env.REACT_APP_SERVER_BASE_URL}/v2/bookmark?doc_num=${data.doc_num}&bookmark=${bookmark}`
+            const response = await fetch(url, {
                 method: 'PATCH',
                 headers: {
                     Authorization: `Bearer ${token}`,
@@ -45,30 +48,24 @@ const DataCard = ({ panel, index, data, token, isEven, click }) => {
             });
             if (response.ok) {
                 const result = await response.json();
-                console.log(result) // DA QUESTO PUNTO IN GIù E' BENE ESEGUIRE LA RICERCA DELL'ELEMENTO DA AGGIORNARE IN REDUX NON CON L'ATTRIBUZIONE DI INDEX MA COL NUMERO DOCUMENTO
-                const reduxUpdate = { index: index, bookmark: !localBookmark } // Si passa a Redux l'indice assoluto per l'oggetto e il bookmark aggiornato
-                if (panel === "search") {
-                    console.log('search-panel');
-                    dispatch(updateFavouriteElement(reduxUpdate));
-                    // Aggiorna anche il redux dei favourites
-                } else if (panel === "fav") {
-                    console.log('fav-panel');
-                    dispatch(updateFavourite(reduxUpdate))
-                }
-                setLocalBookmark(!localBookmark);
+                console.log(result)
+                dispatch(setNeedTrue());
+                setFavouriteFetchStatus('idle');
             } else {
                 const resultError = await response.json();
+                setFavouriteError(resultError);
+                setFavouriteFetchStatus('error');
                 console.log('Fetch error: ', resultError)
             }
         } catch (error) {
             console.log('Catch error: ', error)
+            setFavouriteError(error);
+            setFavouriteFetchStatus('error');
         }
     }
-
-    // Gestisco stato note
-    // Se in backend la nota arriva come stringa vuota essa non esiste
-    const [isNote, setIsNote] = useState(false);
-
+    useEffect(() => {
+        console.log('fetchStatus: ', favouriteFetchStatus)
+    }, [favouriteFetchStatus])
 
     // Gestisco apertura e chiusura Note per ogni card
     const [isNoteVisible, setIsNoteVisible] = useState(false);
@@ -102,8 +99,9 @@ const DataCard = ({ panel, index, data, token, isEven, click }) => {
                 <div>
                     <h4 className="text-xs md:text-left text-stone-400">Preferiti</h4>
                     <div className="flex justify-center items-center h-11 cursor-pointer" onClick={setOrRemoveFavourite}>
-                        {!localBookmark && <i className="fi fi-rr-star text-red-800 text-lg rounded-lg p-2"></i>}
-                        {localBookmark && <i className="fi fi-sr-star text-red-800 text-lg rounded-lg p-2"></i>}
+                        {favouriteFetchStatus === 'idle' && !data.bookmark && <i className="fi fi-rr-star text-red-800 text-lg rounded-lg p-2"></i>}
+                        {favouriteFetchStatus === 'idle' && data.bookmark && <i className="fi fi-sr-star text-red-800 text-lg rounded-lg p-2"></i>}
+                        {favouriteFetchStatus === 'loading' && <MiniLoader />}
                     </div>
                 </div>
                 <div>
