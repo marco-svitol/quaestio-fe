@@ -3,8 +3,7 @@ import { DisabledButton, MiniSecondaryButton, PrimaryButton } from './Buttons.js
 import { useDispatch, useSelector } from "react-redux";
 import { getSearch } from "../redux/searchSlice.js";
 import PageBlock from "./PageBlock.jsx";
-import { setLastCall, setNeedFalse } from "../redux/lastCallSlice.js";
-import { useLocation } from 'react-router-dom';
+import { setLastCall, setNeedFalse, setNeedTrue } from "../redux/lastCallSlice.js";
 
 const SearchBar = () => {
     const { fetchStatus } = useSelector((state) => state.search);
@@ -46,7 +45,6 @@ const SearchBar = () => {
     useEffect(() => {
             setInputData({ pa, tecarea, doc_num, pdfrom, pdto }); // needLastCall ricompila i campi ugali all'ultima chiamata
         if (needLastCall && token) { // getLastSearch fa effettuare l'ultima chiamata
-            console.log('here')
             dispatch(getSearch({ searchData: { pa, tecarea, doc_num, pdfrom, pdto }, token: token }));
             dispatch(setNeedFalse());
         }

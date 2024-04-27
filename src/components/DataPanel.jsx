@@ -48,7 +48,6 @@ const DataPanel = () => {
                         {
                             pagedData && Array.isArray(pagedData[page - 1]) && pagedData[page - 1].map((element, index) => {
                                 if (!element.userinfo) { /* questo toglie la card per userinfo */
-                                    /* index viene passato per poter aggiornare il Redux di ogni card singolarmente */
                                     return <DataCard key={index} panel="search" data={element} token={token} isEven={index % 2 === 0 ? true : false} click={() => handleSelectObject(element)} />
                                 } else {
                                     console.log('userInfo; ', element.userInfo);

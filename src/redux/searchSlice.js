@@ -4,6 +4,7 @@ import { dataPagination } from "./paginationFunction";
 export const getSearch = createAsyncThunk(
     'data/search',
     async ({ searchData, token }) => {
+        console.log('redux searchData: ', searchData)
         try {
             const response = await fetch(`${process.env.REACT_APP_SERVER_BASE_URL}/v2/search?pa=${searchData.pa}&tecarea=${searchData.tecarea}&doc_num=${searchData.doc_num}&pdfrom=${searchData.pdfrom}&pdto=${searchData.pdto}`, {
                 method: 'GET',
@@ -50,6 +51,7 @@ const searchSlice = createSlice({
         [getSearch.fulfilled]: (state, action) => {
             state.error = null;
             const data = action.payload;
+            console.log('redux data: ', data)
             // Aggiungo index ad ogni elemento
             const numberedData = data.map((element, index) => {
                 return {...element, index: index}

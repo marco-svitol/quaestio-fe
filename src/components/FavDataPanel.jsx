@@ -4,7 +4,6 @@ import FavPageSelect from "./FavPageSelect.jsx";
 import DetailsModal from "./DetailsModal.jsx";
 import DataCard from "./DataCard.jsx";
 import { setFavPage } from "../redux/favouritesSlice";
-import { getFavourites } from "../redux/favouritesSlice";
 import PageBlock from "./PageBlock.jsx";
 
 const FavDataPanel = () => {

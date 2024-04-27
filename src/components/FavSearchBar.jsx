@@ -3,9 +3,10 @@ import { DisabledButton, MiniSecondaryButton, PrimaryButton } from './Buttons.js
 import { useDispatch, useSelector } from "react-redux";
 import { getFavourites } from "../redux/favouritesSlice.js";
 import PageBlock from "./PageBlock.jsx";
+import { setFavLastCall } from "../redux/favLastCallSlice.js";
 
 const FavSearchBar = () => {
-    const { fetchStatus } = useSelector((state) => state.search);
+    const { favFetchStatus } = useSelector((state) => state.favourites);
 
     // Handle input data
     const token = useSelector(state => state.login.token);
@@ -15,6 +16,9 @@ const FavSearchBar = () => {
         pdfrom: '', //YYYYMMDD
         pdto: ''
     })
+
+    // Check di favLastCall. Se è true rieffettua la chiamata.
+    // I dati dell'ultima call sono già memorizzati in Redux (si memorizzano ad ogni chiamata)
 
     const handleInputData = (event) => {
         const { id, value } = event.target;
@@ -74,6 +78,7 @@ const FavSearchBar = () => {
     // GET SEARCH FETCH
     const dispatch = useDispatch();
     const getReduxFavourites = () => {
+        dispatch(setFavLastCall(inputData))
         dispatch(getFavourites({ favouritesData: inputData, token: token }))
     }
 
@@ -97,7 +102,7 @@ const FavSearchBar = () => {
             <input type="text" id="doc_num" onChange={handleInputData} />
 
             {
-                fetchStatus === 'pending' ? (
+                favFetchStatus === 'pending' ? (
                     <div className="custom-loader my-4"></div>
                 ) : (
                     (

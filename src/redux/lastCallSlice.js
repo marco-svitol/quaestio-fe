@@ -1,7 +1,7 @@
 import { createSlice } from '@reduxjs/toolkit'
 
-// Questo slice gestisce il ritorno in homepage, memorizzando i parametri dell'ultima chiamata,
-// reimpostandoli in SearchBar e, se richiesto, rieffettuando la chiamata
+// Questo slice, gestito dalla SearchBar, memorizza i parametri dell'ultima chiamata, permettendo di averli a disposizione nel ritorno in homepage
+// ad ogni ritorno in hompage, se needLastCall è true, la SearchBar rieffettua la chiamata.
 const lastCallSlice = createSlice({
     name: 'lastCall',
     initialState: {
@@ -14,7 +14,6 @@ const lastCallSlice = createSlice({
     },
     reducers: {
         setLastCall: (state, action) => {
-            console.log('action.payload: ', action.payload)
             state.pa = action.payload.pa;
             state.tecarea = action.payload.tecarea;
             state.doc_num = action.payload.doc_num;
@@ -30,5 +29,5 @@ const lastCallSlice = createSlice({
     }
 })
 
-export const { setLastCall, setStoredPage, setNeedTrue, setNeedFalse } = lastCallSlice.actions;
+export const { setLastCall, setNeedTrue, setNeedFalse } = lastCallSlice.actions;
 export default lastCallSlice.reducer;

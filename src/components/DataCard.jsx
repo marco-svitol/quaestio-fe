@@ -50,7 +50,7 @@ const DataCard = ({ panel, data, token, isEven, click }) => {
                 const result = await response.json();
                 console.log(result)
                 dispatch(setNeedTrue());
-                setFavouriteFetchStatus('idle');
+                // Non viene impostato 'idle' nello stato, esso verrà impostato dopo la chiamata di aggiornamento
             } else {
                 const resultError = await response.json();
                 setFavouriteError(resultError);
@@ -63,12 +63,15 @@ const DataCard = ({ panel, data, token, isEven, click }) => {
             setFavouriteFetchStatus('error');
         }
     }
-    useEffect(() => {
-        console.log('fetchStatus: ', favouriteFetchStatus)
-    }, [favouriteFetchStatus])
 
     // Gestisco apertura e chiusura Note per ogni card
     const [isNoteVisible, setIsNoteVisible] = useState(false);
+
+    // Risetto lo status 'idle' dopo la chiamata di aggiornamento
+    useEffect(() => {
+        setFavouriteFetchStatus('idle')
+    }, [data])
+
 
     return (
         <div className={`flex flex-col md:flex-col xl:flex-row text-[8pt] border ${isEven ? 'bg-stone-50 border-red-50' : 'bg-stone-100 border-red-100'} hover:border-red-800 w-full p-4 gap-4 rounded-3xl relative`}>
