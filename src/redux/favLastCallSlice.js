@@ -3,7 +3,7 @@ import { createSlice } from "@reduxjs/toolkit";
 const favLastCallSlice = createSlice({
     name: 'favLastCall',
     initialState: {
-        needFavLastCall: false,
+        favNeedLastCall: false,
         doc_num: '',
         pdfrom: '',
         pdto: ''
@@ -11,14 +11,14 @@ const favLastCallSlice = createSlice({
     reducers: {
         setFavLastCall:(state, action) => {
             state.doc_num = action.payload.doc_num;
-            state.pdfrom = action.payload.pdfrmo;
+            state.pdfrom = action.payload.pdfrom;
             state.pdto = action.payload.pdto;
         },
         setFavNeedTrue: state => {
-            state.needFavLastCall = true;
+            state.favNeedLastCall = true;
         },
         setFavNeedFalse: state => {
-            state.needFavLastCall = false;
+            state.favNeedLastCall = false;
         }
     }
 })
