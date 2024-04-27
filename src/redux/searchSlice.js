@@ -51,13 +51,9 @@ const searchSlice = createSlice({
         [getSearch.fulfilled]: (state, action) => {
             state.error = null;
             const data = action.payload;
-            console.log('redux data: ', data)
-            // Aggiungo index ad ogni elemento
-            const numberedData = data.map((element, index) => {
-                return {...element, index: index}
-            })
+            console.log('redux data: ', data);
             // Impagino
-            const pagedData = dataPagination(numberedData, state.pageSize)
+            const pagedData = dataPagination(data, state.pageSize)
             state.pagedData = pagedData;
             state.page = 1;
             state.fetchStatus = 'succeeded';

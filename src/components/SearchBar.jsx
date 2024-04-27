@@ -43,7 +43,8 @@ const SearchBar = () => {
     const token = useSelector(state => state.login.token);
     const { needLastCall, pa, tecarea, doc_num, pdfrom, pdto } = useSelector(state => state.lastCall);
     useEffect(() => {
-            setInputData({ pa, tecarea, doc_num, pdfrom, pdto }); // needLastCall ricompila i campi ugali all'ultima chiamata
+            // ricompilo semplicemente i campi uguali all'ultima chiamata
+            setInputData({ pa, tecarea, doc_num, pdfrom, pdto });
         if (needLastCall && token) { // getLastSearch fa effettuare l'ultima chiamata
             dispatch(getSearch({ searchData: { pa, tecarea, doc_num, pdfrom, pdto }, token: token }));
             dispatch(setNeedFalse());
