@@ -152,9 +152,6 @@ const SettingsPage = () => {
     const sendFetch = async () => {
         let oldpassword = encodeURIComponent(passwordInput.oldPassword);
         let newpassword = encodeURIComponent(passwordInput.password1);
-        console.log('oldpassword: ', oldpassword);
-        console.log('newpassword: ', newpassword);
-        console.log('token: ', token);
         try {
             setPasswordFetchStatus('loading');;
             const response = await fetch(`${process.env.REACT_APP_SERVER_BASE_URL}/v2/changepassword?oldpassword=${oldpassword}&newpassword=${newpassword}`, {

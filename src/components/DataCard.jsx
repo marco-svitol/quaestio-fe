@@ -74,33 +74,34 @@ const DataCard = ({ panel, data, token, isEven, click }) => {
 
 
     return (
-        <div className={`flex flex-col md:flex-col xl:flex-row text-[8pt] border ${isEven ? 'bg-stone-50 border-red-50' : 'bg-stone-100 border-red-100'} hover:border-red-800 w-full p-4 gap-4 rounded-3xl relative`}>
-
+        <div className={`flex flex-col md:flex-col xl:flex-row text-[8pt] border ${isEven ? 'bg-stone-50 border-red-50' : 'bg-stone-100 border-red-100'} hover:border-red-800 w-full xl:w-fit px-4 py-2 gap-4 rounded-3xl relative`}>
             {/* Numero documento */}
-            <div className="w-full sm:w-[200px]">
+            <div className="w-full sm:w-[200px] xl:w-[160px]">
                 {/* <h6>{index}</h6> */}
-                <h4 className="text-xs md:text-left text-stone-400">Numero</h4>
+                {/* <h4 className="text-xs md:text-left text-stone-400">Numero</h4> */}
                 <div className="border rounded-lg border-stone-300 p-2 h-11 flex gap-2 items-center">
                     <i className="fi fi-rr-file-circle-info text-red-800 text-lg cursor-pointer" onClick={clickAndReturnState}></i> {data.doc_num}
                 </div>
             </div>
 
+            {/* Titolo documento */}
+            <div className="w-full xl:w-[300px] 2xl:w-[500px]">
+                {/* <h4 className="text-xs text-center md:text-left lg:text-center xl:text-left ml-2 text-stone-400">Titolo</h4> */}
+                <div className="border rounded-lg border-stone-300 p-2 text-center md:text-left lg:text-center xl:text-left h-11 overflow-hidden flex items-start">{data.invention_title}</div>
+            </div>
+
             {/* Other data */}
-            <div className="w-full flex xs-custom sm:flex-row justify-between gap-4">
-                <div className="w-full sm:w-[300px] md:w-[500px] lg:w-[250px] xl:w-[300px] 2xl:w-[500px]">
-                    <h4 className="text-xs text-center md:text-left lg:text-center xl:text-left ml-2 text-stone-400">Titolo</h4>
-                    <div className="border rounded-lg border-stone-300 p-2 text-center md:text-left lg:text-center xl:text-left h-11 overflow-hidden flex items-start">{data.invention_title}</div>
+            <div className="flex xs-custom sm:flex-row justify-start xl:justify-end gap-1 xl:w-[240px]">
+                <div>
+                    {/* <h4 className="text-xs md:text-left text-stone-400">Data</h4> */}
+                    {data.date && <div className="border rounded-lg border-stone-300 p-2 h-11 flex items-center w-[95px]">{formattedDate}</div>}
                 </div>
                 <div>
-                    <h4 className="text-xs md:text-left text-stone-400">Data</h4>
-                    {data.date && <div className="border rounded-lg border-stone-300 p-2 h-11 flex items-center">{formattedDate}</div>}
+                    {/* <h4 className="text-xs md:text-left text-stone-400">Stato</h4> */}
+                    <div className="border rounded-lg border-stone-300 p-2 h-11 flex justify-center items-center w-[50px]">{readHistory}</div>
                 </div>
                 <div>
-                    <h4 className="text-xs md:text-left text-stone-400">Stato</h4>
-                    <div className="border rounded-lg border-stone-300 p-2 h-11 flex items-center">{readHistory}</div>
-                </div>
-                <div>
-                    <h4 className="text-xs md:text-left text-stone-400">Preferiti</h4>
+                    {/* <h4 className="text-xs md:text-left text-stone-400">Preferiti</h4> */}
                     <div className="flex justify-center items-center h-11 cursor-pointer" onClick={setOrRemoveFavourite}>
                         {favouriteFetchStatus === 'idle' && !data.bookmark && <i className="fi fi-rr-star text-red-800 text-lg rounded-lg p-2"></i>}
                         {favouriteFetchStatus === 'idle' && data.bookmark && <i className="fi fi-sr-star text-red-800 text-lg rounded-lg p-2"></i>}
@@ -108,7 +109,7 @@ const DataCard = ({ panel, data, token, isEven, click }) => {
                     </div>
                 </div>
                 <div>
-                    <h4 className="text-xs md:text-left text-stone-400">Note</h4>
+                    {/* <h4 className="text-xs md:text-left text-stone-400">Note</h4> */}
                     <div className="flex justify-center items-center h-11 cursor-pointer" onClick={() => setIsNoteVisible(true)}>
                         {data.notes === "" && <i className="fi fi-rr-note-sticky text-red-800 text-lg rounded-lg p-2"></i>}
                         {data.notes !== "" && <i className="fi fi-sr-note-sticky text-red-800 text-lg rounded-lg p-2"></i>}
