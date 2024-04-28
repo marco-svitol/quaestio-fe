@@ -6,6 +6,7 @@ import { MiniPrimaryButton, PrimaryButton } from "../components/Buttons";
 import { useNavigate } from 'react-router-dom';
 import { setPageSize } from "../redux/searchSlice";
 import { setNeedTrue } from "../redux/lastCallSlice";
+import MiniLoader from '../components/MiniLoader';
 
 const SettingsPage = () => {
     const dispatch = useDispatch();
@@ -40,17 +41,21 @@ const SettingsPage = () => {
             setIsPageSizeEmpty(true);
         }
         dispatch(setSection(0));
-        dispatch(setNeedTrue);
         navigate("/");
     }
 
+    //
+    //
+
     // Gestione input nuova password
     const [passwordInput, setPasswordInput] = useState({
+        oldPassword: '',
         password1: '',
         password2: ''
     })
     const handleInputPasswords = (event) => {
         const { id, value } = event.target
+        console.log('id: ', id)
         setPasswordInput(prevData => ({
             ...prevData,
             [id]: value
@@ -63,10 +68,16 @@ const SettingsPage = () => {
     // Eseguo i controlli al click del button prima di chiamare la funzione di fetch
     const [passwordError, setPasswordError] = useState({
         isError: false,
+        isChecksDone: false,
         errorMessage: []
     })
     const checkPasswordMatch = () => {
         // Check password match
+        setPasswordError({
+            isError: false,
+            isChecksDone: false,
+            errorMessage: []
+        });
         if (passwordInput.password1 !== passwordInput.password2) {
             setPasswordError(prevState => ({
                 isError: true,
@@ -79,14 +90,42 @@ const SettingsPage = () => {
                     isError: true,
                     errorMessage: [...prevState.errorMessage, 'La password deve avere almeno 8 caratteri']
                 }))
-                // Inserisci gli altri controlli
-            } else {
-                console.log('FETCH!')
-            }
+            };
+            if (!checkLower(passwordInput.password1)) {
+                setPasswordError(prevState => ({
+                    isError: true,
+                    errorMessage: [...prevState.errorMessage, 'Devi inserire almeno una lettera minuscola']
+                }))
+            };
+            if (!checkUpper(passwordInput.password1)) {
+                setPasswordError(prevState => ({
+                    isError: true,
+                    errorMessage: [...prevState.errorMessage, 'Devi inserire almeno una lettera maiuscola']
+                }))
+            };
+            if (!checkSpecial(passwordInput.password1)) {
+                setPasswordError(prevState => ({
+                    isError: true,
+                    errorMessage: [...prevState.errorMessage, 'Devi inserire almeno un carattere speciale']
+                }))
+            };
+            if (!checkNumber(passwordInput.password1)) {
+                setPasswordError(prevState => ({
+                    isError: true,
+                    errorMessage: [...prevState.errorMessage, 'Devi inserire almeno un numero']
+                }))
+            };
+            setPasswordError(prevState => ({
+                ...prevState,
+                isChecksDone: true
+            }))
         }
     }
     useEffect(() => {
         console.log('passwordError: ', passwordError)
+        if (passwordError.isChecksDone && !passwordError.isError) {
+            sendFetch();
+        }
     }, [passwordError])
 
     // Funzioni di controllo strength password
@@ -106,6 +145,52 @@ const SettingsPage = () => {
         return string.length >= 8;
     }
 
+    // Gestisco l'invio dei dati
+    const { token } = useSelector(state => state.login);
+    const [passwordFetchStatus, setPasswordFetchStatus] = useState('idle');
+    const [passwordFetchError, setPasswordFetchError] = useState(null);
+    const sendFetch = async () => {
+        let oldpassword = encodeURIComponent(passwordInput.oldPassword);
+        let newpassword = encodeURIComponent(passwordInput.password1);
+        console.log('oldpassword: ', oldpassword);
+        console.log('newpassword: ', newpassword);
+        console.log('token: ', token);
+        try {
+            setPasswordFetchStatus('loading');;
+            const response = await fetch(`${process.env.REACT_APP_SERVER_BASE_URL}/v2/changepassword?oldpassword=${oldpassword}&newpassword=${newpassword}`, {
+                method: 'PATCH',
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                    'Content-Type': 'application/json'
+                }
+            });
+            if (response.ok) {
+                const result = await response.json();
+                setPasswordFetchStatus('succeeded');
+                dispatch(setSection(0));
+                navigate("/");
+            } else {
+                const error = await response.json();
+                setPasswordFetchStatus('failed');
+                setPasswordFetchError(error);
+                console.log('Fetch error: ', error)
+                resetPasswordInput();
+            }
+        } catch (error) {
+            setPasswordFetchStatus('failed');
+            setPasswordFetchError(error);
+            console.log('Catch error: ', error)
+            resetPasswordInput();
+        }
+    }
+
+    function resetPasswordInput() {
+        setPasswordError({
+            isError: false,
+            isChecksDone: false,
+            errorMessage: []
+        })
+    }
 
     return (
         <div className="main-container settings">
@@ -125,8 +210,8 @@ const SettingsPage = () => {
                     <label>Modifica password:</label>
                     <div className="flex flex-col lg:flex-row items-center gap-2 border p-4">
                         <div className="flex flex-col items-start">
-                            <label htmlFor="oldpassword">Vecchia password</label>
-                            <input type="password" id="oldPassword" />
+                            <label htmlFor="oldPassword">Vecchia password</label>
+                            <input type="password" id="oldPassword" onChange={handleInputPasswords} value={passwordInput.oldPassword} />
                         </div>
                         <div className="flex flex-col items-start">
                             <label htmlFor="password1">Nuova password</label>
@@ -136,12 +221,16 @@ const SettingsPage = () => {
                             <label htmlFor="password2">Ripeti nuova password</label>
                             <input type="password" id="password2" onChange={handleInputPasswords} value={passwordInput.password2} />
                         </div>
+
                         {
-                            !passwordError.isError &&
+                            passwordFetchStatus === 'idle' &&
                             <div className="flex flex-col items-start self-end mb-[-8px] ml-4">
                                 <MiniPrimaryButton text="Salva nuova password" click={checkPasswordMatch} />
                             </div>
                         }
+                        {passwordFetchStatus === 'loading' && <MiniLoader />}
+                        {passwordFetchStatus === 'failed' && <div>Qualcosa è andato storto, ricarica la pagina e riprova.</div>}
+
                         {
                             passwordError.isError &&
                             <div className="ml-4 flex flex-col items-start text-xs self-end">
