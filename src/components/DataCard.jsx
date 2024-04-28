@@ -5,6 +5,7 @@ import { updateFavourite } from "../redux/favouritesSlice";
 import NoteModal from "./notes/NoteModal";
 import { setNeedTrue } from "../redux/lastCallSlice";
 import MiniLoader from "./MiniLoader";
+import FavouriteModal from "./FavouriteModal";
 
 const DataCard = ({ panel, data, token, isEven, click }) => {
     const [formattedDate, setFormattedDate] = useState(null);
@@ -28,6 +29,13 @@ const DataCard = ({ panel, data, token, isEven, click }) => {
         setReadHistory(data.read_history)
     }, [data.read_history])
 
+    //
+
+    // Gestisco l'apertura della modale di favourite
+    const [isFavModal, setIsFavModal] = useState(false);
+    const handleShowFavModal = () => {
+        setIsFavModal(true)
+    }
     // favourite fetch
     const [favouriteFetchStatus, setFavouriteFetchStatus] = useState('idle');
     const [favouriteError, setFavouriteError] = useState(null)
@@ -102,7 +110,7 @@ const DataCard = ({ panel, data, token, isEven, click }) => {
                 </div>
                 <div>
                     <h4 className="block xl:hidden text-xs md:text-left text-stone-400">Preferiti</h4>
-                    <div className="flex justify-center items-center h-11 cursor-pointer w-[34px]" onClick={setOrRemoveFavourite}>
+                    <div className="flex justify-center items-center h-11 cursor-pointer w-[34px]" onClick={handleShowFavModal}>
                         {favouriteFetchStatus === 'idle' && !data.bookmark && <i className="fi fi-rr-star text-red-800 text-lg rounded-lg p-2"></i>}
                         {favouriteFetchStatus === 'idle' && data.bookmark && <i className="fi fi-sr-star text-red-800 text-lg rounded-lg p-2"></i>}
                         {favouriteFetchStatus === 'loading' && <MiniLoader />}
@@ -115,6 +123,7 @@ const DataCard = ({ panel, data, token, isEven, click }) => {
                         {data.notes !== "" && <i className="fi fi-sr-note-sticky text-red-800 text-lg rounded-lg p-2"></i>}
                     </div>
                 </div>
+                {isFavModal && <FavouriteModal close={setIsFavModal} isBookmark={data.bookmark} />}
                 {isNoteVisible && <NoteModal close={setIsNoteVisible} docNum={data.doc_num} note={data.notes} />}
             </div>
         </div>
