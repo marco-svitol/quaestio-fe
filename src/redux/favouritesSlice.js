@@ -1,6 +1,6 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import { dataPagination } from "./paginationFunction";
-import ConsoleLog from "../components/ConsoleLog";
+import { sortArray } from "./paginationFunction";
 
 export const getFavourites = createAsyncThunk(
     'favourites/favSearch',
@@ -38,6 +38,14 @@ const favouritesSlice = createSlice({
     reducers: {
         setFavPage: (state, action) => {
             state.favPage = action.payload;
+        },
+        sortFavourites: (state, action) => {
+            const flatData = state.favPagedData.flat();
+            const sortedData = sortArray(flatData, action.payload.key, action.payload.reverse);
+            // impagino
+            const favPagedData = dataPagination(sortedData, 8);
+            state.favPagedData = favPagedData;
+            state.page = 1;
         }
     },
     extraReducers: (builder) => {
@@ -46,12 +54,10 @@ const favouritesSlice = createSlice({
                 state.favFetchStatus = 'pending'
             })
             .addCase(getFavourites.fulfilled, (state, action) => {
-                console.log('favourites: ', action.payload)
                 state.favError = null;
                 state.favPagedData = dataPagination(action.payload, 8);
                 state.favPage = 1;
                 state.favFetchStatus = 'succeeded';
-                console.log('favPagedData: ', state.favPagedData);
             })
             .addCase(getFavourites.rejected, (state, action) => {
                 state.error = action.error.message;
@@ -60,5 +66,5 @@ const favouritesSlice = createSlice({
     }
 })
 
-export const { setFavPage, updateFavourite } = favouritesSlice.actions;
+export const { setFavPage, updateFavourite, sortFavourites } = favouritesSlice.actions;
 export default favouritesSlice.reducer;

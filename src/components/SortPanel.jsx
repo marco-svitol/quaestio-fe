@@ -1,8 +1,9 @@
 import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { sortDocuments } from "../redux/searchSlice";
+import { sortFavourites } from "../redux/favouritesSlice";
 
-const SortPanel = () => {
+const SortPanel = ({ isFavourite }) => {
     const [selectedKey, setSelectedKey] = useState({
         key: null,
         reverse: false
@@ -16,8 +17,13 @@ const SortPanel = () => {
     }
     const dispatch = useDispatch();
     useEffect(() => {
-        console.log('selectedKey: ', selectedKey)
-        dispatch(sortDocuments({ key: selectedKey.key, reverse: selectedKey.reverse }))
+        if (selectedKey.key) {
+            if (isFavourite) {
+                dispatch(sortFavourites({ key: selectedKey.key, reverse: selectedKey.reverse }))
+            } else {
+                dispatch(sortDocuments({ key: selectedKey.key, reverse: selectedKey.reverse }))
+            }
+        }
     }, [selectedKey])
     return (
         <div className="flex gap-4 text-xs text-stone-400 font-bold">

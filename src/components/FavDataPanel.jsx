@@ -5,6 +5,7 @@ import DetailsModal from "./DetailsModal.jsx";
 import DataCard from "./DataCard.jsx";
 import { setFavPage } from "../redux/favouritesSlice";
 import PageBlock from "./PageBlock.jsx";
+import SortPanel from "./SortPanel.jsx";
 
 const FavDataPanel = () => {
     const { favPagedData, favError, favPage } = useSelector((state) => state.favourites);
@@ -39,6 +40,8 @@ const FavDataPanel = () => {
                         )
                     }
                         {favPagedData && <FavPageSelect page={favPage} selectPage={handleSelectFavPage} />}
+
+                        {favPagedData && <SortPanel isFavourite /> }
 
                         {
                             favPagedData && Array.isArray(favPagedData[favPage - 1]) && favPagedData[favPage - 1].map((element, index) => {

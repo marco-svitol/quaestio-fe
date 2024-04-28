@@ -34,9 +34,9 @@ const SearchBar = () => {
         }
     }
 
-    useEffect(() => {
+    /* useEffect(() => {
         console.log('inputData: ', inputData)
-    }, [inputData])
+    }, [inputData]) */
 
     // Check di lastCall per vedere se c'è una chiamata in memoria da rilanciare
     // Questo passaggio viene effettuato ad ogni montaggio di SearchBar
