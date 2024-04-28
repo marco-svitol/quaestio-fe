@@ -9,6 +9,7 @@ import PageBlock from './PageBlock'
 import { Link } from "react-router-dom";
 import { setStoredPage } from "../redux/lastCallSlice";
 import NoteModal from "./notes/NoteModal";
+import SortPanel from "./SortPanel";
 
 const DataPanel = () => {
     const { pagedData, error, page, fetchStatus } = useSelector((state) => state.search);
@@ -44,6 +45,9 @@ const DataPanel = () => {
                         {pagedData && !pagedData[0][0].userinfo && <PageSelect page={page} selectPage={HandleSelectPage} />}
 
                         {pagedData && <Link to="/settings"><div className="border rounded border-red-400 py-1 px-2">Elementi per pagina: <span className="font-bold text-red-800">{pageSize}</span></div></Link>}
+
+                        {/* Sort Panel */}
+                        {pagedData && <SortPanel />}
 
                         {
                             pagedData && Array.isArray(pagedData[page - 1]) && pagedData[page - 1].map((element, index) => {

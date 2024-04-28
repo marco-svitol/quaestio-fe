@@ -78,7 +78,7 @@ const DataCard = ({ panel, data, token, isEven, click }) => {
             {/* Numero documento */}
             <div className="w-full sm:w-[200px] xl:w-[160px]">
                 {/* <h6>{index}</h6> */}
-                {/* <h4 className="text-xs md:text-left text-stone-400">Numero</h4> */}
+                <h4 className="block xl:hidden text-xs md:text-left text-stone-400">Numero</h4>
                 <div className="border rounded-lg border-stone-300 p-2 h-11 flex gap-2 items-center">
                     <i className="fi fi-rr-file-circle-info text-red-800 text-lg cursor-pointer" onClick={clickAndReturnState}></i> {data.doc_num}
                 </div>
@@ -86,31 +86,31 @@ const DataCard = ({ panel, data, token, isEven, click }) => {
 
             {/* Titolo documento */}
             <div className="w-full xl:w-[300px] 2xl:w-[500px]">
-                {/* <h4 className="text-xs text-center md:text-left lg:text-center xl:text-left ml-2 text-stone-400">Titolo</h4> */}
+                <h4 className="block xl:hidden text-xs text-center md:text-left lg:text-center ml-2 text-stone-400">Titolo</h4>
                 <div className="border rounded-lg border-stone-300 p-2 text-center md:text-left lg:text-center xl:text-left h-11 overflow-hidden flex items-start">{data.invention_title}</div>
             </div>
 
             {/* Other data */}
-            <div className="flex xs-custom sm:flex-row justify-start xl:justify-end gap-1 xl:w-[240px]">
+            <div className="flex xs-custom sm:flex-row justify-start xl:justify-end gap-1 w-full xl:w-[240px]">
                 <div>
-                    {/* <h4 className="text-xs md:text-left text-stone-400">Data</h4> */}
+                    <h4 className="block xl:hidden text-xs md:text-left text-stone-400">Data</h4>
                     {data.date && <div className="border rounded-lg border-stone-300 p-2 h-11 flex items-center w-[95px]">{formattedDate}</div>}
                 </div>
                 <div>
-                    {/* <h4 className="text-xs md:text-left text-stone-400">Stato</h4> */}
+                    <h4 className="block xl:hidden text-xs md:text-left text-stone-400">Stato</h4>
                     <div className="border rounded-lg border-stone-300 p-2 h-11 flex justify-center items-center w-[50px]">{readHistory}</div>
                 </div>
                 <div>
-                    {/* <h4 className="text-xs md:text-left text-stone-400">Preferiti</h4> */}
-                    <div className="flex justify-center items-center h-11 cursor-pointer" onClick={setOrRemoveFavourite}>
+                    <h4 className="block xl:hidden text-xs md:text-left text-stone-400">Preferiti</h4>
+                    <div className="flex justify-center items-center h-11 cursor-pointer w-[34px]" onClick={setOrRemoveFavourite}>
                         {favouriteFetchStatus === 'idle' && !data.bookmark && <i className="fi fi-rr-star text-red-800 text-lg rounded-lg p-2"></i>}
                         {favouriteFetchStatus === 'idle' && data.bookmark && <i className="fi fi-sr-star text-red-800 text-lg rounded-lg p-2"></i>}
                         {favouriteFetchStatus === 'loading' && <MiniLoader />}
                     </div>
                 </div>
                 <div>
-                    {/* <h4 className="text-xs md:text-left text-stone-400">Note</h4> */}
-                    <div className="flex justify-center items-center h-11 cursor-pointer" onClick={() => setIsNoteVisible(true)}>
+                    <h4 className="block xl:hidden text-xs md:text-left text-stone-400">Note</h4>
+                    <div className="flex justify-center items-center h-11 cursor-pointer w-[34px]" onClick={() => setIsNoteVisible(true)}>
                         {data.notes === "" && <i className="fi fi-rr-note-sticky text-red-800 text-lg rounded-lg p-2"></i>}
                         {data.notes !== "" && <i className="fi fi-sr-note-sticky text-red-800 text-lg rounded-lg p-2"></i>}
                     </div>

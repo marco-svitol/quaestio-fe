@@ -1,5 +1,5 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import { dataPagination } from "./paginationFunction";
+import { dataPagination, sortArray } from "./paginationFunction";
 
 export const getSearch = createAsyncThunk(
     'data/search',
@@ -42,6 +42,14 @@ const searchSlice = createSlice({
         },
         setPage: (state, action) => {
             state.page = action.payload;
+        },
+        sortDocuments: (state, action) => {
+            const flatData = state.pagedData.flat();
+            const sortedData = sortArray(flatData, action.payload.key, action.payload.reverse);
+            // impagino
+            const pagedData = dataPagination(sortedData, state.pageSize);
+            state.pagedData = pagedData;
+            state.page = 1;
         }
     },
     extraReducers: {
@@ -65,5 +73,5 @@ const searchSlice = createSlice({
     }
 })
 
-export const { setPageSize, setPage, updateFavouriteElement } = searchSlice.actions;
+export const { setPageSize, setPage, updateFavouriteElement, sortDocuments } = searchSlice.actions;
 export default searchSlice.reducer;
