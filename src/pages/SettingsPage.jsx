@@ -79,6 +79,7 @@ const SettingsPage = () => {
                     isError: true,
                     errorMessage: [...prevState.errorMessage, 'La password deve avere almeno 8 caratteri']
                 }))
+                // Inserisci gli altri controlli
             } else {
                 console.log('FETCH!')
             }
