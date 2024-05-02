@@ -44,6 +44,11 @@ const FavouriteSettingModal = ({ close, categoryId, setFavouriteFetch }) => {
         close(false);
     }
 
+    const removeFavourite = () => {
+        setFavouriteFetch();
+        close(false);
+    }
+
     return (
         <div className="absolute right-[-20px] top-[-20px] shadow-2xl rounded-xl border bg-white z-10 flex flex-col items-start gap-4 p-4 text-[12pt] min-w-[500px]">
             <i className="fi fi-sr-circle-xmark cursor-pointer text-xl text-red-800 absolute top-3 right-3" onClick={() => close(false)}></i>
@@ -72,7 +77,7 @@ const FavouriteSettingModal = ({ close, categoryId, setFavouriteFetch }) => {
                         <MiniPrimaryButton text={`Sposta preferito in '${selectedCategory.name}'`} click={sendData}/>
             
                     {/* Elimina dai preferiti */}
-                    <MiniSecondaryButton text={`Elimina dai preferiti`} />
+                    <MiniSecondaryButton text={`Elimina dai preferiti`} click={removeFavourite}/>
 
                 </div>
             }

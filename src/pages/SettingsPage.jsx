@@ -7,6 +7,7 @@ import { useNavigate } from 'react-router-dom';
 import { setPageSize } from "../redux/searchSlice";
 import { setNeedTrue } from "../redux/lastCallSlice";
 import MiniLoader from '../components/MiniLoader';
+import { getUserProfile } from '../redux/userProfileSlice.js'
 
 const SettingsPage = () => {
     const dispatch = useDispatch();
@@ -122,7 +123,6 @@ const SettingsPage = () => {
         }
     }
     useEffect(() => {
-        console.log('passwordError: ', passwordError)
         if (passwordError.isChecksDone && !passwordError.isError) {
             sendFetch();
         }
@@ -163,9 +163,6 @@ const SettingsPage = () => {
             });
             if (response.ok) {
                 // questa parte funziona, sistema la gestione di result e del messaggio a video
-                console.log('here 1');
-                console.log('response: ', response);
-                console.log('response.status: ', response.status)
                 const result = await response.json();
                 console.log('result: ', result);
                 setPasswordFetchStatus('succeeded');
@@ -194,6 +191,76 @@ const SettingsPage = () => {
             errorMessage: []
         })
     }
+
+    // Gestisco il rename delle categorie
+    const { bmfolders } = useSelector(state => state.userProfile);
+    const [categoryToEdit, setCategoryToEdit] = useState({
+        id: bmfolders[1].id,
+        name: bmfolders[1].name
+    });
+    const handleSelectCategory = (event) => {
+        const { value } = event.target;
+        const selectedOption = event.target.options[event.target.selectedIndex];
+        const name = selectedOption.getAttribute('data-name');
+        setNewCategoryName('');
+        setCategoryToEdit({
+            id: value,
+            name: name
+        })
+    }
+    useEffect(() => {
+        console.log('categorytoEdit: ', categoryToEdit)
+    }, [categoryToEdit])
+
+    // Gestisco l'input del nuovo nome categoria
+    const [newCategoryName, setNewCategoryName] = useState(null);
+    const handleNameInput = (event) => {
+        const { value } = event.target;
+        setNewCategoryName(value);
+    }
+
+    // Invio i dati per il rename
+    const [categoryRenameFetchStatus, setCategoryRenameFetchStatus] = useState('idle');
+    const [categoryRenameError, setCategoryRenameError] = useState(null)
+    const sendCategoryRename = async () => {
+        setCategoryRenameFetchStatus('loading');
+        console.log('categoryToEdit: ', categoryToEdit);
+        let url;
+        url = `${process.env.REACT_APP_SERVER_BASE_URL}/v2/bmfolder?id=${categoryToEdit.id}&name=${newCategoryName}`;
+        const headers = {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${token}`
+        }
+        const options = {
+            method: 'POST',
+            headers
+        }
+        try {
+
+            const response = await fetch(url, options);
+            if (response.ok) {
+                const result = await response.json();
+                console.log('Fetch done: ', result);
+                setCategoryRenameFetchStatus('succeeded');
+                dispatch(getUserProfile({ token }));
+                setNewCategoryName('');
+                setTimeout(() => {
+                    dispatch(setSection(0));
+                    navigate("/");
+                }, 3000)
+            } else {
+                const error = await response.json();
+                setCategoryRenameError(error);
+                setCategoryRenameFetchStatus('failed');
+                console.log('Fetch error: ', error)
+            }
+        } catch (error) {
+            setCategoryRenameError(error);
+            setCategoryRenameFetchStatus('failed');
+            console.log('Catch error: ', error)
+        }
+    }
+
 
     return (
         <div className="main-container settings">
@@ -246,7 +313,39 @@ const SettingsPage = () => {
 
                     </div>
                 </div>
-                {/* Save settings */}
+
+                {/* Categorie preferiti */}
+                {
+                    bmfolders && bmfolders.length > 1 &&
+                    <div className="flex gap-4 items-center">
+                        <label htmlFor="">Rinomina categorie preferiti</label>
+                        <div className="flex flex-col items-start">
+                            <label htmlFor="">Categoria da rinominare</label>
+                            <select onChange={handleSelectCategory} value={categoryToEdit} >
+                                {
+                                    bmfolders.map((element, index) => {
+                                        if (index > 0) {
+                                            return <option key={index - 1} value={element.id} data-name={element.name}>{element.name}</option>
+                                        }
+                                    })
+                                }
+                            </select>
+                        </div>
+                        <div className="flex flex-col items-start">
+                            <label htmlFor="">Nuovo nome categoria</label>
+                            <input type="text" onChange={handleNameInput} value={newCategoryName} />
+                        </div>
+
+                        <div className="flex flex-col items-start self-end mb-[-8px] ml-4">
+                            {categoryRenameFetchStatus === 'idle' && <MiniPrimaryButton text="Rinomina categoria" click={sendCategoryRename} />}
+                            {categoryRenameFetchStatus === 'loading' && <MiniLoader />}
+                            {categoryRenameFetchStatus === 'succeeded' && <h4>Categoria rinominata con successo, attendi il refresh della pagina.</h4>}
+                            {categoryRenameFetchStatus === 'failed' && <h4>Qualcosa è andato storto. Ricarica la pagina e riprova.</h4>}
+                        </div>
+
+
+                    </div>
+                }
 
             </PageBlock>
         </div>

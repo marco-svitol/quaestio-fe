@@ -41,8 +41,10 @@ const DataCard = ({ data, token, isEven, click }) => {
     const [favouriteError, setFavouriteError] = useState(null)
     const dispatch = useDispatch();
     const setOrChangeOrRemoveFavourite = async (categoryId) => {
+        console.log('categoryId: ', categoryId)
         // la seguente condizione imposta un aggiunta, una edit o una delete
-        let bookmark = data.bookmark === 0 ? categoryId : categoryId || 0;
+        let bookmark = data.bookmark === false ? categoryId : categoryId || 0;
+        console.log('bookmark: ', bookmark);
         try {
             setFavouriteFetchStatus('loading');
             console.log('data.bookmark: ', data.bookmark);
@@ -118,7 +120,7 @@ const DataCard = ({ data, token, isEven, click }) => {
                     <h4 className="block xl:hidden text-xs md:text-left text-stone-400">Preferiti</h4>
                     <div className="flex justify-center items-center h-11 cursor-pointer w-[34px]">
                         {favouriteFetchStatus === 'idle' && !data.bookmark && <i className="fi fi-rr-star text-red-800 text-lg rounded-lg p-2" onClick={sectionNumber === 0 ? setIsFavModal : setIsFavSettingModal}></i>}
-                        {favouriteFetchStatus === 'idle' && data.bookmark && <i className="fi fi-sr-star text-red-800 text-lg rounded-lg p-2" onClick={sectionNumber === 0 ? setOrChangeOrRemoveFavourite : setIsFavSettingModal}></i>}
+                        {favouriteFetchStatus === 'idle' && data.bookmark && <i className="fi fi-sr-star text-red-800 text-lg rounded-lg p-2" onClick={sectionNumber === 0 ? () => setOrChangeOrRemoveFavourite(null) : setIsFavSettingModal}></i>}
                         {favouriteFetchStatus === 'loading' && <MiniLoader />}
                     </div>
                 </div>

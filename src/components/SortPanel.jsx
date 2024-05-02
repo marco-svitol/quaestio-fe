@@ -3,7 +3,7 @@ import { useDispatch } from "react-redux";
 import { sortDocuments } from "../redux/searchSlice";
 import { sortFavourites } from "../redux/favouritesSlice";
 
-const SortPanel = ({ isFavourite }) => {
+const SortPanel = ({ isFavourite, category }) => {
     const [selectedKey, setSelectedKey] = useState({
         key: null,
         reverse: false
@@ -19,9 +19,9 @@ const SortPanel = ({ isFavourite }) => {
     useEffect(() => {
         if (selectedKey.key) {
             if (isFavourite) {
-                dispatch(sortFavourites({ key: selectedKey.key, reverse: selectedKey.reverse }))
+                dispatch(sortFavourites({ key: selectedKey.key, reverse: selectedKey.reverse, category }))
             } else {
-                dispatch(sortDocuments({ key: selectedKey.key, reverse: selectedKey.reverse }))
+                dispatch(sortDocuments({ key: selectedKey.key, reverse: selectedKey.reverse, category }))
             }
         }
     }, [selectedKey])

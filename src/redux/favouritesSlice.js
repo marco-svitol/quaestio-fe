@@ -33,6 +33,7 @@ const favouritesSlice = createSlice({
         favFetchStatus: 'idle',
         favError: null,
         favPagedData: null,
+        favCategorizedPagedData: null,
         favPage: null
     },
     reducers: {
@@ -41,10 +42,21 @@ const favouritesSlice = createSlice({
         },
         sortFavourites: (state, action) => {
             const flatData = state.favPagedData.flat();
+            if (action.payload.category.id) {
+                const categoryFavourites = flatData.filter(element => element.bmfolderid === action.payload);
+            }
             const sortedData = sortArray(flatData, action.payload.key, action.payload.reverse);
             // impagino
             const favPagedData = dataPagination(sortedData, 8);
             state.favPagedData = favPagedData;
+            state.page = 1;
+        },
+        getCategory: (state, action) => {
+            const flatData = state.favPagedData.flat();
+            const categoryFavourites = flatData.filter(element => element.bmfolderid === action.payload);
+            // Impagino
+            const favCategorizedPagedData = dataPagination(categoryFavourites, 8);
+            state.favCategorizedPagedData = favCategorizedPagedData;
             state.page = 1;
         }
     },
@@ -66,5 +78,5 @@ const favouritesSlice = createSlice({
     }
 })
 
-export const { setFavPage, updateFavourite, sortFavourites } = favouritesSlice.actions;
+export const { setFavPage, updateFavourite, sortFavourites, getCategory } = favouritesSlice.actions;
 export default favouritesSlice.reducer;
