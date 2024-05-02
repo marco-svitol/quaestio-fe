@@ -87,7 +87,7 @@ const FavDataPanel = () => {
                         }
                         {favPagedData && <FavPageSelect page={favPage} selectPage={handleSelectFavPage} />}
 
-                        {favPagedData && <SortPanel isFavourite category={category} />}
+                        {favPagedData && <SortPanel isFavourite category={category.id} />}
 
                         {
                             !category.id &&

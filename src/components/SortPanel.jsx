@@ -21,7 +21,7 @@ const SortPanel = ({ isFavourite, category }) => {
             if (isFavourite) {
                 dispatch(sortFavourites({ key: selectedKey.key, reverse: selectedKey.reverse, category }))
             } else {
-                dispatch(sortDocuments({ key: selectedKey.key, reverse: selectedKey.reverse, category }))
+                dispatch(sortDocuments({ key: selectedKey.key, reverse: selectedKey.reverse }))
             }
         }
     }, [selectedKey])

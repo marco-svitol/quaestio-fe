@@ -41,14 +41,22 @@ const favouritesSlice = createSlice({
             state.favPage = action.payload;
         },
         sortFavourites: (state, action) => {
-            const flatData = state.favPagedData.flat();
-            if (action.payload.category.id) {
-                const categoryFavourites = flatData.filter(element => element.bmfolderid === action.payload);
+            let flatData;
+            if (action.payload.category) {
+                console.log('cat')
+                flatData = state.favCategorizedPagedData.flat();
+            } else {
+                console.log('no cat')
+                flatData = state.favPagedData.flat();
             }
             const sortedData = sortArray(flatData, action.payload.key, action.payload.reverse);
             // impagino
             const favPagedData = dataPagination(sortedData, 8);
-            state.favPagedData = favPagedData;
+            if (action.payload.category) {
+                state.favCategorizedPagedData = favPagedData
+            } else {
+                state.favPagedData = favPagedData;
+            }
             state.page = 1;
         },
         getCategory: (state, action) => {
