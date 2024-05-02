@@ -110,7 +110,7 @@ const FavouriteModal = ({ close, isBookmark, setFavouriteFetch }) => {
     // Invio dei dati
     const sendData = () => {
                     setFavouriteFetch(selectedCategory.id)
-                    close();
+                    close(false);
     }
 
     return (

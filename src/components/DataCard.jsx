@@ -7,8 +7,10 @@ import { setNeedTrue } from "../redux/lastCallSlice";
 import { setFavNeedTrue } from '../redux/favLastCallSlice';
 import MiniLoader from "./MiniLoader";
 import FavouriteModal from "./FavouriteModal";
+import FavouriteSettingModal from "./FavouriteSettingModal";
 
-const DataCard = ({ panel, data, token, isEven, click }) => {
+const DataCard = ({ data, token, isEven, click }) => {
+    const { sectionNumber } = useSelector(state => state.section);
     const [formattedDate, setFormattedDate] = useState(null);
     useEffect(() => {
         if (data.date) {
@@ -34,27 +36,19 @@ const DataCard = ({ panel, data, token, isEven, click }) => {
 
     // Gestisco l'apertura della modale di favourite
     const [isFavModal, setIsFavModal] = useState(false);
-    const handleShowFavModal = () => {
-        setIsFavModal(true)
-    }
     // favourite fetch
     const [favouriteFetchStatus, setFavouriteFetchStatus] = useState('idle');
     const [favouriteError, setFavouriteError] = useState(null)
     const dispatch = useDispatch();
-    const setOrRemoveFavourite = async (categoryId) => {
-        console.log('here categoryId: ', categoryId)
-        let bmfolderid;
-        if (categoryId) {
-            bmfolderid = categoryId
-        } else {
-            bmfolderid = 0
-        }
+    const setOrChangeOrRemoveFavourite = async (categoryId) => {
+        // la seguente condizione imposta un aggiunta, una edit o una delete
+        let bookmark = data.bookmark === 0 ? categoryId : categoryId || 0;
         try {
             setFavouriteFetchStatus('loading');
             console.log('data.bookmark: ', data.bookmark);
-            const bookmark = data.bookmark ? 0 : 1;
+            
             console.log('bookmark: ', bookmark)
-            const url = `${process.env.REACT_APP_SERVER_BASE_URL}/v2/bookmark?doc_num=${data.doc_num}&bookmark=${bookmark}&bmfolderid=${bmfolderid}`
+            const url = `${process.env.REACT_APP_SERVER_BASE_URL}/v2/bookmark?doc_num=${data.doc_num}&bookmark=${bookmark}`
             console.log('here url: ', url);
             const response = await fetch(url, {
                 method: 'PATCH',
@@ -90,6 +84,8 @@ const DataCard = ({ panel, data, token, isEven, click }) => {
         setFavouriteFetchStatus('idle')
     }, [data])
 
+    // Gestisco l'apertura della modale di favourite in sezione Preferiti
+    const [isFavSettingModal, setIsFavSettingModal] = useState(false);
 
     return (
         <div className={`flex flex-col md:flex-col xl:flex-row text-[8pt] border ${isEven ? 'bg-stone-50 border-red-50' : 'bg-stone-100 border-red-100'} hover:border-red-800 w-full xl:w-fit px-4 py-2 gap-4 rounded-3xl relative`}>
@@ -121,8 +117,8 @@ const DataCard = ({ panel, data, token, isEven, click }) => {
                 <div>
                     <h4 className="block xl:hidden text-xs md:text-left text-stone-400">Preferiti</h4>
                     <div className="flex justify-center items-center h-11 cursor-pointer w-[34px]">
-                        {favouriteFetchStatus === 'idle' && !data.bookmark && <i className="fi fi-rr-star text-red-800 text-lg rounded-lg p-2" onClick={handleShowFavModal}></i>}
-                        {favouriteFetchStatus === 'idle' && data.bookmark && <i className="fi fi-sr-star text-red-800 text-lg rounded-lg p-2" onClick={setOrRemoveFavourite}></i>}
+                        {favouriteFetchStatus === 'idle' && !data.bookmark && <i className="fi fi-rr-star text-red-800 text-lg rounded-lg p-2" onClick={sectionNumber === 0 ? setIsFavModal : setIsFavSettingModal}></i>}
+                        {favouriteFetchStatus === 'idle' && data.bookmark && <i className="fi fi-sr-star text-red-800 text-lg rounded-lg p-2" onClick={sectionNumber === 0 ? setOrChangeOrRemoveFavourite : setIsFavSettingModal}></i>}
                         {favouriteFetchStatus === 'loading' && <MiniLoader />}
                     </div>
                 </div>
@@ -133,7 +129,8 @@ const DataCard = ({ panel, data, token, isEven, click }) => {
                         {data.notes !== "" && <i className="fi fi-sr-note-sticky text-red-800 text-lg rounded-lg p-2"></i>}
                     </div>
                 </div>
-                {isFavModal && <FavouriteModal close={setIsFavModal} isBookmark={data.bookmark} setFavouriteFetch={setOrRemoveFavourite} />}
+                {isFavModal && <FavouriteModal close={setIsFavModal} isBookmark={data.bookmark} setFavouriteFetch={setOrChangeOrRemoveFavourite} />}
+                {isFavSettingModal && <FavouriteSettingModal close={setIsFavSettingModal} categoryId={data.bmfolderid} setFavouriteFetch={setOrChangeOrRemoveFavourite} />}
                 {isNoteVisible && <NoteModal close={setIsNoteVisible} docNum={data.doc_num} note={data.notes} />}
             </div>
         </div>
