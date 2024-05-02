@@ -3,7 +3,7 @@ import { DisabledButton, MiniSecondaryButton, PrimaryButton } from './Buttons.js
 import { useDispatch, useSelector } from "react-redux";
 import { getFavourites } from "../redux/favouritesSlice.js";
 import PageBlock from "./PageBlock.jsx";
-import { setFavLastCall } from "../redux/favLastCallSlice.js";
+import { setFavLastCall, setFavNeedFalse } from "../redux/favLastCallSlice.js";
 
 const FavSearchBar = () => {
     const { favFetchStatus } = useSelector((state) => state.favourites);
@@ -23,7 +23,10 @@ const FavSearchBar = () => {
     useEffect(() => {
         // Ricompilo i campi uguali all'ultima chiamata
         setInputData({ doc_num, pdfrom, pdto });
-        //
+        if (favNeedLastCall, token) { // Fa effetturare l'ultima chiamata
+            dispatch(getFavourites({ favouritesData: {doc_num, pdfrom, pdto}, token: token}));
+            dispatch(setFavNeedFalse());
+        }
         // Eventuale logica per rieffettuare una chiamata
     }, [favNeedLastCall, token])
 

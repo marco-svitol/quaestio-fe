@@ -23,5 +23,5 @@ const favLastCallSlice = createSlice({
     }
 })
 
-export const {setFavLastCall} = favLastCallSlice.actions;
+export const {setFavLastCall, setFavNeedTrue, setFavNeedFalse} = favLastCallSlice.actions;
 export default favLastCallSlice.reducer;

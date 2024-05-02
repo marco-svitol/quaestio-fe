@@ -145,7 +145,7 @@ const SettingsPage = () => {
         return string.length >= 8;
     }
 
-    // Gestisco l'invio dei dati
+    // Gestisco l'invio dei dati password
     const { token } = useSelector(state => state.login);
     const [passwordFetchStatus, setPasswordFetchStatus] = useState('idle');
     const [passwordFetchError, setPasswordFetchError] = useState(null);
@@ -162,11 +162,17 @@ const SettingsPage = () => {
                 }
             });
             if (response.ok) {
+                // questa parte funziona, sistema la gestione di result e del messaggio a video
+                console.log('here 1');
+                console.log('response: ', response);
+                console.log('response.status: ', response.status)
                 const result = await response.json();
+                console.log('result: ', result);
                 setPasswordFetchStatus('succeeded');
                 dispatch(setSection(0));
                 navigate("/");
             } else {
+                console.log('here 2');
                 const error = await response.json();
                 setPasswordFetchStatus('failed');
                 setPasswordFetchError(error);
@@ -227,6 +233,7 @@ const SettingsPage = () => {
                         }
                         {passwordFetchStatus === 'loading' && <MiniLoader />}
                         {passwordFetchStatus === 'failed' && <div>Qualcosa è andato storto, ricarica la pagina e riprova.</div>}
+                        {passwordFetchStatus === 'succeeded' && <div>Password modificata con successo.</div>}
 
                         {
                             passwordError.isError &&
