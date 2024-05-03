@@ -321,7 +321,7 @@ const SettingsPage = () => {
                         <label htmlFor="">Rinomina categorie preferiti</label>
                         <div className="flex flex-col items-start">
                             <label htmlFor="">Categoria da rinominare</label>
-                            <select onChange={handleSelectCategory} value={categoryToEdit} >
+                            <select onChange={handleSelectCategory} value={categoryToEdit.name} >
                                 {
                                     bmfolders.map((element, index) => {
                                         if (index > 0) {
