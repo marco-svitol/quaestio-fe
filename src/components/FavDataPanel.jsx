@@ -65,7 +65,7 @@ const FavDataPanel = () => {
                     <>
 
                         {/* Seleziona categoria */}
-                        {bmfolders && <div className="flex flex-col gap-2 items-start self-start">
+                        {bmfolders && favPagedData.length > 0 && <div className="flex flex-col gap-2 items-start self-start">
                             <label htmlFor="">Scegli una categoria di preferiti</label>
                             <select onChange={handleCategorySelect} >
                                 <option key={0} value={null}>Tutti</option>
