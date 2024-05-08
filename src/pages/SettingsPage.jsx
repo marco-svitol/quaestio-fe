@@ -10,6 +10,9 @@ import MiniLoader from '../components/MiniLoader';
 import { getUserProfile } from '../redux/userProfileSlice.js'
 
 const SettingsPage = () => {
+
+    // CAMBIO NUMERO ELEMENTI PER PAGINA
+
     const dispatch = useDispatch();
     // Handle pageSizeInput
     const [pageSizeInput, setPageSizeInput] = useState(null)
@@ -48,8 +51,7 @@ const SettingsPage = () => {
         navigate("/");
     }
 
-    //
-    //
+    // // CAMBIO PASSWORD
 
     // Gestione input nuova password
     const [passwordInput, setPasswordInput] = useState({
@@ -217,12 +219,18 @@ const SettingsPage = () => {
         console.log('showPassword: ', showPassword)
     }, [showPassword])
 
+    // // RENAME CATEGORIE
+
     // Gestisco il rename delle categorie
     const { bmfolders } = useSelector(state => state.userProfile);
     const [categoryToEdit, setCategoryToEdit] = useState({
         id: bmfolders[1].id,
         name: bmfolders[1].name
     });
+    // debug
+    useEffect(() => {
+        console.log('categoryToEdit: ', categoryToEdit)
+    }, [categoryToEdit])
     const handleSelectCategory = (event) => {
         const { value } = event.target;
         const selectedOption = event.target.options[event.target.selectedIndex];
@@ -355,12 +363,10 @@ const SettingsPage = () => {
                         <label htmlFor="">Rinomina categorie preferiti</label>
                         <div className="flex flex-col items-start">
                             <label htmlFor="">Categoria da rinominare</label>
-                            <select onChange={handleSelectCategory} value={categoryToEdit.name} >
+                            <select onChange={handleSelectCategory} value={categoryToEdit.id} >
                                 {
                                     bmfolders.map((element, index) => {
-                                        if (index > 0) {
-                                            return <option key={index - 1} value={element.id} data-name={element.name}>{element.name}</option>
-                                        }
+                                            return <option key={index - 1} value={element.id} data-name={element.name} disabled={index === 0 ? true : false}>{element.name}</option>
                                     })
                                 }
                             </select>
