@@ -229,10 +229,6 @@ const SettingsPage = () => {
         id: bmfolders[1].id,
         name: bmfolders[1].name
     });
-    // debug
-    useEffect(() => {
-        console.log('categoryToEdit: ', categoryToEdit)
-    }, [categoryToEdit])
     const handleSelectCategory = (event) => {
         const { value } = event.target;
         const selectedOption = event.target.options[event.target.selectedIndex];
@@ -254,11 +250,18 @@ const SettingsPage = () => {
     // Invio i dati per il rename
     const [categoryRenameFetchStatus, setCategoryRenameFetchStatus] = useState('idle');
     const [categoryRenameError, setCategoryRenameError] = useState(null)
-    const sendCategoryRename = async () => {
+    const endEditCategory = async (isDelete) => {
+        let name;
+        if(isDelete) {
+            name = '';
+        } else {
+            name = newCategoryName
+        }
         setCategoryRenameFetchStatus('loading');
         console.log('categoryToEdit: ', categoryToEdit);
         let url;
-        url = `${process.env.REACT_APP_SERVER_BASE_URL}/v2/bmfolder?id=${categoryToEdit.id}&name=${newCategoryName}`;
+        console.log('name: ', name);
+        url = `${process.env.REACT_APP_SERVER_BASE_URL}/v2/bmfolder?id=${categoryToEdit.id}&name=${name}`;
         const headers = {
             'Content-Type': 'application/json',
             Authorization: `Bearer ${token}`
@@ -273,7 +276,15 @@ const SettingsPage = () => {
             if (response.ok) {
                 const result = await response.json();
                 console.log('Fetch done: ', result);
-                setCategoryRenameFetchStatus('succeeded');
+                if(isDelete) {
+                    setCategoryRenameFetchStatus('succeeded delete');
+                } else {
+                    setCategoryRenameFetchStatus('succeeded rename');
+                }
+                setCategoryToEdit({
+                    id: bmfolders[1].id,
+                    name: bmfolders[1].name
+                })
                 dispatch(getUserProfile({ token }));
                 setNewCategoryName('');
                 setTimeout(() => {
@@ -379,9 +390,11 @@ const SettingsPage = () => {
                         </div>
 
                         <div className="flex flex-col items-start self-end mb-[-8px] ml-4">
-                            {categoryRenameFetchStatus === 'idle' && <MiniPrimaryButton text="Rinomina categoria" click={sendCategoryRename} />}
+                            {categoryRenameFetchStatus === 'idle' && !newCategoryName && <MiniPrimaryButton text="Elimina categoria" click={() => endEditCategory(true)} />}
+                            {categoryRenameFetchStatus === 'idle' && newCategoryName && <MiniPrimaryButton text="Rinomina categoria" click={() => endEditCategory(false)} />}
                             {categoryRenameFetchStatus === 'loading' && <MiniLoader />}
-                            {categoryRenameFetchStatus === 'succeeded' && <h4>Categoria rinominata con successo, attendi il refresh della pagina.</h4>}
+                            {categoryRenameFetchStatus === 'succeeded rename' && <h4>Categoria rinominata con successo, attendi il refresh della pagina.</h4>}
+                            {categoryRenameFetchStatus === 'succeeded delete' && <h4>Categoria eliminata con successo, attendi il refresh della pagina.</h4>}
                             {categoryRenameFetchStatus === 'failed' && <h4>Qualcosa è andato storto. Ricarica la pagina e riprova.</h4>}
                         </div>
 
