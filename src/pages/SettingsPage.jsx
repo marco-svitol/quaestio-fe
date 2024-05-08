@@ -32,12 +32,15 @@ const SettingsPage = () => {
 
     // Set new pageSize settings
     const { pageSize } = useSelector(state => state.search);
+    const { pageData } = useSelector(state => state.search);
     const [isPageSizeEmpty, setIsPageSizeEmpty] = useState(false);
     const navigate = useNavigate();
     const sendPageSizeSettings = () => {
         if (pageSizeInput) {
             dispatch(setPageSize(pageSizeInput));
-            dispatch(setNeedTrue());
+            if (pageData) {
+                dispatch(setNeedTrue());
+            }
         } else {
             setIsPageSizeEmpty(true);
         }
@@ -150,16 +153,20 @@ const SettingsPage = () => {
     const [passwordFetchStatus, setPasswordFetchStatus] = useState('idle');
     const [passwordFetchError, setPasswordFetchError] = useState(null);
     const sendFetch = async () => {
-        let oldpassword = encodeURIComponent(passwordInput.oldPassword);
-        let newpassword = encodeURIComponent(passwordInput.password1);
+
+        let bodyData = {
+            oldpassword: encodeURIComponent(passwordInput.oldPassword),
+            newpassword: encodeURIComponent(passwordInput.password1)
+        }
         try {
             setPasswordFetchStatus('loading');;
-            const response = await fetch(`${process.env.REACT_APP_SERVER_BASE_URL}/v2/changepassword?oldpassword=${oldpassword}&newpassword=${newpassword}`, {
+            const response = await fetch(`${process.env.REACT_APP_SERVER_BASE_URL}/v2/changepassword`, {
                 method: 'PATCH',
                 headers: {
                     Authorization: `Bearer ${token}`,
-                    'Content-Type': 'application/json'
-                }
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(bodyData)
             });
             if (response.ok) {
                 // questa parte funziona, sistema la gestione di result e del messaggio a video
@@ -192,6 +199,24 @@ const SettingsPage = () => {
         })
     }
 
+    // Gestisco icona showPassword
+    const [showPassword, setShowPassword] = useState({
+        isShowOld: false,
+        isShowNew1: false,
+        isShowNew2: false,
+    });
+    const handleShowPassword = (inputId, boo) => {
+        console.log('inputId: ', inputId);
+        console.log('boo: ', boo)
+        setShowPassword(prevState => ({
+            ...prevState,
+            [inputId]: boo
+        }))
+    }
+    useEffect(() => {
+        console.log('showPassword: ', showPassword)
+    }, [showPassword])
+
     // Gestisco il rename delle categorie
     const { bmfolders } = useSelector(state => state.userProfile);
     const [categoryToEdit, setCategoryToEdit] = useState({
@@ -208,9 +233,6 @@ const SettingsPage = () => {
             name: name
         })
     }
-    useEffect(() => {
-        console.log('categorytoEdit: ', categoryToEdit)
-    }, [categoryToEdit])
 
     // Gestisco l'input del nuovo nome categoria
     const [newCategoryName, setNewCategoryName] = useState(null);
@@ -269,55 +291,67 @@ const SettingsPage = () => {
                 <h3>Gestione utente</h3>
 
                 {/* Page size */}
-                <div className="flex items-center gap-2">
+                <div className="flex items-center gap-2 border border-red-800 rounded p-4">
                     <label htmlFor="pageSize">Quantità di elementi per pagina:</label>
                     {pageSize && <input type="number" id="pageSize" placeholder={pageSize} className="w-16" onChange={handlePageSizeInput} />}
                     {pageSizeInput && <div className="ml-4"><MiniPrimaryButton text="Salva elementi per pagina" click={sendPageSizeSettings} /></div>}
                 </div>
 
                 {/* Cambio password */}
-                <div className="flex items-center gap-2">
+                <div className="flex flex-col items-start gap-2 border border-red-800 rounded p-4">
                     <label>Modifica password:</label>
-                    <div className="flex flex-col lg:flex-row items-center gap-2 border p-4">
+                    <div className="flex flex-col lg:flex-row items-center gap-8 border p-4">
                         <div className="flex flex-col items-start">
                             <label htmlFor="oldPassword">Vecchia password</label>
-                            <input type="password" id="oldPassword" onChange={handleInputPasswords} value={passwordInput.oldPassword} />
+                            <div className="flex gap-1 items-center relative">
+                                {!showPassword.isShowOld && <i className="fi fi-rr-eye absolute right-3 top-4 cursor-pointer text-xl text-neutral-400" onClick={() => handleShowPassword('isShowOld', true)}></i>}
+                                {showPassword.isShowOld && <i className="fi fi-rr-eye-crossed absolute right-3 top-4 cursor-pointer text-xl text-neutral-400" onClick={() => handleShowPassword('isShowOld', false)}></i>}
+                                <input type={showPassword.isShowOld ? 'text' : 'password'} className="w-[300px]" id="oldPassword" onChange={handleInputPasswords} value={passwordInput.oldPassword} />
+                            </div>
                         </div>
                         <div className="flex flex-col items-start">
                             <label htmlFor="password1">Nuova password</label>
-                            <input type="password" id="password1" onChange={handleInputPasswords} value={passwordInput.password1} />
+                            <div className="flex gap-1 items-center relative">
+                                {!showPassword.isShowNew1 && <i className="fi fi-rr-eye absolute right-3 top-4 cursor-pointer text-xl text-neutral-400" onClick={() => handleShowPassword('isShowNew1', true)}></i>}
+                                {showPassword.isShowNew1 && <i className="fi fi-rr-eye-crossed absolute right-3 top-4 cursor-pointer text-xl text-neutral-400" onClick={() => handleShowPassword('isShowNew1', false)}></i>}
+                                <input type={showPassword.isShowNew1 ? 'text' : 'password'} id="password1" className="w-[300px]" onChange={handleInputPasswords} value={passwordInput.password1} />
+                            </div>
                         </div>
                         <div className="flex flex-col items-start">
                             <label htmlFor="password2">Ripeti nuova password</label>
-                            <input type="password" id="password2" onChange={handleInputPasswords} value={passwordInput.password2} />
+                            <div className="flex gap-1 items-center relative">
+                                {!showPassword.isShowNew2 && <i className="fi fi-rr-eye absolute right-3 top-4 cursor-pointer text-xl text-neutral-400" onClick={() => handleShowPassword('isShowNew2', true)}></i>}
+                                {showPassword.isShowNew2 && <i className="fi fi-rr-eye-crossed absolute right-3 top-4 cursor-pointer text-xl text-neutral-400" onClick={() => handleShowPassword('isShowNew2', false)}></i>}
+                                <input type={showPassword.isShowNew2 ? 'text' : 'password'} id="password2" className="w-[300px]" onChange={handleInputPasswords} value={passwordInput.password2} />
+                            </div>
                         </div>
 
-                        {
-                            passwordFetchStatus === 'idle' &&
-                            <div className="flex flex-col items-start self-end mb-[-8px] ml-4">
-                                <MiniPrimaryButton text="Salva nuova password" click={checkPasswordMatch} />
-                            </div>
-                        }
-                        {passwordFetchStatus === 'loading' && <MiniLoader />}
-                        {passwordFetchStatus === 'failed' && <div>Qualcosa è andato storto, ricarica la pagina e riprova.</div>}
-                        {passwordFetchStatus === 'succeeded' && <div>Password modificata con successo.</div>}
-
-                        {
-                            passwordError.isError &&
-                            <div className="ml-4 flex flex-col items-start text-xs self-end">
-                                {passwordError.errorMessage.map((element, index) => {
-                                    return <div key={index}>{element}</div>
-                                })}
-                            </div>
-                        }
 
                     </div>
+                    {
+                        passwordFetchStatus === 'idle' &&
+                        <div className="flex flex-col items-start mb-[-8px] ml-4">
+                            <MiniPrimaryButton text="Salva nuova password" click={checkPasswordMatch} />
+                        </div>
+                    }
+                    {passwordFetchStatus === 'loading' && <MiniLoader />}
+                    {passwordFetchStatus === 'failed' && <div>Qualcosa è andato storto, ricarica la pagina e riprova.</div>}
+                    {passwordFetchStatus === 'succeeded' && <div>Password modificata con successo.</div>}
+
+                    {
+                        passwordError.isError &&
+                        <div className="ml-4 flex flex-col items-start text-xs">
+                            {passwordError.errorMessage.map((element, index) => {
+                                return <div key={index}>{element}</div>
+                            })}
+                        </div>
+                    }
                 </div>
 
                 {/* Categorie preferiti */}
                 {
                     bmfolders && bmfolders.length > 1 &&
-                    <div className="flex gap-4 items-center">
+                    <div className="flex gap-4 items-center border border-red-800 rounded p-4">
                         <label htmlFor="">Rinomina categorie preferiti</label>
                         <div className="flex flex-col items-start">
                             <label htmlFor="">Categoria da rinominare</label>
