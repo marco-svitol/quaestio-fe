@@ -75,9 +75,13 @@ const favouritesSlice = createSlice({
             })
             .addCase(getFavourites.fulfilled, (state, action) => {
                 state.favError = null;
-                state.favPagedData = dataPagination(action.payload, 8);
-                state.favPage = 1;
-                state.favFetchStatus = 'succeeded';
+                console.log('action.payload: ', action.payload)
+                console.log('typeof action.payload: ', typeof(action.payload))
+                if(action.payload !== '{}') {
+                    state.favPagedData = dataPagination(action.payload, 8);
+                    state.favPage = 1;
+                }
+                state.favFetchStatus = 'idle';
             })
             .addCase(getFavourites.rejected, (state, action) => {
                 state.error = action.error.message;
