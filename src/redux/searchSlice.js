@@ -3,8 +3,8 @@ import { dataPagination, sortArray } from "./paginationFunction";
 
 export const getSearch = createAsyncThunk(
     'data/search',
-    async ({ searchData, token }) => {
-        console.log('redux searchData: ', searchData)
+    async ({ searchData, token, sort }) => {
+        console.log('redux sort: ', sort)
         try {
             const response = await fetch(`${process.env.REACT_APP_SERVER_BASE_URL}/v2/search?pa=${searchData.pa}&tecarea=${searchData.tecarea}&doc_num=${searchData.doc_num}&pdfrom=${searchData.pdfrom}&pdto=${searchData.pdto}`, {
                 method: 'GET',
@@ -14,7 +14,7 @@ export const getSearch = createAsyncThunk(
             })
             if (response.ok) {
                 const search = await response.json();
-                return search;
+                return { search, sort };
             } else {
                 const loginError = await response.json();
                 console.log('redux loginError: ', loginError);
@@ -43,6 +43,18 @@ const searchSlice = createSlice({
         setPage: (state, action) => {
             state.page = action.payload;
         },
+        repageDataPageSize: (state, action) => {
+            const {newPageSize, sort} = action.payload;
+            if(state.pagedData) {
+                const oldData = [...state.pagedData];
+                const flatData = oldData.flat();
+                // risorto
+                const sortedFlatData = sortArray(flatData, sort.key, sort.reverse)
+                // reimpagino
+                const newPagedFlatData = dataPagination(flatData, newPageSize);
+                state.pagedData = newPagedFlatData;
+            }
+        },
         sortDocuments: (state, action) => {
             const flatData = state.pagedData.flat();
             const sortedData = sortArray(flatData, action.payload.key, action.payload.reverse);
@@ -58,10 +70,15 @@ const searchSlice = createSlice({
         },
         [getSearch.fulfilled]: (state, action) => {
             state.error = null;
-            const data = action.payload;
-            console.log('redux data: ', data);
+            const data = action.payload.search;
+            const sort = action.payload.sort;
+            // Sorto solo se il sortStatus è settato
+            let sortedData = data;
+            if (sort.key) {
+                sortedData = sortArray(data, sort.key, sort.reverse);
+            }
             // Impagino
-            const pagedData = dataPagination(data, state.pageSize)
+            const pagedData = dataPagination(sortedData, state.pageSize)
             state.pagedData = pagedData;
             state.page = 1;
             state.fetchStatus = 'succeeded';
@@ -73,5 +90,5 @@ const searchSlice = createSlice({
     }
 })
 
-export const { setPageSize, setPage, updateFavouriteElement, sortDocuments } = searchSlice.actions;
+export const { setPageSize, setPage, updateFavouriteElement, sortDocuments, repageDataPageSize } = searchSlice.actions;
 export default searchSlice.reducer;

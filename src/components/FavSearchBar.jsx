@@ -20,15 +20,16 @@ const FavSearchBar = () => {
     // Check di favLastCall. Se è true rieffettua la chiamata.
     // I dati dell'ultima call sono già memorizzati in Redux (si memorizzano ad ogni chiamata)
     const { favNeedLastCall, doc_num, pdfrom, pdto } = useSelector(state => state.favLastCall);
+    const sortStatus = useSelector(state => state.sortStatus);
     useEffect(() => {
         // Ricompilo i campi uguali all'ultima chiamata
         setInputData({ doc_num, pdfrom, pdto });
-        if (favNeedLastCall, token) { // Fa effetturare l'ultima chiamata
-            dispatch(getFavourites({ favouritesData: {doc_num, pdfrom, pdto}, token: token}));
+        if (favNeedLastCall && token && sortStatus) { // Fa effetturare l'ultima chiamata
+            dispatch(getFavourites({ favouritesData: { doc_num, pdfrom, pdto }, token: token, sort: sortStatus }));
             dispatch(setFavNeedFalse());
         }
         // Eventuale logica per rieffettuare una chiamata
-    }, [favNeedLastCall, token])
+    }, [favNeedLastCall, token, sortStatus])
 
     const handleInputData = (event) => {
         const { id, value } = event.target;
@@ -89,7 +90,7 @@ const FavSearchBar = () => {
     const dispatch = useDispatch();
     const getReduxFavourites = () => {
         dispatch(setFavLastCall(inputData))
-        dispatch(getFavourites({ favouritesData: inputData, token: token }))
+        dispatch(getFavourites({ favouritesData: inputData, token: token, sort: sortStatus }))
     }
 
     return (

@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import { setSection } from "../redux/sectionSlice";
 import { MiniPrimaryButton, PrimaryButton } from "../components/Buttons";
 import { useNavigate } from 'react-router-dom';
-import { setPageSize } from "../redux/searchSlice";
+import { repageDataPageSize, setPageSize } from "../redux/searchSlice";
 import { setNeedTrue } from "../redux/lastCallSlice";
 import MiniLoader from '../components/MiniLoader';
 import { getUserProfile } from '../redux/userProfileSlice.js'
@@ -35,18 +35,20 @@ const SettingsPage = () => {
 
     // Set new pageSize settings
     const { pageSize } = useSelector(state => state.search);
-    const { pageData } = useSelector(state => state.search);
+    const { pagedData } = useSelector(state => state.search);
+    const sortStatus = useSelector(state => state.sortStatus)
     const [isPageSizeEmpty, setIsPageSizeEmpty] = useState(false);
     const navigate = useNavigate();
     const sendPageSizeSettings = () => {
         if (pageSizeInput) {
             dispatch(setPageSize(pageSizeInput));
-            if (pageData) {
+            /* if (pagedData) {
                 dispatch(setNeedTrue());
-            }
+            } */
         } else {
             setIsPageSizeEmpty(true);
         }
+        dispatch(repageDataPageSize({ newPageSize: pageSizeInput, sort: sortStatus }))
         dispatch(setSection(0));
         navigate("/");
     }
@@ -366,7 +368,7 @@ const SettingsPage = () => {
                             <select onChange={handleSelectCategory} value={categoryToEdit.id} >
                                 {
                                     bmfolders.map((element, index) => {
-                                            return <option key={index - 1} value={element.id} data-name={element.name} disabled={index === 0 ? true : false}>{element.name}</option>
+                                        return <option key={index - 1} value={element.id} data-name={element.name} disabled={index === 0 ? true : false}>{element.name}</option>
                                     })
                                 }
                             </select>

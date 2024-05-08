@@ -4,7 +4,8 @@ import { sortArray } from "./paginationFunction";
 
 export const getFavourites = createAsyncThunk(
     'favourites/favSearch',
-    async ({ favouritesData, token }) => {
+    async ({ favouritesData, token, sort }) => {
+        console.log('sort: ', sort);
         try {
             const response = await fetch(`${process.env.REACT_APP_SERVER_BASE_URL}/v2/searchbookmark?doc_num=${favouritesData.doc_num}&pdfrom=${favouritesData.pdfrom}&pdto=${favouritesData.pdto}`, {
                 method: 'GET',
@@ -14,7 +15,7 @@ export const getFavourites = createAsyncThunk(
             })
             if (response.ok) {
                 const favourites = await response.json();
-                return favourites;
+                return {favourites, sort};
             } else {
                 const favError = await response.json();
                 console.log('Fetch error: ', favError)
@@ -43,10 +44,8 @@ const favouritesSlice = createSlice({
         sortFavourites: (state, action) => {
             let flatData;
             if (action.payload.category) {
-                console.log('cat')
                 flatData = state.favCategorizedPagedData.flat();
             } else {
-                console.log('no cat')
                 flatData = state.favPagedData.flat();
             }
             const sortedData = sortArray(flatData, action.payload.key, action.payload.reverse);
@@ -62,6 +61,7 @@ const favouritesSlice = createSlice({
         getCategory: (state, action) => {
             const flatData = state.favPagedData.flat();
             const categoryFavourites = flatData.filter(element => element.bmfolderid === action.payload);
+
             // Impagino
             const favCategorizedPagedData = dataPagination(categoryFavourites, 8);
             state.favCategorizedPagedData = favCategorizedPagedData;
@@ -75,10 +75,16 @@ const favouritesSlice = createSlice({
             })
             .addCase(getFavourites.fulfilled, (state, action) => {
                 state.favError = null;
-                console.log('action.payload: ', action.payload)
-                console.log('typeof action.payload: ', typeof(action.payload))
-                if(action.payload !== '{}') {
-                    state.favPagedData = dataPagination(action.payload, 8);
+                const favourites = action.payload.favourites;
+                const sort = action.payload.sort;
+                // Sorto solo se il sortStatus è settato
+                let sortedFavourites = favourites;
+                if(sort.key) {
+                    sortedFavourites = sortArray(favourites, sort.key, sort.reverse)
+                }
+                // Impagino
+                if(favourites !== '{}') {
+                    state.favPagedData = dataPagination(sortedFavourites, 8);
                     state.favPage = 1;
                 }
                 state.favFetchStatus = 'idle';

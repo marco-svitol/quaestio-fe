@@ -43,7 +43,8 @@ const Navbar = () => {
     // Memorizzo se è stata effettuata la prima chiamata, in modo da effettuarla solo al primo approdo
     const [isFirstCallDone, setIsFirstCallDone] = useState(false);
 
-    const { sectionNumber } = useSelector(state => state.section)
+    const { sectionNumber } = useSelector(state => state.section);
+    const sortStatus = useSelector(state => state.sortStatus);
     const handleSection = (number) => {
         dispatch(setSection(number))
         if (number === 1 && !isFirstCallDone) {
@@ -52,7 +53,7 @@ const Navbar = () => {
                     doc_num: '',
                     pdfrom: '',
                     pdto: ''
-                }, token: token
+                }, token: token, sort: sortStatus
             }));
             setIsFirstCallDone(true);
         }

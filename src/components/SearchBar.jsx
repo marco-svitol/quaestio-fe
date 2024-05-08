@@ -42,14 +42,15 @@ const SearchBar = () => {
     // Questo passaggio viene effettuato ad ogni montaggio di SearchBar
     const token = useSelector(state => state.login.token);
     const { needLastCall, pa, tecarea, doc_num, pdfrom, pdto } = useSelector(state => state.lastCall);
+    const sortStatus = useSelector(state => state.sortStatus);
     useEffect(() => {
             // ricompilo semplicemente i campi uguali all'ultima chiamata
             setInputData({ pa, tecarea, doc_num, pdfrom, pdto });
-        if (needLastCall && token) { // getLastSearch fa effettuare l'ultima chiamata
-            dispatch(getSearch({ searchData: { pa, tecarea, doc_num, pdfrom, pdto }, token: token }));
+        if (needLastCall && token && sortStatus) { // getLastSearch fa effettuare l'ultima chiamata
+            dispatch(getSearch({ searchData: { pa, tecarea, doc_num, pdfrom, pdto }, token: token, sort: sortStatus }));
             dispatch(setNeedFalse());
         }
-    }, [needLastCall, token])
+    }, [needLastCall, token, sortStatus])
 
     // Preset date 
     const handleLast = (days) => {
@@ -94,7 +95,7 @@ const SearchBar = () => {
     const dispatch = useDispatch();
     const getReduxSearch = () => {
         dispatch(setLastCall(inputData))
-        dispatch(getSearch({ searchData: inputData, token: token }))
+        dispatch(getSearch({ searchData: inputData, token: token, sort: sortStatus }))
     }
 
     return (
