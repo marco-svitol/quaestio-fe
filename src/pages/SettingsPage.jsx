@@ -15,7 +15,8 @@ const SettingsPage = () => {
 
     const dispatch = useDispatch();
     // Handle pageSizeInput
-    const [pageSizeInput, setPageSizeInput] = useState(null)
+    const { pageSize } = useSelector(state => state.search);
+    const [pageSizeInput, setPageSizeInput] = useState(pageSize)
     const handlePageSizeInput = (event) => {
         const { id, value } = event.target;
         let fixedValue;
@@ -34,7 +35,6 @@ const SettingsPage = () => {
     }, [pageSizeInput])
 
     // Set new pageSize settings
-    const { pageSize } = useSelector(state => state.search);
     const { pagedData } = useSelector(state => state.search);
     const sortStatus = useSelector(state => state.sortStatus)
     const [isPageSizeEmpty, setIsPageSizeEmpty] = useState(false);
@@ -314,7 +314,7 @@ const SettingsPage = () => {
                 {/* Page size */}
                 <div className="flex items-center gap-2 border border-red-800 rounded p-4">
                     <label htmlFor="pageSize">Quantità di elementi per pagina:</label>
-                    {pageSize && <input type="number" id="pageSize" placeholder={pageSize} className="w-16" onChange={handlePageSizeInput} />}
+                    {pageSize && <input type="number" id="pageSize" value={pageSizeInput} className="w-16" onChange={handlePageSizeInput} />}
                     {pageSizeInput && <div className="ml-4"><MiniPrimaryButton text="Salva elementi per pagina" click={sendPageSizeSettings} /></div>}
                 </div>
 
