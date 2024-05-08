@@ -13,9 +13,14 @@ const FavSearchBar = () => {
     const searchValues = useSelector((state) => state.userProfile.searchValues);
     const [inputData, setInputData] = useState({
         doc_num: '',
-        pdfrom: '', //YYYYMMDD
+        pdfrom: '',
         pdto: ''
     })
+
+    // debug
+    useEffect(() => {
+        console.log('inputData: ', inputData)
+    }, [inputData])
 
     // Check di favLastCall. Se è true rieffettua la chiamata.
     // I dati dell'ultima call sono già memorizzati in Redux (si memorizzano ad ogni chiamata)
@@ -33,18 +38,10 @@ const FavSearchBar = () => {
 
     const handleInputData = (event) => {
         const { id, value } = event.target;
-        if (id === 'pdfrom' || id === 'pdto') {
-            const dateValue = value.replace(/-/g, '');
-            setInputData(prevInputData => ({
-                ...prevInputData,
-                [id]: dateValue
-            }))
-        } else {
             setInputData(prevInputData => ({
                 ...prevInputData,
                 [id]: value
             }))
-        }
     }
 
     // Preset date 
@@ -64,33 +61,19 @@ const FavSearchBar = () => {
         const year = (date.getFullYear().toString());
         const month = (date.getMonth() + 1).toString().padStart(2, '0');
         const day = (date.getDate()).toString().padStart(2, '0');
-        const formattedDate = year + month + day;
+        const formattedDate = year + "-" + month + "-" + day;
         return formattedDate;
     }
-
-    // Update date input value
-    const [fromValue, setFromValue] = useState(inputData.pdfrom);
-    const [toValue, setToValue] = useState(inputData.pdto);
-    useEffect(() => {
-        const y = (inputData.pdfrom).slice(0, 4);
-        const m = (inputData.pdfrom).slice(4, 6);
-        const d = (inputData.pdfrom).slice(6, 8);
-        const value = `${y}-${m}-${d}`;
-        setFromValue(value);
-    }, [inputData.pdfrom]);
-    useEffect(() => {
-        const y = (inputData.pdto).slice(0, 4);
-        const m = (inputData.pdto).slice(4, 6);
-        const d = (inputData.pdto).slice(6, 8);
-        const value = `${y}-${m}-${d}`;
-        setToValue(value);
-    }, [inputData.pdto]);
 
     // GET SEARCH FETCH
     const dispatch = useDispatch();
     const getReduxFavourites = () => {
-        dispatch(setFavLastCall(inputData))
-        dispatch(getFavourites({ favouritesData: inputData, token: token, sort: sortStatus }))
+        // Il passaggio di formattazione viene effettuato perché il backend riceva la data in formato YYYYMMDD anziché YYYY-MM-DD
+        let formattedInputData = { ...inputData};
+        formattedInputData.pdfrom = formattedInputData.pdfrom.replace(/-/g, '');
+        formattedInputData.pdto = formattedInputData.pdto.replace(/-/g, '');
+        dispatch(setFavLastCall(inputData)) // A last call non passo l'inputData formattato, perché la data in frontend viene gestita in modo canonico
+        dispatch(getFavourites({ favouritesData: formattedInputData, token: token, sort: sortStatus }))
     }
 
     return (
@@ -100,9 +83,9 @@ const FavSearchBar = () => {
             <h3>Ricerca tra i preferiti</h3>
 
             <label htmlFor="data">Da:</label>
-            <input type="date" id="pdfrom" value={fromValue} onChange={handleInputData} />
+            <input type="date" id="pdfrom" value={inputData.pdfrom} onChange={handleInputData} />
             <label htmlFor="data">A:</label>
-            <input type="date" id="pdto" value={toValue} onChange={handleInputData} />
+            <input type="date" id="pdto" value={inputData.pdto} onChange={handleInputData} />
             <div className="flex xs-custom text-sm gap-1">
                 <MiniSecondaryButton text="Ultimo mese" click={() => handleLast(30)} />
                 <MiniSecondaryButton text="Ultimo trimestre" click={() => handleLast(90)} />
