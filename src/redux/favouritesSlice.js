@@ -1,6 +1,5 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import { dataPagination } from "./paginationFunction";
-import { sortArray } from "./paginationFunction";
+import { booleanSortArray, dataPagination, emptyStringSortArray, sortArray } from "./paginationFunction.js";
 
 export const getFavourites = createAsyncThunk(
     'favourites/favSearch',
@@ -15,7 +14,7 @@ export const getFavourites = createAsyncThunk(
             })
             if (response.ok) {
                 const favourites = await response.json();
-                return {favourites, sort};
+                return { favourites, sort };
             } else {
                 const favError = await response.json();
                 console.log('Fetch error: ', favError)
@@ -48,7 +47,15 @@ const favouritesSlice = createSlice({
             } else {
                 flatData = state.favPagedData.flat();
             }
-            const sortedData = sortArray(flatData, action.payload.key, action.payload.reverse);
+            // Sorto
+            let sortedData;
+            if (action.payload.key === 'bookmark') {
+                sortedData = booleanSortArray(flatData, action.payload.key, action.payload.reverse);
+            } else if (action.payload.key === 'notes') {
+                sortedData = emptyStringSortArray(flatData, action.payload.key, action.payload.reverse);
+            } else {
+                sortedData = sortArray(flatData, action.payload.key, action.payload.reverse);
+            }
             // impagino
             const favPagedData = dataPagination(sortedData, 8);
             if (action.payload.category) {
@@ -79,11 +86,17 @@ const favouritesSlice = createSlice({
                 const sort = action.payload.sort;
                 // Sorto solo se il sortStatus è settato
                 let sortedFavourites = favourites;
-                if(sort.key) {
-                    sortedFavourites = sortArray(favourites, sort.key, sort.reverse)
+                if (sort.key) {
+                    if (sort.key === 'bookmark') {
+                        sortedFavourites = booleanSortArray(favourites, sort.key, sort.reverse)
+                    } else if (sort.key === 'notes') {
+                        sortedFavourites = emptyStringSortArray(favourites, sort.key, sort.reverse)
+                    } else {
+                        sortedFavourites = sortArray(favourites, sort.key, sort.reverse)
+                    }
                 }
                 // Impagino
-                if(favourites !== '{}') {
+                if (favourites !== '{}') {
                     state.favPagedData = dataPagination(sortedFavourites, 8);
                 }
                 state.favFetchStatus = 'idle';

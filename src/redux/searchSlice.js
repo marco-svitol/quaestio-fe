@@ -1,5 +1,5 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import { dataPagination, sortArray } from "./paginationFunction";
+import { booleanSortArray, dataPagination, emptyStringSortArray, sortArray } from "./paginationFunction";
 
 export const getSearch = createAsyncThunk(
     'data/search',
@@ -44,8 +44,8 @@ const searchSlice = createSlice({
             state.page = action.payload;
         },
         repageDataPageSize: (state, action) => {
-            const {newPageSize, sort} = action.payload;
-            if(state.pagedData) {
+            const { newPageSize, sort } = action.payload;
+            if (state.pagedData) {
                 const oldData = [...state.pagedData];
                 const flatData = oldData.flat();
                 // risorto
@@ -56,8 +56,19 @@ const searchSlice = createSlice({
             }
         },
         sortDocuments: (state, action) => {
+            const { key, reverse } = action.payload;
             const flatData = state.pagedData.flat();
-            const sortedData = sortArray(flatData, action.payload.key, action.payload.reverse);
+            console.log('key: ', key);
+            console.log('reverse: ', reverse)
+            // Sorto
+            let sortedData;
+            if (key === 'bookmark') {
+                sortedData = booleanSortArray(flatData, key, reverse)
+            } else if (key === 'notes') {
+                sortedData = emptyStringSortArray(flatData, key, reverse)
+            } else {
+                sortedData = sortArray(flatData, key, reverse)
+            }
             // impagino
             const pagedData = dataPagination(sortedData, state.pageSize);
             state.pagedData = pagedData;
@@ -75,7 +86,13 @@ const searchSlice = createSlice({
             // Sorto solo se il sortStatus è settato
             let sortedData = data;
             if (sort.key) {
-                sortedData = sortArray(data, sort.key, sort.reverse);
+                if (sort.key === 'bookmark') {
+                    sortedData = booleanSortArray(data, sort.key, sort.reverse);
+                } else if (sort.key === 'notes') {
+                    sortedData = emptyStringSortArray(data, sort.key, sort.reverse);
+                } else {
+                    sortedData = sortArray(data, sort.key, sort.reverse);
+                }
             }
             // Impagino
             const pagedData = dataPagination(sortedData, state.pageSize)

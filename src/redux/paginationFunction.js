@@ -24,3 +24,27 @@ export const sortArray = (dataArray, objectKey, reverse) => {
         return 0
     })
 }
+
+export const booleanSortArray = (dataArray, objectKey, reverse) => {
+    function comparison(a, b) {
+        if(reverse) {
+            return b[objectKey] - a[objectKey]
+        } else {
+            return a[objectKey] - b[objectKey]
+        }
+    }
+    return dataArray.sort(comparison);
+}
+
+export const emptyStringSortArray = (dataArray, objectKey, reverse) => {
+    function comparison(a, b) {
+        let firstValue = a[objectKey] !== "";
+        let secondValue = b[objectKey] !== "";
+        if(reverse) {
+            return secondValue - firstValue
+        } else {
+            return firstValue - secondValue
+        }
+    }
+    return dataArray.sort(comparison);
+}

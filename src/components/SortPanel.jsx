@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { sortDocuments } from "../redux/searchSlice";
 import { sortFavourites } from "../redux/favouritesSlice";
 import { setSort } from "../redux/sortStatusSlice";
@@ -13,7 +13,7 @@ const SortPanel = ({ isFavourite, category }) => {
         const { id } = event.target;
         setSelectedKey(prevState => ({
             key: id,
-            reverse: prevState.key === id ? !prevState.reverse : prevState.reverse // Questa condizione imposta il reverse solo al secondo click sullo stesso elemento
+            reverse: !prevState.reverse
         }))
     }
     const dispatch = useDispatch();
@@ -33,9 +33,9 @@ const SortPanel = ({ isFavourite, category }) => {
             <div className="w-full xl:w-[300px] 2xl:w-[500px] text-left border-r p-1 rounded flex gap-1 cursor-pointer" id="invention_title" onClick={handleSelectSort}><div className="pt-[2px]"><i className="fi fi-rr-sort-alt"></i></div> Titolo</div>
             <div className="flex sm:flex-row justify-start xl:justify-end gap-1 w-full xl:w-[240px]">
                 <div className="w-[95px] text-left border-r p-1 rounded flex gap-1 cursor-pointer" id="date" onClick={handleSelectSort}><div className="pt-[2px]"><i className="fi fi-rr-sort-alt"></i></div> Data</div>
-                <div className="w-[50px] text-left border-r p-1 rounded flex gap-1 cursor-pointer">Stato</div>
-                <div className="w-[34px] p-1 rounded flex gap-1 cursor-pointer">Pref.</div>
-                <div className="w-[34px] border-l p-1 rounded flex gap-1 cursor-pointer">Note</div>
+                <div className="w-[50px] text-left border-r p-1 rounded flex gap-1 cursor-pointer" id="read_history" onClick={handleSelectSort}>Stato</div>
+                <div className="w-[34px] p-1 rounded flex gap-1 cursor-pointer" id="bookmark" onClick={handleSelectSort}>Pref.</div>
+                <div className="w-[34px] border-l p-1 rounded flex gap-1 cursor-pointer" id="notes" onClick={handleSelectSort}>Note</div>
             </div>
         </div>
     )
