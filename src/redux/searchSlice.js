@@ -33,7 +33,7 @@ const searchSlice = createSlice({
         fetchStatus: 'idle',
         error: null,
         pageSize: 8,
-        page: null,
+        page: 1,
         pagedData: null
     },
     reducers: {
@@ -80,7 +80,6 @@ const searchSlice = createSlice({
             // Impagino
             const pagedData = dataPagination(sortedData, state.pageSize)
             state.pagedData = pagedData;
-            state.page = 1;
             state.fetchStatus = 'succeeded';
         },
         [getSearch.rejected]: (state, action) => {

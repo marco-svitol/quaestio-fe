@@ -35,7 +35,7 @@ const favouritesSlice = createSlice({
         favError: null,
         favPagedData: null,
         favCategorizedPagedData: null,
-        favPage: null
+        favPage: 1
     },
     reducers: {
         setFavPage: (state, action) => {
@@ -85,7 +85,6 @@ const favouritesSlice = createSlice({
                 // Impagino
                 if(favourites !== '{}') {
                     state.favPagedData = dataPagination(sortedFavourites, 8);
-                    state.favPage = 1;
                 }
                 state.favFetchStatus = 'idle';
             })

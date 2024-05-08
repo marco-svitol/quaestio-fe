@@ -35,6 +35,7 @@ const FavouriteModal = ({ close, isBookmark, setFavouriteFetch }) => {
             }
         }
     }
+    // debug
     useEffect(() => {
         console.log('selectedField: ', selectedField)
     }, [selectedField])
@@ -48,12 +49,16 @@ const FavouriteModal = ({ close, isBookmark, setFavouriteFetch }) => {
     useEffect(() => {
         console.log('categoryInput: ', categoryInput)
     }, [categoryInput])
-
+    
     // Gestisco elezione categoria
     const [selectedCategory, setSelectedCategory] = useState({
         id: "00000000-917E-4162-99CF-9DBF336F308F",
         name: "Predefinita"
     })
+    // debug
+    useEffect(() => {
+        console.log('selectedCategory: ', selectedCategory)
+    }, [selectedCategory])
     const handleCategorySelect = (event) => {
         const { value } = event.target;
         const selectedOption = event.target.options[event.target.selectedIndex];
@@ -90,8 +95,14 @@ const FavouriteModal = ({ close, isBookmark, setFavouriteFetch }) => {
             if (response.ok) {
                 const result = await response.json();
                 console.log('Fetch done: ', result);
+                // Seleziono in automatico la nuova categoria nel menu a tendina sotto
+                setSelectedCategory({
+                    id: result.bmfolderid,
+                    name: categoryInput
+                });
+                //
                 setCategoryFetchStatus('succeeded');
-                dispatch(getUserProfile({token}));
+                dispatch(getUserProfile({ token }));
                 setSelectedField(1);
                 setCategoryInput('');
             } else {
@@ -109,8 +120,9 @@ const FavouriteModal = ({ close, isBookmark, setFavouriteFetch }) => {
 
     // Invio dei dati
     const sendData = () => {
-                    setFavouriteFetch(selectedCategory.id)
-                    close(false);
+        console.log('selectedCategory.id: ', selectedCategory.id)
+        setFavouriteFetch(selectedCategory.id);
+        close(false);
     }
 
     return (
@@ -130,7 +142,7 @@ const FavouriteModal = ({ close, isBookmark, setFavouriteFetch }) => {
                     <div className="flex gap-2">
                         <input type="checkbox" onChange={handleSelectField} id="field_0" checked={selectedField === 0 ? true : false} />
                         <div className={`flex flex-col gap-2 items-start border p-2 w-full ${selectedField === 1 ? 'opacity-20' : ''}`}>
-                            <label htmlFor="name">Aggiungi preferito in una nuova categoria:</label>
+                            <label htmlFor="name">Crea nuova categoria:</label>
                             <div className="flex gap-2">
                                 <input type="text" id="name" onChange={handleCategoryInput} value={categoryInput} className="w-[300px]" />
                             </div>
@@ -154,7 +166,7 @@ const FavouriteModal = ({ close, isBookmark, setFavouriteFetch }) => {
                 <div className="flex gap-2">
                     <input type="checkbox" onChange={handleSelectField} id="field_1" checked={selectedField === 1 ? true : false} />
                     <div className={`flex flex-col gap-2 items-start border p-2 w-full ${selectedField === 0 ? 'opacity-20' : ''}`}>
-                        <label htmlFor="categoryId">Seleziona una categoria esistente:</label>
+                        <label htmlFor="categoryId">Seleziona una categoria:</label>
                         <select id="categoryId" onChange={handleCategorySelect} value={selectedCategory.id} className={`${selectedField === 0 ? 'pointer-events-none' : ''}`} >
                             {
                                 bmfolders && bmfolders.map((element, index) => (
