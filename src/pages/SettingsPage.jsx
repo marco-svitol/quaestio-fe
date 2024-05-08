@@ -42,15 +42,10 @@ const SettingsPage = () => {
     const sendPageSizeSettings = () => {
         if (pageSizeInput) {
             dispatch(setPageSize(pageSizeInput));
-            /* if (pagedData) {
-                dispatch(setNeedTrue());
-            } */
         } else {
             setIsPageSizeEmpty(true);
         }
         dispatch(repageDataPageSize({ newPageSize: pageSizeInput, sort: sortStatus }))
-        dispatch(setSection(0));
-        navigate("/");
     }
 
     // // CAMBIO PASSWORD
@@ -312,10 +307,10 @@ const SettingsPage = () => {
                 <h3>Gestione utente</h3>
 
                 {/* Page size */}
-                <div className="flex items-center gap-2 border border-red-800 rounded p-4">
+                <div className="flex items-center gap-2 border border-red-800 rounded p-4 h-[105px]">
                     <label htmlFor="pageSize">Quantità di elementi per pagina:</label>
                     {pageSize && <input type="number" id="pageSize" value={pageSizeInput} className="w-16" onChange={handlePageSizeInput} />}
-                    {pageSizeInput && <div className="ml-4"><MiniPrimaryButton text="Salva elementi per pagina" click={sendPageSizeSettings} /></div>}
+                    {pageSizeInput && pageSizeInput !== pageSize && <div className="ml-4"><MiniPrimaryButton text="Salva elementi per pagina" click={sendPageSizeSettings} /></div>}
                 </div>
 
                 {/* Cambio password */}
