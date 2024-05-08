@@ -5,12 +5,11 @@ import { useDispatch, useSelector } from "react-redux";
 import { setNeedTrue } from "../../redux/lastCallSlice";
 import MiniLoader from "../MiniLoader";
 
-const NoteModal = ({ close, docNum, note }) => {
+const NoteModal = ({ close, docNum, note, setLoading }) => {
 
     // Gestisco l'input della nota
     const [inputData, setInputData] = useState(null);
     useEffect(() => {
-        console.log('notes: ', note)
         if (note !== "") {
             setInputData(note);
         }
@@ -39,6 +38,7 @@ const NoteModal = ({ close, docNum, note }) => {
         try {
             const response = await fetch(url, options)
             if (response.ok) {
+                setLoading(true);
                 dispatch(setNeedTrue());
                 close(false);
             } else {
@@ -60,6 +60,9 @@ const NoteModal = ({ close, docNum, note }) => {
             <i className="fi fi-sr-circle-xmark cursor-pointer text-xl text-red-800 absolute top-3 right-3" onClick={() => close(false)}></i>
             <h4 className="text-xs"><span className="text-stone-400">Nota documento n.</span> {docNum}</h4>
             <textarea id="noteInput" className="mt-4 w-full h-[240px] resize-none bg-transparent p-2 border border-stone-300" onChange={handleInputData} value={inputData} ></textarea>
+            <div className="flex p-1 border-b border-r border-l rounded-b-lg mt-[-10px] hover:bg-neutral-100 cursor-pointer" onClick={() => setInputData('')}>
+                Elimina testo
+            </div>
             <div className="flex self-end">
                 {fetchStatus === 'loading' && <MiniLoader />}
                 {fetchStatus === 'idle' && <MiniPrimaryButton text="Salva nota" click={sendNote} />}
