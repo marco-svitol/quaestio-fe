@@ -37,16 +37,15 @@ const SettingsPage = () => {
     // Set new pageSize settings
     const { pagedData } = useSelector(state => state.search);
     const sortStatus = useSelector(state => state.sortStatus)
-    const [isPageSizeEmpty, setIsPageSizeEmpty] = useState(false);
     const navigate = useNavigate();
     const sendPageSizeSettings = () => {
         if (pageSizeInput) {
+            localStorage.setItem('pageSize', pageSizeInput);
             dispatch(setPageSize(pageSizeInput));
-        } else {
-            setIsPageSizeEmpty(true);
         }
         dispatch(repageDataPageSize({ newPageSize: pageSizeInput, sort: sortStatus }))
     }
+
 
     // // CAMBIO PASSWORD
 
@@ -343,6 +342,7 @@ const SettingsPage = () => {
                     <label htmlFor="pageSize">Quantità di elementi per pagina:</label>
                     {pageSize && <input type="number" id="pageSize" value={pageSizeInput} className="w-16" onChange={handlePageSizeInput} />}
                     {pageSizeInput && pageSizeInput !== pageSize && <div className="ml-4"><MiniPrimaryButton text="Salva elementi per pagina" click={sendPageSizeSettings} /></div>}
+                    {!pageSizeInput && <h4>Nessun valore specificato</h4>}
                 </div>
 
                 {/* Cambio password */}

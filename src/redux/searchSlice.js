@@ -29,12 +29,16 @@ export const getSearch = createAsyncThunk(
     }
 )
 
+// Controllo che sia memorizzato in cache del browser il pageSize
+const browserPageSize = localStorage.getItem('pageSize');
+const initialPageSize = browserPageSize ? parseInt(browserPageSize) : 8;
+
 const searchSlice = createSlice({
     name: 'search',
     initialState: {
         fetchStatus: 'idle',
         error: null,
-        pageSize: 8,
+        pageSize: initialPageSize,
         page: 1,
         pagedData: null
     },
