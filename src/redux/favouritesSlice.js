@@ -98,6 +98,8 @@ const favouritesSlice = createSlice({
                 // Impagino
                 if (favourites !== '{}') {
                     state.favPagedData = dataPagination(sortedFavourites, 8);
+                } else {
+                    state.favPagedData = null
                 }
                 state.favFetchStatus = 'idle';
             })

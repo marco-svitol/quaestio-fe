@@ -41,10 +41,8 @@ const DataCard = ({ data, token, isEven, click }) => {
     const [favouriteError, setFavouriteError] = useState(null)
     const dispatch = useDispatch();
     const setOrChangeOrRemoveFavourite = async (categoryId) => {
-        console.log('categoryId: ', categoryId)
         // la seguente condizione imposta un aggiunta, una edit o una delete
         let bookmark = data.bookmark === false ? categoryId : categoryId || 0;
-        console.log('bookmark: ', bookmark);
         try {
             setFavouriteFetchStatus('loading');
             console.log('data.bookmark: ', data.bookmark);
