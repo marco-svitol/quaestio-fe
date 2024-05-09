@@ -239,10 +239,13 @@ const SettingsPage = () => {
 
     // Gestisco il rename delle categorie
     const { bmfolders } = useSelector(state => state.userProfile);
-    const [categoryToEdit, setCategoryToEdit] = useState({
-        id: bmfolders[1].id,
-        name: bmfolders[1].name
-    });
+    let initialState;
+    if (bmfolders && bmfolders.length > 1) {
+        initialState = { id: bmfolders[1].id, name: bmfolders[1].name }
+    } else {
+        initialState = null;
+    }
+    const [categoryToEdit, setCategoryToEdit] = useState(initialState);
     const handleSelectCategory = (event) => {
         const { value } = event.target;
         const selectedOption = event.target.options[event.target.selectedIndex];
@@ -295,16 +298,13 @@ const SettingsPage = () => {
                 } else {
                     setCategoryRenameFetchStatus('succeeded rename');
                 }
-                setCategoryToEdit({
-                    id: bmfolders[1].id,
-                    name: bmfolders[1].name
-                })
                 dispatch(getUserProfile({ token }));
                 setNewCategoryName('');
                 setTimeout(() => {
-                    dispatch(setSection(0));
-                    navigate("/");
+                    setCategoryRenameFetchStatus('idle');
+                    setCategoryRenameError(null);
                 }, 3000)
+
             } else {
                 const error = await response.json();
                 setCategoryRenameError(error);
@@ -317,6 +317,20 @@ const SettingsPage = () => {
             console.log('Catch error: ', error)
         }
     }
+
+    useEffect(() => {
+        console.log('bmfolders.length: ', bmfolders.length)
+        if (bmfolders.length > 1) {
+            setCategoryToEdit({
+                id: bmfolders[1].id,
+                name: bmfolders[1].name
+            })
+        } else {
+            setTimeout(() => {
+                setCategoryToEdit(null);
+            }, 3000)
+        }
+    }, [bmfolders])
 
     return (
         <div className="main-container settings">
@@ -385,7 +399,7 @@ const SettingsPage = () => {
 
                 {/* Categorie preferiti */}
                 {
-                    bmfolders && bmfolders.length > 1 &&
+                    bmfolders && bmfolders.length > 1 && categoryToEdit &&
                     <div className="flex gap-4 items-center border border-red-800 rounded p-4">
                         <label htmlFor="">Rinomina categorie preferiti</label>
                         <div className="flex flex-col items-start">
@@ -407,8 +421,8 @@ const SettingsPage = () => {
                             {categoryRenameFetchStatus === 'idle' && !newCategoryName && <MiniPrimaryButton text="Elimina categoria" click={() => endEditCategory(true)} />}
                             {categoryRenameFetchStatus === 'idle' && newCategoryName && <MiniPrimaryButton text="Rinomina categoria" click={() => endEditCategory(false)} />}
                             {categoryRenameFetchStatus === 'loading' && <MiniLoader />}
-                            {categoryRenameFetchStatus === 'succeeded rename' && <h4>Categoria rinominata con successo, attendi il refresh della pagina.</h4>}
-                            {categoryRenameFetchStatus === 'succeeded delete' && <h4>Categoria eliminata con successo, attendi il refresh della pagina.</h4>}
+                            {categoryRenameFetchStatus === 'succeeded rename' && <h4>Categoria rinominata con successo.</h4>}
+                            {categoryRenameFetchStatus === 'succeeded delete' && <h4>Categoria eliminata con successo.</h4>}
                             {categoryRenameFetchStatus === 'failed' && <h4>Qualcosa è andato storto. Ricarica la pagina e riprova.</h4>}
                         </div>
 
