@@ -68,12 +68,8 @@ const FavSearchBar = () => {
     // GET SEARCH FETCH
     const dispatch = useDispatch();
     const getReduxFavourites = () => {
-        // Il passaggio di formattazione viene effettuato perché il backend riceva la data in formato YYYYMMDD anziché YYYY-MM-DD
-        let formattedInputData = { ...inputData};
-        formattedInputData.pdfrom = formattedInputData.pdfrom.replace(/-/g, '');
-        formattedInputData.pdto = formattedInputData.pdto.replace(/-/g, '');
         dispatch(setFavLastCall(inputData)) // A last call non passo l'inputData formattato, perché la data in frontend viene gestita in modo canonico
-        dispatch(getFavourites({ favouritesData: formattedInputData, token: token, sort: sortStatus }))
+        dispatch(getFavourites({ favouritesData: inputData, token: token, sort: sortStatus }))
     }
 
     return (

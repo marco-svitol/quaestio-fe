@@ -4,7 +4,9 @@ import { booleanSortArray, dataPagination, emptyStringSortArray, sortArray } fro
 export const getSearch = createAsyncThunk(
     'data/search',
     async ({ searchData, token, sort }) => {
-        console.log('redux sort: ', sort)
+        // In questo passaggio formatto la data in modo che il backend la riceva nel modo corretto
+        searchData.pdfrom = searchData.pdfrom.replace(/-/g, '');
+        searchData.pdto = searchData.pdto.replace(/-/g, '');
         try {
             const response = await fetch(`${process.env.REACT_APP_SERVER_BASE_URL}/v2/search?pa=${searchData.pa}&tecarea=${searchData.tecarea}&doc_num=${searchData.doc_num}&pdfrom=${searchData.pdfrom}&pdto=${searchData.pdto}`, {
                 method: 'GET',
@@ -58,8 +60,6 @@ const searchSlice = createSlice({
         sortDocuments: (state, action) => {
             const { key, reverse } = action.payload;
             const flatData = state.pagedData.flat();
-            console.log('key: ', key);
-            console.log('reverse: ', reverse)
             // Sorto
             let sortedData;
             if (key === 'bookmark') {

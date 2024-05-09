@@ -66,13 +66,8 @@ const SearchBar = () => {
     // GET SEARCH FETCH
     const dispatch = useDispatch();
     const getReduxSearch = () => {
-        // Il passaggio di formattazione viene effettuato perché il backend riceva la data in formato YYYYMMDD anziché YYYY-MM-DD
-        let formattedInputData = { ...inputData};
-        formattedInputData.pdfrom = formattedInputData.pdfrom.replace(/-/g, '');
-        formattedInputData.pdto = formattedInputData.pdto.replace(/-/g, '');
-        console.log('formattedInpudData: ', formattedInputData)
         dispatch(setLastCall(inputData)) // A last call non passo l'inputData formattato, perché la data in frontend viene gestita in modo canonico
-        dispatch(getSearch({ searchData: formattedInputData, token: token, sort: sortStatus }))
+        dispatch(getSearch({ searchData: inputData, token: token, sort: sortStatus }))
     }
 
     return (

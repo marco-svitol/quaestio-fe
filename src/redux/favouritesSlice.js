@@ -4,7 +4,9 @@ import { booleanSortArray, dataPagination, emptyStringSortArray, sortArray } fro
 export const getFavourites = createAsyncThunk(
     'favourites/favSearch',
     async ({ favouritesData, token, sort }) => {
-        console.log('sort: ', sort);
+        // In questo passaggio formatto la data in modo che il backend la riceva nel modo corretto
+        favouritesData.pdfrom = favouritesData.pdfrom.replace(/-/g, '');
+        favouritesData.pdto = favouritesData.pdto.replace(/-/g, '');
         try {
             const response = await fetch(`${process.env.REACT_APP_SERVER_BASE_URL}/v2/searchbookmark?doc_num=${favouritesData.doc_num}&pdfrom=${favouritesData.pdfrom}&pdto=${favouritesData.pdto}`, {
                 method: 'GET',
