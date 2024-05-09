@@ -153,8 +153,8 @@ const SettingsPage = () => {
     const [passwordFetchError, setPasswordFetchError] = useState(null);
     const sendFetch = async () => {
         let bodyData = {
-            oldpassword: encodeURIComponent(passwordInput.oldPassword),
-            newpassword: encodeURIComponent(passwordInput.password1)
+            oldpassword: passwordInput.oldPassword,
+            newpassword: passwordInput.password1
         }
         try {
             setPasswordFetchStatus('loading');;
