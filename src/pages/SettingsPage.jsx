@@ -152,7 +152,6 @@ const SettingsPage = () => {
     const [passwordFetchStatus, setPasswordFetchStatus] = useState('idle');
     const [passwordFetchError, setPasswordFetchError] = useState(null);
     const sendFetch = async () => {
-
         let bodyData = {
             oldpassword: encodeURIComponent(passwordInput.oldPassword),
             newpassword: encodeURIComponent(passwordInput.password1)
@@ -170,22 +169,22 @@ const SettingsPage = () => {
             if (response.ok) {
                 // questa parte funziona, sistema la gestione di result e del messaggio a video
                 const result = await response.json();
-                console.log('result: ', result);
                 setPasswordFetchStatus('succeeded');
                 dispatch(setSection(0));
                 navigate("/");
             } else {
-                console.log('here 2');
-                const error = await response.json();
+                /* const error = await response.json(); */
+                const statusCode = response.status
+                console.log('response: ', response.status)
                 setPasswordFetchStatus('failed');
-                setPasswordFetchError(error);
-                console.log('Fetch error: ', error)
+                setPasswordFetchError(statusCode);
+                /* console.log('Fetch error: ', error) */
                 resetPasswordInput();
             }
         } catch (error) {
+            console.error('Catch error: ', error)
             setPasswordFetchStatus('failed');
             setPasswordFetchError(error);
-            console.log('Catch error: ', error)
             resetPasswordInput();
         }
     }
@@ -215,6 +214,26 @@ const SettingsPage = () => {
     useEffect(() => {
         console.log('showPassword: ', showPassword)
     }, [showPassword])
+
+    // Gestisco casistica UX di vecchia password errata
+    useEffect(() => {
+        if (passwordFetchError == 403) {
+            setTimeout(() => {
+                setPasswordInput({
+                    oldPassword: '',
+                    password1: '',
+                    password2: ''
+                });
+                setPasswordError({
+                    isError: false,
+                    isChecksDone: false,
+                    errorMessage: []
+                });
+                setPasswordFetchStatus('idle');
+                setPasswordFetchError(null)
+            }, 3000)
+        }
+    }, [passwordFetchError])
 
     // // RENAME CATEGORIE
 
@@ -247,7 +266,7 @@ const SettingsPage = () => {
     const [categoryRenameError, setCategoryRenameError] = useState(null)
     const endEditCategory = async (isDelete) => {
         let name;
-        if(isDelete) {
+        if (isDelete) {
             name = '';
         } else {
             name = newCategoryName
@@ -271,7 +290,7 @@ const SettingsPage = () => {
             if (response.ok) {
                 const result = await response.json();
                 console.log('Fetch done: ', result);
-                if(isDelete) {
+                if (isDelete) {
                     setCategoryRenameFetchStatus('succeeded delete');
                 } else {
                     setCategoryRenameFetchStatus('succeeded rename');
@@ -298,7 +317,6 @@ const SettingsPage = () => {
             console.log('Catch error: ', error)
         }
     }
-
 
     return (
         <div className="main-container settings">
@@ -351,8 +369,9 @@ const SettingsPage = () => {
                         </div>
                     }
                     {passwordFetchStatus === 'loading' && <MiniLoader />}
-                    {passwordFetchStatus === 'failed' && <div>Qualcosa è andato storto, ricarica la pagina e riprova.</div>}
                     {passwordFetchStatus === 'succeeded' && <div>Password modificata con successo.</div>}
+                    {passwordFetchStatus === 'failed' && passwordFetchError != 403 && <h4>Qualcosa è andato storto, ricarica la pagina e riprova.</h4>}
+                    {passwordFetchStatus === 'failed' && passwordFetchError == 403 && <h4>Vecchia password errata. Riprova.</h4>}
 
                     {
                         passwordError.isError &&
