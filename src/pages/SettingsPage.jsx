@@ -166,11 +166,10 @@ const SettingsPage = () => {
                 body: JSON.stringify(bodyData)
             });
             if (response.ok) {
-                // questa parte funziona, sistema la gestione di result e del messaggio a video
                 const result = await response.json();
                 setPasswordFetchStatus('succeeded');
-                dispatch(setSection(0));
-                navigate("/");
+                /* dispatch(setSection(0));
+                navigate("/"); */
             } else {
                 /* const error = await response.json(); */
                 const statusCode = response.status
@@ -233,6 +232,20 @@ const SettingsPage = () => {
             }, 3000)
         }
     }, [passwordFetchError])
+
+    // Gestisco UX password modificata con successo
+    useEffect(() => {
+        if (passwordFetchStatus === 'succeeded') {
+            setPasswordInput({
+                oldPassword: '',
+                password1: '',
+                password2: ''
+            })
+            setTimeout(() => {
+                setPasswordFetchStatus('idle');
+            }, 3000)
+        }
+    }, [passwordFetchStatus])
 
     // // RENAME CATEGORIE
 
@@ -383,7 +396,7 @@ const SettingsPage = () => {
                         </div>
                     }
                     {passwordFetchStatus === 'loading' && <MiniLoader />}
-                    {passwordFetchStatus === 'succeeded' && <div>Password modificata con successo.</div>}
+                    {passwordFetchStatus === 'succeeded' && <h3>Password modificata con successo.</h3>}
                     {passwordFetchStatus === 'failed' && passwordFetchError != 403 && <h4>Qualcosa è andato storto, ricarica la pagina e riprova.</h4>}
                     {passwordFetchStatus === 'failed' && passwordFetchError == 403 && <h4>Vecchia password errata. Riprova.</h4>}
 
