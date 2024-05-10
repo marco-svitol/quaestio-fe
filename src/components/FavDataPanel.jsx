@@ -8,7 +8,7 @@ import PageBlock from "./PageBlock.jsx";
 import SortPanel from "./SortPanel.jsx";
 
 const FavDataPanel = () => {
-    const { favPagedData, favCategorizedPagedData, favError, favPage } = useSelector((state) => state.favourites);
+    const { favPagedData, favCategorizedPagedData, favError, favPage, favFetchStatus } = useSelector((state) => state.favourites);
     const token = useSelector((state) => state.login.token);
 
     // Handle pagination
@@ -57,7 +57,8 @@ const FavDataPanel = () => {
     }, [category])
 
     return (
-        <PageBlock width="full" items="center">
+        <PageBlock width="full" items="center" relative>
+            {favFetchStatus === 'pending' && <div className="absolute top-0 right-0 bottom-0 left-0 z-10 bg-white bg-opacity-80"></div>}
             {
                 favError ? (
                     <h3>Qualcosa è andato storto, ricarica la pagina e riprova</h3>

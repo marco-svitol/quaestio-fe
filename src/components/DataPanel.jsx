@@ -37,7 +37,7 @@ const DataPanel = () => {
                     <h3>Qualcosa è andato storto, ricarica la pagina e riprova</h3>
                 ) : (
                     <>
-                        {fetchStatus === 'pending' && <div className="absolute top-0 right-0 bottom-0 left-0 bg-white bg-opacity-80"></div>}
+                        {fetchStatus === 'pending' && <div className="absolute top-0 right-0 bottom-0 left-0 z-10 bg-white bg-opacity-80"></div>}
                         {pagedData && <h4>{(pageSize * (pagedData.length - 1)) + (pagedData[pagedData.length - 1].length)} elementi trovati.</h4>}
                         {pagedData && <PageSelect page={page} selectPage={HandleSelectPage} />}
 
