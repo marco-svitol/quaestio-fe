@@ -19,11 +19,11 @@ const SearchBar = () => {
     })
 
     const handleInputData = (event) => {
-        const { id, value } = event.target;           
-            setInputData(prevInputData => ({
-                ...prevInputData,
-                [id]: value
-            }))
+        const { id, value } = event.target;
+        setInputData(prevInputData => ({
+            ...prevInputData,
+            [id]: value
+        }))
     }
 
     useEffect(() => {
@@ -36,8 +36,8 @@ const SearchBar = () => {
     const { needLastCall, pa, tecarea, doc_num, pdfrom, pdto } = useSelector(state => state.lastCall);
     const sortStatus = useSelector(state => state.sortStatus);
     useEffect(() => {
-            // ricompilo semplicemente i campi uguali all'ultima chiamata
-            setInputData({ pa, tecarea, doc_num, pdfrom, pdto });
+        // ricompilo semplicemente i campi uguali all'ultima chiamata
+        setInputData({ pa, tecarea, doc_num, pdfrom, pdto });
         if (needLastCall && token && sortStatus) { // getLastSearch fa effettuare l'ultima chiamata
             dispatch(getSearch({ searchData: { pa, tecarea, doc_num, pdfrom, pdto }, token: token, sort: sortStatus }));
             dispatch(setNeedFalse());
@@ -95,8 +95,11 @@ const SearchBar = () => {
                 }
             </select>
 
+            {/* Data da */}
             <label htmlFor="data">Da:</label>
             <input type="date" id="pdfrom" value={inputData.pdfrom} onChange={handleInputData} />
+
+            {/* Data a */}
             <label htmlFor="data">A:</label>
             <input type="date" id="pdto" value={inputData.pdto} onChange={handleInputData} />
             <div className="flex xs-custom text-sm gap-1">

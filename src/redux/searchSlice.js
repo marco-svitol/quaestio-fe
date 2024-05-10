@@ -5,10 +5,12 @@ export const getSearch = createAsyncThunk(
     'data/search',
     async ({ searchData, token, sort }) => {
         // In questo passaggio formatto la data in modo che il backend la riceva nel modo corretto
-        searchData.pdfrom = searchData.pdfrom.replace(/-/g, '');
-        searchData.pdto = searchData.pdto.replace(/-/g, '');
+        let dataCopy = {...searchData} // Eseguo una copia effettiva del seachData
+        // Altrimenti modificando il formato della data ne risente anche il frontend
+        dataCopy.pdfrom = dataCopy.pdfrom.replace(/-/g, '');
+        dataCopy.pdto = dataCopy.pdto.replace(/-/g, '');
         try {
-            const response = await fetch(`${process.env.REACT_APP_SERVER_BASE_URL}/v2/search?pa=${searchData.pa}&tecarea=${searchData.tecarea}&doc_num=${searchData.doc_num}&pdfrom=${searchData.pdfrom}&pdto=${searchData.pdto}`, {
+            const response = await fetch(`${process.env.REACT_APP_SERVER_BASE_URL}/v2/search?pa=${dataCopy.pa}&tecarea=${dataCopy.tecarea}&doc_num=${dataCopy.doc_num}&pdfrom=${dataCopy.pdfrom}&pdto=${dataCopy.pdto}`, {
                 method: 'GET',
                 headers: {
                     Authorization: `Bearer ${token}`
