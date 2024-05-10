@@ -12,7 +12,7 @@ import NoteModal from "./notes/NoteModal";
 import SortPanel from "./SortPanel";
 
 const DataPanel = () => {
-    const { pagedData, error, page, fetchStatus } = useSelector((state) => state.search);
+    const { pagedData, error, page, fetchStatus, pageSize } = useSelector((state) => state.search);
     const token = useSelector((state) => state.login.token);
 
     // Handle pagination
@@ -29,9 +29,6 @@ const DataPanel = () => {
         setSelectedObject(null)
     }
 
-    // Redux: elementi per pagina
-    const { pageSize } = useSelector(state => state.search)
-
     return (
         <PageBlock width="full" items="center" relative>
             {fetchStatus === 'idle' && <div className="flex gap-2 lg:self-start"><div className="hidden lg:block"><i className="fi fi-sr-angle-circle-left text-2xl text-red-800"></i></div><h4 className="text-black">Seleziona un Richiedente per iniziare la ricerca</h4></div>}
@@ -41,8 +38,8 @@ const DataPanel = () => {
                 ) : (
                     <>
                         {fetchStatus === 'pending' && <div className="absolute top-0 right-0 bottom-0 left-0 bg-white bg-opacity-80"></div>}
-                        {pagedData && <h4>{(pageSize * (pagedData.length - 1)) + (pagedData[pagedData.length - 1].length - 1)} elementi trovati.</h4>} {/* -1 finale per togliere userinfo */}
-                        {pagedData && !pagedData[0][0].userinfo && <PageSelect page={page} selectPage={HandleSelectPage} />}
+                        {pagedData && <h4>{(pageSize * (pagedData.length - 1)) + (pagedData[pagedData.length - 1].length)} elementi trovati.</h4>}
+                        {pagedData && <PageSelect page={page} selectPage={HandleSelectPage} />}
 
                         {pagedData && <Link to="/settings"><div className="border rounded border-red-400 py-1 px-2">Elementi per pagina: <span className="font-bold text-red-800">{pageSize}</span></div></Link>}
 

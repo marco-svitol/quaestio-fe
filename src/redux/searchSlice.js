@@ -88,9 +88,11 @@ const searchSlice = createSlice({
         [getSearch.fulfilled]: (state, action) => {
             state.error = null;
             const data = action.payload.search;
+            // tolgo lo userinfo se c'è
+            const dataWithoutUserinfo = data.filter(element => !Object.keys(element).includes('userinfo'));
             const sort = action.payload.sort;
             // Sorto solo se il sortStatus è settato
-            let sortedData = data;
+            let sortedData = dataWithoutUserinfo;
             if (sort.key) {
                 if (sort.key === 'bookmark') {
                     sortedData = booleanSortArray(data, sort.key, sort.reverse);

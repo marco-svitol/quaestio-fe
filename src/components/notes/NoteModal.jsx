@@ -4,6 +4,7 @@ import { useSearchParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { setNeedTrue } from "../../redux/lastCallSlice";
 import MiniLoader from "../MiniLoader";
+import { setFavNeedTrue } from "../../redux/favLastCallSlice";
 
 const NoteModal = ({ close, docNum, note, setLoading }) => {
 
@@ -20,6 +21,7 @@ const NoteModal = ({ close, docNum, note, setLoading }) => {
     }
 
     // Gestisco l'invio della nota
+    const { sectionNumber } = useSelector(state => state.section);
     const [fetchStatus, setFetchStatus] = useState('idle');
     const [error, setError] = useState(null);
     const { needLastCall } = useSelector(state => state.lastCall)
@@ -40,6 +42,7 @@ const NoteModal = ({ close, docNum, note, setLoading }) => {
             if (response.ok) {
                 setLoading(true);
                 dispatch(setNeedTrue());
+                dispatch(setFavNeedTrue())
                 close(false);
             } else {
                 const error = await response.json();
