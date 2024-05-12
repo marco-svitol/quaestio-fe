@@ -84,13 +84,13 @@ const favouritesSlice = createSlice({
                 state.favFetchStatus = 'pending'
             })
             .addCase(getFavourites.fulfilled, (state, action) => {
-                console.log("action.payload: ", action.payload);
+                console.log('fav action.payload: ', action.payload)
                 state.favError = null;
                 const favourites = action.payload.favourites;
                 const sort = action.payload.sort;
                 // Sorto solo se il sortStatus è settato
                 let sortedFavourites = favourites;
-                if (sort.key) {
+                if (sort.key && sortedFavourites !== '{}') {
                     if (sort.key === 'bookmark') {
                         sortedFavourites = booleanSortArray(favourites, sort.key, sort.reverse)
                     } else if (sort.key === 'notes') {

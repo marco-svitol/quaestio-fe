@@ -13,6 +13,9 @@ export const dataPagination = (dataObject, pageSize) => {
 // objectKey è la voce secondo cui applicare il sort
 // reverse è un booleano
 export const sortArray = (dataArray, objectKey, reverse) => {
+    console.log('dataArray: ', dataArray);
+    console.log('objectKey: ', objectKey);
+    console.log('reverse: ', reverse);
     return dataArray.sort((a, b) => {
         const compareResult = reverse ? -1 : 1;
         if (a[objectKey] < b[objectKey]) {

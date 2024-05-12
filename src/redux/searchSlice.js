@@ -86,7 +86,6 @@ const searchSlice = createSlice({
             state.fetchStatus = 'pending';
         },
         [getSearch.fulfilled]: (state, action) => {
-            console.log("action.payload: ", action.payload);
             state.error = null;
             const data = action.payload.search;
             // tolgo lo userinfo se c'è

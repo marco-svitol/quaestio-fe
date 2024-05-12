@@ -18,9 +18,9 @@ const FavSearchBar = () => {
     })
 
     // debug
-    useEffect(() => {
+    /* useEffect(() => {
         console.log('inputData: ', inputData)
-    }, [inputData])
+    }, [inputData]) */
 
     // Check di favLastCall. Se è true rieffettua la chiamata.
     // I dati dell'ultima call sono già memorizzati in Redux (si memorizzano ad ogni chiamata)

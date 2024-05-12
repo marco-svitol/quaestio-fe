@@ -86,9 +86,9 @@ const FavDataPanel = () => {
                                 favPagedData && favPagedData.length > 0 && <h4>{(8 * (favPagedData.length - 1)) + (favPagedData[favPagedData.length - 1].length)} elementi trovati.</h4>
                             )
                         }
-                        {favPagedData && favPagedData.lenght > 0 && <FavPageSelect page={favPage} selectPage={handleSelectFavPage} />}
+                        {favPagedData && favPagedData.length > 0 && <FavPageSelect page={favPage} selectPage={handleSelectFavPage} />}
 
-                        {favPagedData && favPagedData.lenght > 0 && <SortPanel isFavourite category={category.id} />}
+                        {favPagedData && favPagedData.length > 0 && <SortPanel isFavourite category={category.id} />}
 
                         {
                             !category.id &&
