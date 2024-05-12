@@ -84,6 +84,7 @@ const favouritesSlice = createSlice({
                 state.favFetchStatus = 'pending'
             })
             .addCase(getFavourites.fulfilled, (state, action) => {
+                console.log("action.payload: ", action.payload);
                 state.favError = null;
                 const favourites = action.payload.favourites;
                 const sort = action.payload.sort;
@@ -102,7 +103,7 @@ const favouritesSlice = createSlice({
                 if (favourites !== '{}') {
                     state.favPagedData = dataPagination(sortedFavourites, 8);
                 } else {
-                    state.favPagedData = null
+                    state.favPagedData = []
                 }
                 state.favFetchStatus = 'idle';
             })

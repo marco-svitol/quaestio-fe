@@ -37,7 +37,7 @@ const FavDataPanel = () => {
         const selectedOption = event.target.options[event.target.selectedIndex];
         const name = selectedOption.getAttribute('data-name');
         console.log('value: ', value);
-            console.log('name: ', name)
+        console.log('name: ', name)
         if (!name) {
             setCategory({
                 id: null,
@@ -86,9 +86,9 @@ const FavDataPanel = () => {
                                 favPagedData && favPagedData.length > 0 && <h4>{(8 * (favPagedData.length - 1)) + (favPagedData[favPagedData.length - 1].length)} elementi trovati.</h4>
                             )
                         }
-                        {favPagedData && <FavPageSelect page={favPage} selectPage={handleSelectFavPage} />}
+                        {favPagedData && favPagedData.lenght > 0 && <FavPageSelect page={favPage} selectPage={handleSelectFavPage} />}
 
-                        {favPagedData && <SortPanel isFavourite category={category.id} />}
+                        {favPagedData && favPagedData.lenght > 0 && <SortPanel isFavourite category={category.id} />}
 
                         {
                             !category.id &&
@@ -111,6 +111,8 @@ const FavDataPanel = () => {
                             })
                         }
 
+
+                        {favPagedData && favPagedData.length === 0 && <h3>Nessun elemento preferito trovato.</h3>}
                         {selectedFavObject && <DetailsModal data={selectedFavObject} close={resetSelectedFavObject} />}
                     </>
                 )
