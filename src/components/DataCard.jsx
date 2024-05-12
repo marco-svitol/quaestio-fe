@@ -39,6 +39,7 @@ const DataCard = ({ data, token, isEven, click }) => {
     // favourite fetch
     const [favouriteFetchStatus, setFavouriteFetchStatus] = useState('idle');
     const [favouriteError, setFavouriteError] = useState(null)
+    const { pagedData } = useSelector(state => state.search) // Questo serve per verificare se esiste prima di droppare il setNeedTrue()
     const dispatch = useDispatch();
     const setOrChangeOrRemoveFavourite = async (categoryId) => {
         // la seguente condizione imposta un aggiunta, una edit o una delete
@@ -60,7 +61,9 @@ const DataCard = ({ data, token, isEven, click }) => {
             if (response.ok) {
                 const result = await response.json();
                 console.log(result)
-                dispatch(setNeedTrue());
+                if (pagedData) {
+                    dispatch(setNeedTrue());
+                }
                 dispatch(setFavNeedTrue());
                 // Non viene impostato 'idle' nello stato, esso verrà impostato dopo la chiamata di aggiornamento
             } else {
