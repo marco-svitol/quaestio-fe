@@ -45,6 +45,7 @@ const Navbar = () => {
 
     const { sectionNumber } = useSelector(state => state.section);
     const sortStatus = useSelector(state => state.sortStatus);
+    const { pageSize } = useSelector(state => state.search);
     const handleSection = (number) => {
         dispatch(setSection(number))
         if (number === 1 && !isFirstCallDone) {
@@ -53,7 +54,7 @@ const Navbar = () => {
                     doc_num: '',
                     pdfrom: '',
                     pdto: ''
-                }, token: token, sort: sortStatus
+                }, token: token, sort: sortStatus, pageSize: pageSize
             }));
             setIsFirstCallDone(true);
         }

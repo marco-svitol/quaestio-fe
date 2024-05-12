@@ -26,11 +26,12 @@ const FavSearchBar = () => {
     // I dati dell'ultima call sono già memorizzati in Redux (si memorizzano ad ogni chiamata)
     const { favNeedLastCall, doc_num, pdfrom, pdto } = useSelector(state => state.favLastCall);
     const sortStatus = useSelector(state => state.sortStatus);
+    const { pageSize } = useSelector(state => state.search);
     useEffect(() => {
         // Ricompilo i campi uguali all'ultima chiamata
         setInputData({ doc_num, pdfrom, pdto });
         if (favNeedLastCall && token && sortStatus) { // Fa effetturare l'ultima chiamata
-            dispatch(getFavourites({ favouritesData: { doc_num, pdfrom, pdto }, token: token, sort: sortStatus }));
+            dispatch(getFavourites({ favouritesData: { doc_num, pdfrom, pdto }, token: token, sort: sortStatus, pageSize: pageSize }));
             dispatch(setFavNeedFalse());
         }
         // Eventuale logica per rieffettuare una chiamata
@@ -69,7 +70,7 @@ const FavSearchBar = () => {
     const dispatch = useDispatch();
     const getReduxFavourites = () => {
         dispatch(setFavLastCall(inputData)) // A last call non passo l'inputData formattato, perché la data in frontend viene gestita in modo canonico
-        dispatch(getFavourites({ favouritesData: inputData, token: token, sort: sortStatus }))
+        dispatch(getFavourites({ favouritesData: inputData, token: token, sort: sortStatus, pageSize: pageSize }))
     }
 
     return (

@@ -89,6 +89,7 @@ const searchSlice = createSlice({
             state.error = null;
             const data = action.payload.search;
             // tolgo lo userinfo se c'è
+            console.log('data: ', data)
             const dataWithoutUserinfo = data.filter(element => !Object.keys(element).includes('userinfo'));
             const sort = action.payload.sort;
             // Sorto solo se il sortStatus è settato

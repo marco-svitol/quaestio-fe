@@ -3,9 +3,9 @@ import { booleanSortArray, dataPagination, emptyStringSortArray, sortArray } fro
 
 export const getFavourites = createAsyncThunk(
     'favourites/favSearch',
-    async ({ favouritesData, token, sort }) => {
+    async ({ favouritesData, token, sort, pageSize }) => {
         // In questo passaggio formatto la data in modo che il backend la riceva nel modo corretto
-        let favouritesCopy = {...favouritesData}; // creo una copia in modo che il frontend non risenta delle modifiche seguenti alla data
+        let favouritesCopy = { ...favouritesData }; // creo una copia in modo che il frontend non risenta delle modifiche seguenti alla data
         favouritesCopy.pdfrom = favouritesCopy.pdfrom.replace(/-/g, '');
         favouritesCopy.pdto = favouritesCopy.pdto.replace(/-/g, '');
         try {
@@ -17,7 +17,7 @@ export const getFavourites = createAsyncThunk(
             })
             if (response.ok) {
                 const favourites = await response.json();
-                return { favourites, sort };
+                return { favourites, sort, pageSize };
             } else {
                 const favError = await response.json();
                 console.log('Fetch error: ', favError)
@@ -37,13 +37,14 @@ const favouritesSlice = createSlice({
         favError: null,
         favPagedData: null,
         favCategorizedPagedData: null,
-        favPage: 1
+        favPage: 1,
     },
     reducers: {
         setFavPage: (state, action) => {
             state.favPage = action.payload;
         },
         sortFavourites: (state, action) => {
+            const pageSize = action.payload.pageSize;
             let flatData;
             if (action.payload.category) {
                 flatData = state.favCategorizedPagedData.flat();
@@ -60,7 +61,7 @@ const favouritesSlice = createSlice({
                 sortedData = sortArray(flatData, action.payload.key, action.payload.reverse);
             }
             // impagino
-            const favPagedData = dataPagination(sortedData, 8);
+            const favPagedData = dataPagination(sortedData, pageSize);
             if (action.payload.category) {
                 state.favCategorizedPagedData = favPagedData
             } else {
@@ -69,11 +70,12 @@ const favouritesSlice = createSlice({
             state.page = 1;
         },
         getCategory: (state, action) => {
+            const { categoryId, pageSize } = action.payload;
             const flatData = state.favPagedData.flat();
-            const categoryFavourites = flatData.filter(element => element.bmfolderid === action.payload);
+            const categoryFavourites = flatData.filter(element => element.bmfolderid === categoryId);
 
             // Impagino
-            const favCategorizedPagedData = dataPagination(categoryFavourites, 8);
+            const favCategorizedPagedData = dataPagination(categoryFavourites, pageSize);
             state.favCategorizedPagedData = favCategorizedPagedData;
             state.page = 1;
         }
@@ -84,7 +86,7 @@ const favouritesSlice = createSlice({
                 state.favFetchStatus = 'pending'
             })
             .addCase(getFavourites.fulfilled, (state, action) => {
-                console.log('fav action.payload: ', action.payload)
+                const pageSize = action.payload.pageSize;
                 state.favError = null;
                 const favourites = action.payload.favourites;
                 const sort = action.payload.sort;
@@ -101,7 +103,7 @@ const favouritesSlice = createSlice({
                 }
                 // Impagino
                 if (favourites !== '{}') {
-                    state.favPagedData = dataPagination(sortedFavourites, 8);
+                    state.favPagedData = dataPagination(sortedFavourites, pageSize);
                 } else {
                     state.favPagedData = []
                 }

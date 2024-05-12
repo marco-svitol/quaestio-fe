@@ -17,11 +17,12 @@ const SortPanel = ({ isFavourite, category }) => {
         }))
     }
     const dispatch = useDispatch();
+    const { pageSize } = useSelector(state => state.search)
     useEffect(() => {
         if (selectedKey.key) {
             dispatch(setSort({key: selectedKey.key, reverse: selectedKey.reverse }))
             if (isFavourite) {
-                dispatch(sortFavourites({ key: selectedKey.key, reverse: selectedKey.reverse, category }))
+                dispatch(sortFavourites({ key: selectedKey.key, reverse: selectedKey.reverse, category, pageSize: pageSize }))
             } else {
                 dispatch(sortDocuments({ key: selectedKey.key, reverse: selectedKey.reverse }))
             }
