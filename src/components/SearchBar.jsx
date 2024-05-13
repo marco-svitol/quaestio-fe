@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { DisabledButton, MiniSecondaryButton, PrimaryButton } from './Buttons.js';
 import { useDispatch, useSelector } from "react-redux";
-import { getSearch } from "../redux/searchSlice.js";
+import { getSearch, setPage } from "../redux/searchSlice.js";
 import PageBlock from "./PageBlock.jsx";
 import { setLastCall, setNeedFalse, setNeedTrue } from "../redux/lastCallSlice.js";
 
@@ -67,8 +67,9 @@ const SearchBar = () => {
     // GET SEARCH FETCH
     const dispatch = useDispatch();
     const getReduxSearch = () => {
-        dispatch(setLastCall(inputData)) // A last call non passo l'inputData formattato, perché la data in frontend viene gestita in modo canonico
-        dispatch(getSearch({ searchData: inputData, token: token, sort: sortStatus }))
+        dispatch(setPage(1));
+        dispatch(setLastCall(inputData)); // A last call non passo l'inputData formattato, perché la data in frontend viene gestita in modo canonico
+        dispatch(getSearch({ searchData: inputData, token: token, sort: sortStatus }));
     }
 
     return (
