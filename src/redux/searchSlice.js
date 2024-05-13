@@ -5,7 +5,7 @@ export const getSearch = createAsyncThunk(
     'data/search',
     async ({ searchData, token, sort }) => {
         // In questo passaggio formatto la data in modo che il backend la riceva nel modo corretto
-        let dataCopy = {...searchData} // Eseguo una copia effettiva del seachData
+        let dataCopy = { ...searchData } // Eseguo una copia effettiva del seachData
         // Altrimenti modificando il formato della data ne risente anche il frontend
         dataCopy.pdfrom = dataCopy.pdfrom.replace(/-/g, '');
         dataCopy.pdto = dataCopy.pdto.replace(/-/g, '');
@@ -88,9 +88,14 @@ const searchSlice = createSlice({
         [getSearch.fulfilled]: (state, action) => {
             state.error = null;
             const data = action.payload.search;
-            // tolgo lo userinfo se c'è
             console.log('data: ', data)
-            const dataWithoutUserinfo = data.filter(element => !Object.keys(element).includes('userinfo'));
+            console.log('typeof data: ', typeof (data))
+            let dataWithoutUserinfo;
+            if (Array.isArray(data)) {
+                console.log('here 1')
+                // tolgo lo userinfo se c'è
+                dataWithoutUserinfo = data.filter(element => !Object.keys(element).includes('userinfo'));
+            }
             const sort = action.payload.sort;
             // Sorto solo se il sortStatus è settato
             let sortedData = dataWithoutUserinfo;
@@ -104,8 +109,13 @@ const searchSlice = createSlice({
                 }
             }
             // Impagino
-            const pagedData = dataPagination(sortedData, state.pageSize)
-            state.pagedData = pagedData;
+            let pagedData;
+            if (Array.isArray(data)) {
+                pagedData = dataPagination(sortedData, state.pageSize)
+                state.pagedData = pagedData
+            } else {
+                state.pagedData = null;
+            }
             state.fetchStatus = 'succeeded';
         },
         [getSearch.rejected]: (state, action) => {

@@ -40,7 +40,7 @@ const NoteModal = ({ close, docNum, note, setLoading }) => {
         try {
             const response = await fetch(url, options)
             if (response.ok) {
-                setLoading(true);
+                /* setLoading(true); */
                 dispatch(setNeedTrue());
                 dispatch(setFavNeedTrue())
                 close(false);

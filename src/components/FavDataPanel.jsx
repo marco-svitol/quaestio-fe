@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import FavPageSelect from "./FavPageSelect.jsx";
 import DetailsModal from "./DetailsModal.jsx";
 import DataCard from "./DataCard.jsx";
-import { getCategory, setFavPage } from "../redux/favouritesSlice";
+import { getCategory, setFavPage, setCategory } from "../redux/favouritesSlice";
 import PageBlock from "./PageBlock.jsx";
 import SortPanel from "./SortPanel.jsx";
 import { Link } from "react-router-dom";
@@ -30,32 +30,48 @@ const FavDataPanel = () => {
     // Gestisco la selezione in base alla categoria
     const { bmfolders } = useSelector(state => state.userProfile);
     const { pageSize } = useSelector(state => state.search)
-    const [category, setCategory] = useState({
+    /* const [category, setCategory] = useState({
         id: null,
         name: null
-    })
+    }) */
+    const {favCategory} = useSelector(state => state.favourites);
+    // debug
+    useEffect(() => {
+        console.log('favCategory: ', favCategory)
+    }, [favCategory])
     const handleCategorySelect = (event) => {
         const { value } = event.target;
         const selectedOption = event.target.options[event.target.selectedIndex];
         const name = selectedOption.getAttribute('data-name');
         if (!name) {
-            setCategory({
+            dispatch(setCategory({
                 id: null,
                 name: null
-            })
+            }))
+            /* setCategory({
+                id: null,
+                name: null
+            }) */
         } else {
-            setCategory({
+            dispatch(setCategory({
                 id: value,
                 name: name
-            })
+            }))
+            /* setCategory({
+                id: value,
+                name: name
+            }) */
         }
     }
     useEffect(() => {
-        if (category.id) {
+        console.log('favCategory ', favCategory)
+        if (favCategory.id) {
             console.log('pageSize: ', pageSize)
-            dispatch(getCategory({ categoryId: category.id, pageSize: pageSize }))
+            dispatch(getCategory({ categoryId: favCategory.id, pageSize: pageSize }))
+        } else {
+            dispatch(getCategory({categoryId: null, pageSize: pageSize}))
         }
-    }, [category])
+    }, [favCategory])
 
     return (
         <PageBlock width="full" items="center" relative>
@@ -84,7 +100,7 @@ const FavDataPanel = () => {
                             favPagedData && favPagedData[0] === '{ }' ? (
                                 <h4>0 elementi trovati</h4>
                             ) : (
-                                !category.id ? (
+                                !favCategory.id ? (
                                     favPagedData && favPagedData.length > 0 && <h4>{(pageSize * (favPagedData.length - 1)) + (favPagedData[favPagedData.length - 1].length)} elementi trovati.</h4>
                                 ) : (
                                     favCategorizedPagedData && favCategorizedPagedData.length > 0 && <h4>{(pageSize * (favCategorizedPagedData.length - 1)) + (favCategorizedPagedData[favCategorizedPagedData.length - 1].length)} elementi trovati.</h4>
@@ -93,19 +109,19 @@ const FavDataPanel = () => {
                         }
 
                         {/* Page select */}
-                        {!category.id && favPagedData && favPagedData.length > 0 && <FavPageSelect page={favPage} selectPage={handleSelectFavPage} />}
-                        {category.id && favCategorizedPagedData && favCategorizedPagedData.length > 0 && <FavPageSelect page={favPage} selectPage={handleSelectFavPage} />}
+                        {!favCategory.id && favPagedData && favPagedData.length > 0 && <FavPageSelect page={favPage} selectPage={handleSelectFavPage} />}
+                        {favCategory.id && favCategorizedPagedData && favCategorizedPagedData.length > 0 && <FavPageSelect page={favPage} selectPage={handleSelectFavPage} />}
 
                         {/* Elementi per pagina */}
-                        {!category.id && favPagedData && favPagedData.length > 0 && <Link to="/settings"><div className="border rounded border-red-400 py-1 px-2">Elementi per pagina: <span className="font-bold text-red-800">{pageSize}</span></div></Link>}
-                        {category.id && favCategorizedPagedData && favCategorizedPagedData.length > 0 && <Link to="/settings"><div className="border rounded border-red-400 py-1 px-2">Elementi per pagina: <span className="font-bold text-red-800">{pageSize}</span></div></Link>}
+                        {!favCategory.id && favPagedData && favPagedData.length > 0 && <Link to="/settings"><div className="border rounded border-red-400 py-1 px-2">Elementi per pagina: <span className="font-bold text-red-800">{pageSize}</span></div></Link>}
+                        {favCategory.id && favCategorizedPagedData && favCategorizedPagedData.length > 0 && <Link to="/settings"><div className="border rounded border-red-400 py-1 px-2">Elementi per pagina: <span className="font-bold text-red-800">{pageSize}</span></div></Link>}
 
                         {/* Sort panel */}
-                        {!category.id && favPagedData && favPagedData.length > 0 && <SortPanel isFavourite category={category.id} />}
-                        {category.id && favCategorizedPagedData && favCategorizedPagedData.length > 0 && <SortPanel isFavourite category={category.id} />}
+                        {!favCategory.id && favPagedData && favPagedData.length > 0 && <SortPanel isFavourite category={favCategory.id} />}
+                        {favCategory.id && favCategorizedPagedData && favCategorizedPagedData.length > 0 && <SortPanel isFavourite category={favCategory.id} />}
 
                         {
-                            !category.id &&
+                            !favCategory.id &&
                             favPagedData && Array.isArray(favPagedData[favPage - 1]) && favPagedData[favPage - 1].map((element, index) => {
                                 if (!element.userinfo) { /* questo toglie la card per userinfo */ /* E' comunque già tolta dallo slice a monte, snellire */
                                     return <DataCard key={index} panel="fav" data={element} token={token} isEven={index % 2 === 0 ? true : false} click={() => handleSelectFavObject(element)} />
@@ -115,7 +131,7 @@ const FavDataPanel = () => {
                             })
                         }
                         {
-                            category.id &&
+                            favCategory.id &&
                             favCategorizedPagedData && Array.isArray(favCategorizedPagedData[favPage - 1]) && favCategorizedPagedData[favPage - 1].map((element, index) => {
                                 if (!element.userinfo) { /* questo toglie la card per userinfo */ /* E' comunque già tolta dallo slice a monte, snellire */
                                     return <DataCard key={index} panel="fav" index={index + ((favPage - 1) * 8)} data={element} token={token} isEven={index % 2 === 0 ? true : false} click={() => handleSelectFavObject(element)} />
@@ -127,8 +143,8 @@ const FavDataPanel = () => {
 
 
                         {/* Page select */}
-                        {!category.id && favPagedData && favPagedData.length > 0 && <FavPageSelect page={favPage} selectPage={handleSelectFavPage} />}
-                        {category.id && favCategorizedPagedData && favCategorizedPagedData.length > 0 && <FavPageSelect page={favPage} selectPage={handleSelectFavPage} />}
+                        {!favCategory.id && favPagedData && favPagedData.length > 0 && <FavPageSelect page={favPage} selectPage={handleSelectFavPage} />}
+                        {favCategory.id && favCategorizedPagedData && favCategorizedPagedData.length > 0 && <FavPageSelect page={favPage} selectPage={handleSelectFavPage} />}
 
 
                         {favPagedData && favPagedData.length === 0 && <h3>Nessun elemento preferito trovato.</h3>}

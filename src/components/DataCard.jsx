@@ -82,22 +82,8 @@ const DataCard = ({ data, token, isEven, click }) => {
     // Gestisco apertura e chiusura Note per ogni card
     const [isNoteVisible, setIsNoteVisible] = useState(false);
 
-    // Risetto lo status 'idle' dopo la chiamata di aggiornamento
-    useEffect(() => {
-        setFavouriteFetchStatus('idle')
-    }, [data])
-
     // Gestisco l'apertura della modale di favourite in sezione Preferiti
     const [isFavSettingModal, setIsFavSettingModal] = useState(false);
-
-    //Gestisco il loader nella nota come UX
-    // Questo loader compare fra l'aggiornamento di una nota (e sua chiusura) e la recall di aggiornamento
-    const [isNoteLoading, setIsNoteLoading] = useState(false);
-    useEffect(() => {
-        if (data) {
-            setIsNoteLoading(false)
-        }
-    }, [data])
 
     return (
         <div className={`flex flex-col md:flex-col xl:flex-row text-[8pt] border ${isEven ? 'bg-stone-50 border-red-50' : 'bg-stone-100 border-red-100'} hover:border-red-800 w-full xl:w-fit px-4 py-2 gap-4 rounded-3xl relative`}>
@@ -129,22 +115,20 @@ const DataCard = ({ data, token, isEven, click }) => {
                 <div>
                     <h4 className="block xl:hidden text-xs md:text-left text-stone-400">Preferiti</h4>
                     <div className="flex justify-center items-center h-11 cursor-pointer w-[34px]">
-                        {favouriteFetchStatus === 'idle' && !data.bookmark && <i className="fi fi-rr-star text-red-800 text-lg rounded-lg p-2" onClick={sectionNumber === 0 ? setIsFavModal : setIsFavSettingModal}></i>}
-                        {favouriteFetchStatus === 'idle' && data.bookmark && <i className="fi fi-sr-star text-red-800 text-lg rounded-lg p-2" onClick={sectionNumber === 0 ? () => setOrChangeOrRemoveFavourite(null) : setIsFavSettingModal}></i>}
-                        {favouriteFetchStatus === 'loading' && <MiniLoader />}
+                        {!data.bookmark && <i className="fi fi-rr-star text-red-800 text-lg rounded-lg p-2" onClick={sectionNumber === 0 ? setIsFavModal : setIsFavSettingModal}></i>}
+                        {data.bookmark && <i className="fi fi-sr-star text-red-800 text-lg rounded-lg p-2" onClick={sectionNumber === 0 ? () => setOrChangeOrRemoveFavourite(null) : setIsFavSettingModal}></i>}
                     </div>
                 </div>
                 <div>
                     <h4 className="block xl:hidden text-xs md:text-left text-stone-400">Note</h4>
                     <div className="flex justify-center items-center h-11 cursor-pointer w-[34px]" onClick={() => setIsNoteVisible(true)}>
-                        {data.notes === "" && !isNoteLoading && <i className="fi fi-rr-note-sticky text-red-800 text-lg rounded-lg p-2"></i>}
-                        {data.notes !== "" && !isNoteLoading && <i className="fi fi-sr-note-sticky text-red-800 text-lg rounded-lg p-2"></i>}
-                        {isNoteLoading && <MiniLoader />}
+                        {data.notes === "" && <i className="fi fi-rr-note-sticky text-red-800 text-lg rounded-lg p-2"></i>}
+                        {data.notes !== "" && <i className="fi fi-sr-note-sticky text-red-800 text-lg rounded-lg p-2"></i>}
                     </div>
                 </div>
                 {isFavModal && <FavouriteModal close={setIsFavModal} isBookmark={data.bookmark} setFavouriteFetch={setOrChangeOrRemoveFavourite} />}
                 {isFavSettingModal && <FavouriteSettingModal close={setIsFavSettingModal} categoryId={data.bmfolderid} setFavouriteFetch={setOrChangeOrRemoveFavourite} />}
-                {isNoteVisible && <NoteModal close={setIsNoteVisible} docNum={data.doc_num} note={data.notes} setLoading={setIsNoteLoading} />}
+                {isNoteVisible && <NoteModal close={setIsNoteVisible} docNum={data.doc_num} note={data.notes} />}
             </div>
         </div>
     )

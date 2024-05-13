@@ -3,7 +3,7 @@ import { booleanSortArray, dataPagination, emptyStringSortArray, sortArray } fro
 
 export const getFavourites = createAsyncThunk(
     'favourites/favSearch',
-    async ({ favouritesData, token, sort, pageSize }) => {
+    async ({ favouritesData, token, sort, pageSize, favCategorizedPagedData }) => {
         // In questo passaggio formatto la data in modo che il backend la riceva nel modo corretto
         let favouritesCopy = { ...favouritesData }; // creo una copia in modo che il frontend non risenta delle modifiche seguenti alla data
         favouritesCopy.pdfrom = favouritesCopy.pdfrom.replace(/-/g, '');
@@ -17,7 +17,7 @@ export const getFavourites = createAsyncThunk(
             })
             if (response.ok) {
                 const favourites = await response.json();
-                return { favourites, sort, pageSize };
+                return { favourites, sort, pageSize, favCategorizedPagedData };
             } else {
                 const favError = await response.json();
                 console.log('Fetch error: ', favError)
@@ -36,6 +36,10 @@ const favouritesSlice = createSlice({
         favFetchStatus: 'idle',
         favError: null,
         favPagedData: null,
+        favCategory: {
+            id: null,
+            name: null
+        },
         favCategorizedPagedData: null,
         favPage: 1,
     },
@@ -69,15 +73,22 @@ const favouritesSlice = createSlice({
             }
             state.page = 1;
         },
+        setCategory: (state, action) => {
+            state.favCategory = action.payload
+        },
         getCategory: (state, action) => {
             const { categoryId, pageSize } = action.payload;
-            const flatData = state.favPagedData.flat();
-            const categoryFavourites = flatData.filter(element => element.bmfolderid === categoryId);
+            if (categoryId) {
+                const flatData = state.favPagedData.flat();
+                const categoryFavourites = flatData.filter(element => element.bmfolderid === categoryId);
+                // Impagino
+                const favCategorizedPagedData = dataPagination(categoryFavourites, pageSize);
+                state.favCategorizedPagedData = favCategorizedPagedData;
+                state.page = 1;
+            } else {
+                state.favCategorizedPagedData = null
+            }
 
-            // Impagino
-            const favCategorizedPagedData = dataPagination(categoryFavourites, pageSize);
-            state.favCategorizedPagedData = favCategorizedPagedData;
-            state.page = 1;
         }
     },
     extraReducers: (builder) => {
@@ -108,6 +119,16 @@ const favouritesSlice = createSlice({
                     state.favPagedData = []
                 }
                 state.favFetchStatus = 'idle';
+                // Aggiorno anche gli oggetti in categoria:
+                if (state.favCategory.id) {
+                    const categoryId = state.favCategory.id;
+                    const flatData = state.favPagedData.flat();
+                    const categoryFavourites = flatData.filter(element => element.bmfolderid === categoryId);
+                    // Impagino
+                    const favCategorizedPagedData = dataPagination(categoryFavourites, pageSize);
+                    state.favCategorizedPagedData = favCategorizedPagedData;
+                    state.page = 1;
+                }
             })
             .addCase(getFavourites.rejected, (state, action) => {
                 state.error = action.error.message;
@@ -116,5 +137,5 @@ const favouritesSlice = createSlice({
     }
 })
 
-export const { setFavPage, updateFavourite, sortFavourites, getCategory } = favouritesSlice.actions;
+export const { setFavPage, updateFavourite, sortFavourites, getCategory, setCategory } = favouritesSlice.actions;
 export default favouritesSlice.reducer;
