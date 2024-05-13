@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { DisabledButton, MiniSecondaryButton, PrimaryButton } from './Buttons.js';
 import { useDispatch, useSelector } from "react-redux";
-import { getFavourites } from "../redux/favouritesSlice.js";
+import { getFavourites, setFavPage } from "../redux/favouritesSlice.js";
 import PageBlock from "./PageBlock.jsx";
 import { setFavLastCall, setFavNeedFalse } from "../redux/favLastCallSlice.js";
 
@@ -69,8 +69,9 @@ const FavSearchBar = () => {
     // GET SEARCH FETCH
     const dispatch = useDispatch();
     const getReduxFavourites = () => {
-        dispatch(setFavLastCall(inputData)) // A last call non passo l'inputData formattato, perché la data in frontend viene gestita in modo canonico
-        dispatch(getFavourites({ favouritesData: inputData, token: token, sort: sortStatus, pageSize: pageSize }))
+        dispatch(setFavPage(1));
+        dispatch(setFavLastCall(inputData)); // A last call non passo l'inputData formattato, perché la data in frontend viene gestita in modo canonico
+        dispatch(getFavourites({ favouritesData: inputData, token: token, sort: sortStatus, pageSize: pageSize }));
     }
 
     return (
