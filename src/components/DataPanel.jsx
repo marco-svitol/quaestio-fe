@@ -56,7 +56,7 @@ const DataPanel = () => {
                             })
                         }
 
-                        {pagedData && pagedData.length > 0 && <h4>{(pageSize * (pagedData.length - 1)) + (pagedData[pagedData.length - 1].length)} elementi trovati.</h4>}
+                        {/* {pagedData && pagedData.length > 0 && <h4>{(pageSize * (pagedData.length - 1)) + (pagedData[pagedData.length - 1].length)} elementi trovati.</h4>} */}
                         {pagedData && pagedData.length > 0 && <PageSelect page={page} selectPage={HandleSelectPage} />}
 
                         {pagedData && pagedData.length === 0 && <h3>Nessun elemento trovato.</h3>}

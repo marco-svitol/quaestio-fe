@@ -92,12 +92,15 @@ const FavDataPanel = () => {
                             )
                         }
 
+                        {/* Page select */}
                         {!category.id && favPagedData && favPagedData.length > 0 && <FavPageSelect page={favPage} selectPage={handleSelectFavPage} />}
                         {category.id && favCategorizedPagedData && favCategorizedPagedData.length > 0 && <FavPageSelect page={favPage} selectPage={handleSelectFavPage} />}
 
+                        {/* Elementi per pagina */}
                         {!category.id && favPagedData && favPagedData.length > 0 && <Link to="/settings"><div className="border rounded border-red-400 py-1 px-2">Elementi per pagina: <span className="font-bold text-red-800">{pageSize}</span></div></Link>}
                         {category.id && favCategorizedPagedData && favCategorizedPagedData.length > 0 && <Link to="/settings"><div className="border rounded border-red-400 py-1 px-2">Elementi per pagina: <span className="font-bold text-red-800">{pageSize}</span></div></Link>}
 
+                        {/* Sort panel */}
                         {!category.id && favPagedData && favPagedData.length > 0 && <SortPanel isFavourite category={category.id} />}
                         {category.id && favCategorizedPagedData && favCategorizedPagedData.length > 0 && <SortPanel isFavourite category={category.id} />}
 
@@ -121,6 +124,11 @@ const FavDataPanel = () => {
                                 }
                             })
                         }
+
+
+                        {/* Page select */}
+                        {!category.id && favPagedData && favPagedData.length > 0 && <FavPageSelect page={favPage} selectPage={handleSelectFavPage} />}
+                        {category.id && favCategorizedPagedData && favCategorizedPagedData.length > 0 && <FavPageSelect page={favPage} selectPage={handleSelectFavPage} />}
 
 
                         {favPagedData && favPagedData.length === 0 && <h3>Nessun elemento preferito trovato.</h3>}
