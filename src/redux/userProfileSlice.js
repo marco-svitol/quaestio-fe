@@ -32,7 +32,8 @@ const userProfileSlice = createSlice({
         fetchStatus: 'idle',
         error: null,
         userInfo: null,
-        searchValues: null
+        searchValues: null,
+        bmfolders: null
     },
     reducers: {},
     extraReducers: {
@@ -42,6 +43,7 @@ const userProfileSlice = createSlice({
         [getUserProfile.fulfilled]: (state, action) => {
             state.userInfo = action.payload[0].userinfo;
             state.searchValues = action.payload[0].searchvalues;
+            state.bmfolders = action.payload[0].bmfolders;
             state.fetchStatus = 'succeeded'
         },
         [getUserProfile.rejected]: (state, action) => {

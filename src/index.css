@@ -28,7 +28,6 @@ h4 {
 
 input {
   border: 2px solid #e2e8f0;
-  min-width: 300px;
   border-radius: 4px;
   padding: 12px;
 }
@@ -36,6 +35,10 @@ input {
 input:focus {
   outline: none;
   border-color: #991b1b;
+}
+
+.settings label {
+  font-size: 14pt;
 }
 
 select {
@@ -161,4 +164,19 @@ select:focus {
   .xs-custom {
     flex-direction: column;
   }
+}
+
+.mini-custom-loader {
+  width: 25px;
+  height: 25px;
+  border-radius: 50%;
+  background: 
+    radial-gradient(farthest-side,#991b1b 94%,#0000) top/8px 8px no-repeat,
+    conic-gradient(#0000 30%,#991b1b);
+  -webkit-mask: radial-gradient(farthest-side,#0000 calc(100% - 8px),#000 0);
+  animation:s3 1s infinite linear;
+}
+
+@keyframes s3{ 
+  100%{transform: rotate(1turn)}
 }
