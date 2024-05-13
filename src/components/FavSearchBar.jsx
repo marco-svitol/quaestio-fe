@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { DisabledButton, MiniSecondaryButton, PrimaryButton } from './Buttons.js';
 import { useDispatch, useSelector } from "react-redux";
-import { getFavourites, setFavPage } from "../redux/favouritesSlice.js";
+import { getCategory, getFavourites, setFavPage } from "../redux/favouritesSlice.js";
 import PageBlock from "./PageBlock.jsx";
 import { setFavLastCall, setFavNeedFalse } from "../redux/favLastCallSlice.js";
 
@@ -27,6 +27,7 @@ const FavSearchBar = () => {
     const { favNeedLastCall, doc_num, pdfrom, pdto } = useSelector(state => state.favLastCall);
     const sortStatus = useSelector(state => state.sortStatus);
     const { pageSize } = useSelector(state => state.search);
+        
     useEffect(() => {
         // Ricompilo i campi uguali all'ultima chiamata
         setInputData({ doc_num, pdfrom, pdto });
@@ -39,10 +40,10 @@ const FavSearchBar = () => {
 
     const handleInputData = (event) => {
         const { id, value } = event.target;
-            setInputData(prevInputData => ({
-                ...prevInputData,
-                [id]: value
-            }))
+        setInputData(prevInputData => ({
+            ...prevInputData,
+            [id]: value
+        }))
     }
 
     // Preset date 
