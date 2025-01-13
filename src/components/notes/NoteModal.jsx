@@ -63,7 +63,7 @@ const NoteModal = ({ close, docNum, note, setLoading }) => {
             <i className="fi fi-sr-circle-xmark cursor-pointer text-xl text-red-800 absolute top-3 right-3" onClick={() => close(false)}></i>
             <h4 className="text-xs"><span className="text-stone-400">Nota documento n.</span> {docNum}</h4>
             <textarea id="noteInput" className="mt-4 w-full h-[240px] resize-none bg-transparent p-2 border border-stone-300" onChange={handleInputData} value={inputData} ></textarea>
-            <div className="flex p-1 border-b border-r border-l rounded-b-lg mt-[-10px] hover:bg-neutral-100 cursor-pointer" onClick={() => setInputData('')}>
+            <div className="flex p-1 border-b border-r border-l rounded-b-lg hover:bg-neutral-100 cursor-pointer" onClick={() => setInputData('')}>
                 Elimina testo
             </div>
             <div className="flex self-end">

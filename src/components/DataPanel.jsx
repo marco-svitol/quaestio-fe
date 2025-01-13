@@ -11,6 +11,8 @@ import { setStoredPage } from "../redux/lastCallSlice";
 import NoteModal from "./notes/NoteModal";
 import SortPanel from "./SortPanel";
 
+// DataPanel riceve i dati da searchSlice, al quale effettua chiamate la navbar quando la sezione selezionata in sectioNumber è 0 (1 è per i favourites)
+// I dati delle singole card, se modificati, vengono memorizzati direttamente in searchSlice senza bisogno di effettuare un'altra chiamata
 const DataPanel = () => {
     const { pagedData, error, page, fetchStatus, pageSize } = useSelector((state) => state.search);
     const token = useSelector((state) => state.login.token);

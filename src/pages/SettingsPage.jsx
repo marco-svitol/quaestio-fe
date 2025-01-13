@@ -5,7 +5,6 @@ import { setSection } from "../redux/sectionSlice";
 import { MiniPrimaryButton, PrimaryButton } from "../components/Buttons";
 import { useNavigate } from 'react-router-dom';
 import { repageDataPageSize, setPageSize } from "../redux/searchSlice";
-import { setNeedTrue } from "../redux/lastCallSlice";
 import MiniLoader from '../components/MiniLoader';
 import { getUserProfile } from '../redux/userProfileSlice.js'
 

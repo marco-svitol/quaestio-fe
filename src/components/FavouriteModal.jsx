@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
 import { MiniDisabledButton, MiniPrimaryButton, MiniSecondaryButton } from "./Buttons";
 import { useDispatch, useSelector } from "react-redux";
-import { setNeedTrue } from "../redux/lastCallSlice";
 import { getUserProfile } from "../redux/userProfileSlice";
 import MiniLoader from "./MiniLoader";
 

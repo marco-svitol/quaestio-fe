@@ -8,6 +8,9 @@ import PageBlock from "./PageBlock.jsx";
 import SortPanel from "./SortPanel.jsx";
 import { Link } from "react-router-dom";
 
+// FavouritePanel gestisce le card allo stesso modo di DataPanel, i dati vengono gestiti da favouritesSlice invece che searchSlice
+// Esso è attivato sempre da Navbar in base alla sezione selezionata in sectionSlice
+// Viene effettuata una chiamata ad ogni approdo, in modo che che le card siano sempre aggiornate in base alle modifiche effettuate dalla section 0 (DataPanel)
 const FavDataPanel = () => {
     const { favPagedData, favCategorizedPagedData, favError, favPage, favFetchStatus } = useSelector((state) => state.favourites);
     const token = useSelector((state) => state.login.token);

@@ -47,6 +47,7 @@ const userProfileSlice = createSlice({
             state.fetchStatus = 'succeeded'
         },
         [getUserProfile.rejected]: (state, action) => {
+            console.log('action.payload: ', action.payload)
             state.error = action.error.message;
             state.fetchStatus = 'error'
         }

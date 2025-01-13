@@ -3,7 +3,7 @@ import { DisabledButton, MiniSecondaryButton, PrimaryButton } from './Buttons.js
 import { useDispatch, useSelector } from "react-redux";
 import { getSearch, setPage } from "../redux/searchSlice.js";
 import PageBlock from "./PageBlock.jsx";
-import { setLastCall, setNeedFalse, setNeedTrue } from "../redux/lastCallSlice.js";
+import { setLastCall, setNeedFalse } from "../redux/lastCallSlice.js";
 
 const SearchBar = () => {
     const { fetchStatus } = useSelector((state) => state.search);

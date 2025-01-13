@@ -40,15 +40,13 @@ const Navbar = () => {
     const { userInfo } = useSelector((state) => state.userProfile);
 
     // select section
-    // Memorizzo se è stata effettuata la prima chiamata, in modo da effettuarla solo al primo approdo
-    const [isFirstCallDone, setIsFirstCallDone] = useState(false);
 
     const { sectionNumber } = useSelector(state => state.section);
     const sortStatus = useSelector(state => state.sortStatus);
     const { pageSize } = useSelector(state => state.search);
     const handleSection = (number) => {
         dispatch(setSection(number))
-        if (number === 1 && !isFirstCallDone) {
+        if (number === 1) {
             dispatch(getFavourites({
                 favouritesData: {
                     doc_num: '',
@@ -56,7 +54,6 @@ const Navbar = () => {
                     pdto: ''
                 }, token: token, sort: sortStatus, pageSize: pageSize
             }));
-            setIsFirstCallDone(true);
         }
     }
 
