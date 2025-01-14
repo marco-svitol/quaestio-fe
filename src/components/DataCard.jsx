@@ -8,6 +8,7 @@ import { setFavNeedTrue } from '../redux/favLastCallSlice';
 import MiniLoader from "./MiniLoader";
 import FavouriteModal from "./FavouriteModal";
 import FavouriteSettingModal from "./FavouriteSettingModal";
+import { addDocument, removeDocument } from "../redux/selectedSlice";
 
 const DataCard = ({ data, token, isEven, click, panel }) => {
     const { sectionNumber } = useSelector(state => state.section);
@@ -75,11 +76,11 @@ const DataCard = ({ data, token, isEven, click, panel }) => {
     // Gestisco il cambio di stato (aggiornando il documento singolo in Redux: sia 'search' sia 'favourites' se presente)
     const { isDocumentStatusStatus, pageSize } = useSelector(state => state.search);
     const sortStatus = useSelector(state => state.sortStatus);
-    
+
     useEffect(() => {
         if (isDocumentStatusStatus === 'succeeded') {
             // Se sono nella sezione preferiti
-            if(sectionNumber === 1) {
+            if (sectionNumber === 1) {
                 dispatch(getFavourites({
                     favouritesData: {
                         doc_num: '',
@@ -100,62 +101,80 @@ const DataCard = ({ data, token, isEven, click, panel }) => {
         dispatch(toggleDocumentStatus({ token, familyId: data.familyid, newStatus }))
     }
 
+    // Gestisco la selezione della card, aggiornando Redux
+    const [isSelected, setIsSelected] = useState()
+    const handleSelect = (event) => {
+        const { checked } = event.target
+        setIsSelected(checked)
+        dispatch(checked ? addDocument(data.familyid) : removeDocument(data.familyid))
+    }
+
     return (
-        <div className={`flex flex-col md:flex-col xl:flex-row text-[8pt] border ${isEven ? 'bg-stone-50 border-red-50' : 'bg-stone-100 border-red-100'} hover:border-red-800 w-full xl:w-fit px-4 py-2 gap-4 rounded-3xl relative ${data.read_history === "new" && 'font-bold'}`}>
-            {/* Numero documento */}
-            <div className="w-full sm:w-[200px] xl:w-[160px]">
-                {/* <h6>{index}</h6> */}
-                <h4 className="block xl:hidden text-xs md:text-left text-stone-400">Numero</h4>
-                <div className="p-2 h-11 flex gap-2 items-center">
-                    <div className="border rounded-lg border-stone-300 p-2 w-[40px] h-11 flex justify-center cursor-pointer hover:bg-stone-200" onClick={click}><i className="fi fi-rr-file-circle-info text-red-800 text-lg pt-0.5"></i></div>
-                    <div>{data.doc_num}</div>
-                </div>
+        <div className="group w-fit flex justify-center items-center gap-4 p-2">
+
+            {/* Select */}
+            <div className="relative group">
+                <input type="checkbox" value={data.familyid} className="accent-red-800" onClick={handleSelect} />
+                <div className={`absolute inset-0 bg-white group-hover:hidden`}></div>
             </div>
-
-            {/* Titolo documento */}
-            <div className="w-full xl:w-[300px] 2xl:w-[500px]">
-                <h4 className="block xl:hidden text-xs text-center md:text-left lg:text-center ml-2 text-stone-400">Titolo</h4>
-                <div className="p-2 text-center md:text-left lg:text-center xl:text-left h-11 overflow-hidden flex items-start">{data.invention_title}</div>
-            </div>
-
-            {/* Other data */}
-            <div className="flex xs-custom sm:flex-row justify-start xl:justify-end gap-1 w-full xl:w-[240px]">
-                <div className="w-full">
-                    <h4 className="block xl:hidden text-xs md:text-left text-stone-400">Data</h4>
-                    {data.date && <div className="p-2 h-11 flex justify-center items-center w-full">{formattedDate}</div>}
-                </div>
-                <div className="flex flex-col items-center">
-                    <h4 className="block xl:hidden text-xs md:text-left text-stone-400">Stato</h4>
-                    <div className="border rounded-lg border-stone-300 p-2 h-11 flex justify-center items-center cursor-pointer w-[40px] hover:bg-stone-200">
-                        {
-                            data && data.read_history === "viewed" ? (
-                                <i class="fi fi-rr-envelope-open-text text-red-800 text-lg rounded-lg pt-1" onClick={() => setStatus("new")}></i>
-                            ) : (
-                                <i class="fi fi-rr-envelope text-red-800 text-lg rounded-lg pt-1" onClick={() => setStatus("viewed")}></i>
-                            )
-                        }
+            {/* Card data */}
+            <div className={`flex flex-col md:flex-col xl:flex-row text-[8pt] border ${isSelected ? 'border-red-800 border bg-red-50' : (isEven ? 'bg-stone-50 border-red-50' : 'bg-stone-100 border-red-100')} hover:border-red-800 w-full xl:w-fit px-4 py-2 gap-4 rounded-3xl relative ${data.read_history === "new" && 'font-bold'}`}>
+                {/* Numero documento */}
+                <div className="w-full sm:w-[200px] xl:w-[160px]">
+                    {/* <h6>{index}</h6> */}
+                    <h4 className="block xl:hidden text-xs md:text-left text-stone-400">Numero</h4>
+                    <div className="p-2 h-11 flex gap-2 items-center">
+                        <div className="border rounded-lg border-stone-300 p-2 w-[40px] h-11 flex justify-center cursor-pointer hover:bg-stone-200" onClick={click}><i className="fi fi-rr-file-circle-info text-red-800 text-lg pt-0.5"></i></div>
+                        <div>{data.doc_num}</div>
                     </div>
                 </div>
 
-                <div className="flex flex-col items-center">
-                    <h4 className="block xl:hidden text-xs md:text-left text-stone-400">Preferiti</h4>
-                    <div className="border rounded-lg border-stone-300 flex justify-center items-center h-11 cursor-pointer w-[40px] hover:bg-stone-200">
-                        {!data.bookmark && <i className="fi fi-rr-star text-red-800 text-lg rounded-lg pt-1" onClick={sectionNumber === 0 ? setIsFavModal : setIsFavSettingModal}></i>}
-                        {data.bookmark && <i className="fi fi-sr-star text-red-800 text-lg rounded-lg pt-1" onClick={sectionNumber === 0 ? () => setOrChangeOrRemoveFavourite(null) : setIsFavSettingModal}></i>}
-                    </div>
+                {/* Titolo documento */}
+                <div className="w-full xl:w-[300px] 2xl:w-[500px]">
+                    <h4 className="block xl:hidden text-xs text-center md:text-left lg:text-center ml-2 text-stone-400">Titolo</h4>
+                    <div className="p-2 text-center md:text-left lg:text-center xl:text-left h-11 overflow-hidden flex items-start">{data.invention_title}</div>
                 </div>
-                <div className="flex flex-col items-center">
-                    <h4 className="block xl:hidden text-xs md:text-left text-stone-400">Note</h4>
-                    <div className="border rounded-lg border-stone-300 flex justify-center items-center h-11 cursor-pointer w-[40px] hover:bg-stone-200" onClick={() => setIsNoteVisible(true)}>
-                        {data.notes === "" && <i className="fi fi-rr-note-sticky text-red-800 text-lg rounded-lg pt-1"></i>}
-                        {data.notes !== "" && <i className="fi fi-sr-note-sticky text-red-800 text-lg rounded-lg pt-1"></i>}
+
+                {/* Other data */}
+                <div className="flex xs-custom sm:flex-row justify-start xl:justify-end gap-1 w-full xl:w-[240px]">
+                    <div className="w-full">
+                        <h4 className="block xl:hidden text-xs md:text-left text-stone-400">Data</h4>
+                        {data.date && <div className="p-2 h-11 flex justify-center items-center w-full">{formattedDate}</div>}
                     </div>
+                    <div className="flex flex-col items-center">
+                        <h4 className="block xl:hidden text-xs md:text-left text-stone-400">Stato</h4>
+                        <div className="border rounded-lg border-stone-300 p-2 h-11 flex justify-center items-center cursor-pointer w-[40px] hover:bg-stone-200">
+                            {
+                                data && data.read_history === "viewed" ? (
+                                    <i class="fi fi-rr-envelope-open-text text-red-800 text-lg rounded-lg pt-1" onClick={() => setStatus("new")}></i>
+                                ) : (
+                                    <i class="fi fi-rr-envelope text-red-800 text-lg rounded-lg pt-1" onClick={() => setStatus("viewed")}></i>
+                                )
+                            }
+                        </div>
+                    </div>
+
+                    <div className="flex flex-col items-center">
+                        <h4 className="block xl:hidden text-xs md:text-left text-stone-400">Preferiti</h4>
+                        <div className="border rounded-lg border-stone-300 flex justify-center items-center h-11 cursor-pointer w-[40px] hover:bg-stone-200">
+                            {!data.bookmark && <i className="fi fi-rr-star text-red-800 text-lg rounded-lg pt-1" onClick={sectionNumber === 0 ? setIsFavModal : setIsFavSettingModal}></i>}
+                            {data.bookmark && <i className="fi fi-sr-star text-red-800 text-lg rounded-lg pt-1" onClick={sectionNumber === 0 ? () => setOrChangeOrRemoveFavourite(null) : setIsFavSettingModal}></i>}
+                        </div>
+                    </div>
+                    <div className="flex flex-col items-center">
+                        <h4 className="block xl:hidden text-xs md:text-left text-stone-400">Note</h4>
+                        <div className="border rounded-lg border-stone-300 flex justify-center items-center h-11 cursor-pointer w-[40px] hover:bg-stone-200" onClick={() => setIsNoteVisible(true)}>
+                            {data.notes === "" && <i className="fi fi-rr-note-sticky text-red-800 text-lg rounded-lg pt-1"></i>}
+                            {data.notes !== "" && <i className="fi fi-sr-note-sticky text-red-800 text-lg rounded-lg pt-1"></i>}
+                        </div>
+                    </div>
+                    {isFavModal && <FavouriteModal close={setIsFavModal} isBookmark={data.bookmark} setFavouriteFetch={setOrChangeOrRemoveFavourite} />}
+                    {isFavSettingModal && <FavouriteSettingModal close={setIsFavSettingModal} categoryId={data.bmfolderid} setFavouriteFetch={setOrChangeOrRemoveFavourite} />}
+                    {isNoteVisible && <NoteModal close={setIsNoteVisible} docNum={data.doc_num} note={data.notes} />}
                 </div>
-                {isFavModal && <FavouriteModal close={setIsFavModal} isBookmark={data.bookmark} setFavouriteFetch={setOrChangeOrRemoveFavourite} />}
-                {isFavSettingModal && <FavouriteSettingModal close={setIsFavSettingModal} categoryId={data.bmfolderid} setFavouriteFetch={setOrChangeOrRemoveFavourite} />}
-                {isNoteVisible && <NoteModal close={setIsNoteVisible} docNum={data.doc_num} note={data.notes} />}
             </div>
         </div>
+
     )
 }
 

@@ -48,7 +48,8 @@ const DataPanel = () => {
                         {/* Sort Panel */}
                         {pagedData && pagedData.length > 0 && <SortPanel />}
 
-                        {
+                        <div>
+                            {
                             pagedData && Array.isArray(pagedData[page - 1]) && pagedData[page - 1].map((element, index) => {
                                 if (!element.userinfo) { /* questo toglie la card per userinfo */
                                     return <DataCard key={index} panel="search" data={element} token={token} isEven={index % 2 === 0 ? true : false} click={() => handleSelectObject(element)} />
@@ -57,6 +58,8 @@ const DataPanel = () => {
                                 }
                             })
                         }
+                        </div>
+                        
 
                         {/* {pagedData && pagedData.length > 0 && <h4>{(pageSize * (pagedData.length - 1)) + (pagedData[pagedData.length - 1].length)} elementi trovati.</h4>} */}
                         {pagedData && pagedData.length > 0 && <PageSelect page={page} selectPage={HandleSelectPage} />}

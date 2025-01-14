@@ -29,7 +29,7 @@ const SortPanel = ({ isFavourite, category }) => {
         }
     }, [selectedKey])
     return (
-        <div className="flex gap-4 text-xs text-stone-400 font-bold">
+        <div className="flex gap-4 text-xs text-stone-400 font-bold pl-16">
             <div className="w-full sm:w-[200px] xl:w-[160px] text-left border-r p-1 rounded flex gap-1 cursor-pointer" id="doc_num" onClick={handleSelectSort}><div className="pt-[2px]"><i className="fi fi-rr-sort-alt"></i></div> N.documento</div>
             <div className="w-full xl:w-[300px] 2xl:w-[500px] text-left border-r p-1 rounded flex gap-1 cursor-pointer" id="invention_title" onClick={handleSelectSort}><div className="pt-[2px]"><i className="fi fi-rr-sort-alt"></i></div> Titolo</div>
             <div className="flex sm:flex-row justify-start xl:justify-end gap-1 w-full xl:w-[240px]">
