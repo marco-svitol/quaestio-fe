@@ -68,7 +68,7 @@ const FavouriteModal = ({ close, isBookmark, setFavouriteFetch }) => {
         })
     }
     useEffect(() => {
-        console.log('selecetedCategory: ', selectedCategory)
+        console.log('selectedCategory: ', selectedCategory)
     }, [selectedCategory])
 
     // Creo nuova categoria
@@ -89,7 +89,6 @@ const FavouriteModal = ({ close, isBookmark, setFavouriteFetch }) => {
             headers
         }
         try {
-
             const response = await fetch(url, options);
             if (response.ok) {
                 const result = await response.json();
@@ -152,7 +151,7 @@ const FavouriteModal = ({ close, isBookmark, setFavouriteFetch }) => {
                     {
                         !categoryFetchError && categoryInput &&
                         <div className="flex items-center">
-                            <MiniSecondaryButton text={`Crea nuova categoria: '${categoryInput ? categoryInput : ''}'`} click={createCategory} />
+                            <MiniSecondaryButton text={`Crea nuova categoria: '${categoryInput}'`} click={createCategory} />
                         </div>
                     }
                     {
