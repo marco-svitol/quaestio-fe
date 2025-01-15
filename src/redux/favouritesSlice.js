@@ -88,7 +88,21 @@ const favouritesSlice = createSlice({
             } else {
                 state.favCategorizedPagedData = null
             }
-
+        },
+        updateDocumentStatus: (state, action) => {
+            const familyId = action.payload.familyId;
+            const newStatus = action.payload.newStatus;
+            console.log('slice newStatus: ', newStatus)
+            const updatedFavPagedData = state.favPagedData.map(page => {
+                return page.map(document => {
+                    if (document.familyid === familyId) {
+                        return { ...document, read_history: newStatus };
+                    } else {
+                        return document
+                    }
+                })
+            })
+            state.favPagedData = updatedFavPagedData;
         }
     },
     extraReducers: (builder) => {
@@ -137,5 +151,5 @@ const favouritesSlice = createSlice({
     }
 })
 
-export const { setFavPage, updateFavourite, sortFavourites, getCategory, setCategory } = favouritesSlice.actions;
+export const { setFavPage, updateFavourite, sortFavourites, getCategory, setCategory, updateDocumentStatus } = favouritesSlice.actions;
 export default favouritesSlice.reducer;

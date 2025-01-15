@@ -7,7 +7,11 @@ import { getCategory, setFavPage, setCategory } from "../redux/favouritesSlice";
 import PageBlock from "./PageBlock.jsx";
 import SortPanel from "./SortPanel.jsx";
 import { Link } from "react-router-dom";
+import { removeAllDocuments } from '../redux/selectedSlice.js';
 
+// FavouritePanel gestisce le card allo stesso modo di DataPanel, i dati vengono gestiti da favouritesSlice invece che searchSlice
+// Esso è attivato sempre da Navbar in base alla sezione selezionata in sectionSlice
+// Viene effettuata una chiamata ad ogni approdo, in modo che che le card siano sempre aggiornate in base alle modifiche effettuate dalla section 0 (DataPanel)
 const FavDataPanel = () => {
     const { favPagedData, favCategorizedPagedData, favError, favPage, favFetchStatus } = useSelector((state) => state.favourites);
     const token = useSelector((state) => state.login.token);
@@ -34,11 +38,8 @@ const FavDataPanel = () => {
         id: null,
         name: null
     }) */
-    const {favCategory} = useSelector(state => state.favourites);
+    const { favCategory } = useSelector(state => state.favourites);
     // debug
-    useEffect(() => {
-        console.log('favCategory: ', favCategory)
-    }, [favCategory])
     const handleCategorySelect = (event) => {
         const { value } = event.target;
         const selectedOption = event.target.options[event.target.selectedIndex];
@@ -48,10 +49,6 @@ const FavDataPanel = () => {
                 id: null,
                 name: null
             }))
-            /* setCategory({
-                id: null,
-                name: null
-            }) */
         } else {
             dispatch(setCategory({
                 id: value,
@@ -69,9 +66,19 @@ const FavDataPanel = () => {
             console.log('pageSize: ', pageSize)
             dispatch(getCategory({ categoryId: favCategory.id, pageSize: pageSize }))
         } else {
-            dispatch(getCategory({categoryId: null, pageSize: pageSize}))
+            dispatch(getCategory({ categoryId: null, pageSize: pageSize }))
         }
     }, [favCategory])
+
+    // Svuoto la lista di documenti eventualmente selezionati in selectedSlice
+    // Setto 'Tutti' come categoria
+    useEffect(() => {
+        dispatch(removeAllDocuments())
+        dispatch(setCategory({
+            id: null,
+            name: null
+        }))
+    }, [])
 
     return (
         <PageBlock width="full" items="center" relative>

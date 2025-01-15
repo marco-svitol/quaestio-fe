@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
 import { MiniDisabledButton, MiniPrimaryButton, MiniSecondaryButton } from "./Buttons";
 import { useDispatch, useSelector } from "react-redux";
-import { setNeedTrue } from "../redux/lastCallSlice";
 import { getUserProfile } from "../redux/userProfileSlice";
 import MiniLoader from "./MiniLoader";
 
@@ -69,7 +68,7 @@ const FavouriteModal = ({ close, isBookmark, setFavouriteFetch }) => {
         })
     }
     useEffect(() => {
-        console.log('selecetedCategory: ', selectedCategory)
+        console.log('selectedCategory: ', selectedCategory)
     }, [selectedCategory])
 
     // Creo nuova categoria
@@ -90,7 +89,6 @@ const FavouriteModal = ({ close, isBookmark, setFavouriteFetch }) => {
             headers
         }
         try {
-
             const response = await fetch(url, options);
             if (response.ok) {
                 const result = await response.json();
@@ -153,7 +151,7 @@ const FavouriteModal = ({ close, isBookmark, setFavouriteFetch }) => {
                     {
                         !categoryFetchError && categoryInput &&
                         <div className="flex items-center">
-                            <MiniSecondaryButton text={`Crea nuova categoria: '${categoryInput ? categoryInput : ''}'`} click={createCategory} />
+                            <MiniSecondaryButton text={`Crea nuova categoria: '${categoryInput}'`} click={createCategory} />
                         </div>
                     }
                     {

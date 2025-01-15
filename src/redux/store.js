@@ -7,6 +7,7 @@ import sectionReducer from './sectionSlice.js';
 import lastCallReducer from './lastCallSlice.js';
 import favLastCallReducer from "./favLastCallSlice.js";
 import sortStatusReducer from './sortStatusSlice.js';
+import selectedReducer from './selectedSlice.js';
 
 const store = configureStore({
     reducer: {
@@ -17,7 +18,8 @@ const store = configureStore({
         section: sectionReducer,
         lastCall: lastCallReducer,
         favLastCall: favLastCallReducer,
-        sortStatus: sortStatusReducer
+        sortStatus: sortStatusReducer,
+        selected: selectedReducer
     }
 })
 

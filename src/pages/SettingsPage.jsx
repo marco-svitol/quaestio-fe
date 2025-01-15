@@ -5,7 +5,6 @@ import { setSection } from "../redux/sectionSlice";
 import { MiniPrimaryButton, PrimaryButton } from "../components/Buttons";
 import { useNavigate } from 'react-router-dom';
 import { repageDataPageSize, setPageSize } from "../redux/searchSlice";
-import { setNeedTrue } from "../redux/lastCallSlice";
 import MiniLoader from '../components/MiniLoader';
 import { getUserProfile } from '../redux/userProfileSlice.js'
 
@@ -250,14 +249,9 @@ const SettingsPage = () => {
     // // RENAME CATEGORIE
 
     // Gestisco il rename delle categorie
+    const [categoryToEdit, setCategoryToEdit] = useState(null);
     const { bmfolders } = useSelector(state => state.userProfile);
-    let initialState;
-    if (bmfolders && bmfolders.length > 1) {
-        initialState = { id: bmfolders[1].id, name: bmfolders[1].name }
-    } else {
-        initialState = null;
-    }
-    const [categoryToEdit, setCategoryToEdit] = useState(initialState);
+
     const handleSelectCategory = (event) => {
         const { value } = event.target;
         const selectedOption = event.target.options[event.target.selectedIndex];
@@ -268,6 +262,21 @@ const SettingsPage = () => {
             name: name
         })
     }
+    useEffect(() => {
+        if (bmfolders && bmfolders.length > 1) {
+            setCategoryToEdit({
+                id: bmfolders[1].id,
+                name: bmfolders[1].name
+            })
+        } else {
+            setTimeout(() => {
+                setCategoryToEdit(null);
+            }, 3000)
+        }
+    }, [bmfolders])
+    useEffect(() => {
+        console.log('categoryToEdit: ', categoryToEdit)
+    }, [categoryToEdit])
 
     // Gestisco l'input del nuovo nome categoria
     const [newCategoryName, setNewCategoryName] = useState(null);
@@ -291,6 +300,7 @@ const SettingsPage = () => {
         let url;
         console.log('name: ', name);
         url = `${process.env.REACT_APP_SERVER_BASE_URL}/v2/bmfolder?id=${categoryToEdit.id}&name=${name}`;
+        console.log('url: ', url)
         const headers = {
             'Content-Type': 'application/json',
             Authorization: `Bearer ${token}`
@@ -329,20 +339,6 @@ const SettingsPage = () => {
             console.log('Catch error: ', error)
         }
     }
-
-    useEffect(() => {
-        console.log('bmfolders.length: ', bmfolders.length)
-        if (bmfolders.length > 1) {
-            setCategoryToEdit({
-                id: bmfolders[1].id,
-                name: bmfolders[1].name
-            })
-        } else {
-            setTimeout(() => {
-                setCategoryToEdit(null);
-            }, 3000)
-        }
-    }, [bmfolders])
 
     return (
         <div className="main-container settings">

@@ -31,6 +31,31 @@ export const getSearch = createAsyncThunk(
     }
 )
 
+// Thunk per togglare lo stato del singolo documento
+export const toggleDocumentStatus = createAsyncThunk(
+    'status/toggle',
+    async ({ token, familyId, newStatus }) => {
+        const url = `${process.env.REACT_APP_SERVER_BASE_URL}/v2/docStatus?familyid=${familyId}&status=${newStatus}`;
+        const headers = { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` };
+        const options = { method: 'PATCH', headers };
+        console.log('url: ', url)
+        try {
+            const response = await fetch(url, options);
+            if (response.ok) {
+                const result = await response.json();
+                console.log('result: ', result);
+                return { familyId, newStatus };
+            } else {
+                const errorText = await response.text();
+                throw errorText;
+            }
+        } catch (error) {
+            console.error('Catch.error: ', error);
+            throw error;
+        }
+    }
+)
+
 // Controllo che sia memorizzato in cache del browser il pageSize
 const browserPageSize = localStorage.getItem('pageSize');
 const initialPageSize = browserPageSize ? parseInt(browserPageSize) : 8;
@@ -42,7 +67,8 @@ const searchSlice = createSlice({
         error: null,
         pageSize: initialPageSize,
         page: 1,
-        pagedData: null
+        pagedData: null,
+        isDocumentStatusStatus: 'idle'
     },
     reducers: {
         setPageSize: (state, action) => {
@@ -122,6 +148,28 @@ const searchSlice = createSlice({
             state.error = action.error.message;
             state.fetchStatus = 'error';
         },
+        [toggleDocumentStatus.pending]: (state) => {
+            state.isDocumentStatusStatus = 'loading';
+        },
+        [toggleDocumentStatus.fulfilled]: (state, action) => {
+            const familyId = action.payload.familyId;
+            const newStatus = action.payload.newStatus;
+            const updatedPagedData = state.pagedData.map(page => {
+                return page.map(document => {
+                    if (document.familyid === familyId) {
+                        return { ...document, read_history: newStatus};
+                    } else {
+                        return document
+                    }
+                })
+            })
+            state.pagedData = updatedPagedData;
+            state.isDocumentStatusStatus = 'succeeded';
+        },
+        [toggleDocumentStatus.rejected]: (state, action) => {
+            state.documentStatusError = action.error.message;
+            state.isDocumentStatusStatus = 'failed';
+        }
     }
 })
 
