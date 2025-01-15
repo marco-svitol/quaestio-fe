@@ -4,6 +4,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { getSearch, setPage } from "../redux/searchSlice.js";
 import PageBlock from "./PageBlock.jsx";
 import { setLastCall, setNeedFalse } from "../redux/lastCallSlice.js";
+import {removeAllDocuments} from '../redux/selectedSlice.js';
 
 const SearchBar = () => {
     const { fetchStatus } = useSelector((state) => state.search);
@@ -67,6 +68,7 @@ const SearchBar = () => {
     // GET SEARCH FETCH
     const dispatch = useDispatch();
     const getReduxSearch = () => {
+        dispatch(removeAllDocuments()); // Svuoto la lista di documenti eventualmente selezionati per l'esportazione in selectedSlice
         dispatch(setPage(1));
         dispatch(setLastCall(inputData)); // A last call non passo l'inputData formattato, perché la data in frontend viene gestita in modo canonico
         dispatch(getSearch({ searchData: inputData, token: token, sort: sortStatus }));

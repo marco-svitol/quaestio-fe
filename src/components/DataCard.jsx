@@ -8,7 +8,7 @@ import { setFavNeedTrue } from '../redux/favLastCallSlice';
 import MiniLoader from "./MiniLoader";
 import FavouriteModal from "./FavouriteModal";
 import FavouriteSettingModal from "./FavouriteSettingModal";
-import { addDocument, removeDocument } from "../redux/selectedSlice";
+import { addDocuments, removeDocument } from "../redux/selectedSlice";
 
 const DataCard = ({ data, token, isEven, click, panel }) => {
     const { sectionNumber } = useSelector(state => state.section);
@@ -89,12 +89,6 @@ const DataCard = ({ data, token, isEven, click, panel }) => {
                     }, token, sort: sortStatus, pageSize: pageSize
                 }))
             }
-            // controlla che ci sia nei favoriti ed eventualmente dispatcha
-            console.log("data.familyid: ", data.familyid);
-            console.log("data.read_history: ", data.read_history);
-            /* if (data.bookmark === true) { // se l'elemento è presente nei preferiti, aggiorno la voce status
-                dispatch(updateDocumentStatus({ familyId: data.familyid, newStatus: data.read_history === "viewed" ? "new" : "viewed"}))
-            } */
         }
     }, [isDocumentStatusStatus])
     const setStatus = (newStatus) => {
@@ -102,23 +96,58 @@ const DataCard = ({ data, token, isEven, click, panel }) => {
     }
 
     // Gestisco la selezione della card, aggiornando Redux
-    const [isSelected, setIsSelected] = useState()
+    const { selectedDocuments } = useSelector(state => state.selected)
     const handleSelect = (event) => {
         const { checked } = event.target
-        setIsSelected(checked)
-        dispatch(checked ? addDocument(data.familyid) : removeDocument(data.familyid))
+        dispatch(checked ? addDocuments([data.familyid]) : removeDocument(data.familyid))
     }
+
+    // Gestisco la modale di esportazione
+    const [formats, setFormats] = useState({
+        pdf: true,
+        csv: false
+    })
 
     return (
         <div className="group w-fit flex justify-center items-center gap-4 p-2">
 
+            {
+                selectedDocuments.includes(data.familyid) &&
+                <div className="fixed bottom-4 right-8 flex items-center gap-2 bg-red-800 w-fit py-2 px-4 rounded-xl z-10">
+                    <div className="flex flex-col gap-3 items-center">
+
+                        {/* Formato */}
+                        <div className="flex gap-2 items-center">
+                            <div className="text-white text-sm">Formato:</div>
+                            <div className="flex text-sm">
+                                <div className="flex gap-2 py-1 px-2 rounded">
+                                    <input type="checkbox" id="pdf" defaultChecked />
+                                    <label htmlFor="pdf" className="text-white">pdf</label>
+                                </div>
+                                <div className="flex gap-2 py-1 px-2 rounded">
+                                    <input type="checkbox" id="csv" />
+                                    <label htmlFor="csv" className="text-white">csv</label>
+                                </div>
+                            </div>
+                        </div>
+                        {/* Esporta */}
+                        <div className="flex gap-2 items-center">
+                            <button className="bg-white py-2 px-4 rounded-xl hover:bg-red-50 w-fit">Esporta</button>
+                            <div className="text-white fon">n. <span className="font-bold">{selectedDocuments.length}</span> document<span>{selectedDocuments.length === 1 ? 'o' : 'i'}</span></div>
+                        </div>
+
+                    </div>
+                </div>
+            }
+
+
             {/* Select */}
             <div className="relative group">
-                <input type="checkbox" value={data.familyid} className="accent-red-800" onClick={handleSelect} />
-                <div className={`absolute inset-0 bg-white group-hover:hidden`}></div>
+                <input type="checkbox" value={data.familyid} className="accent-red-800" onClick={handleSelect} checked={selectedDocuments.includes(data.familyid) ? true : false} />
+                <div className={!selectedDocuments.length > 0 && 'absolute inset-0 bg-white group-hover:hidden'}></div>
             </div>
             {/* Card data */}
-            <div className={`flex flex-col md:flex-col xl:flex-row text-[8pt] border ${isSelected ? 'border-red-800 border bg-red-50' : (isEven ? 'bg-stone-50 border-red-50' : 'bg-stone-100 border-red-100')} hover:border-red-800 w-full xl:w-fit px-4 py-2 gap-4 rounded-3xl relative ${data.read_history === "new" && 'font-bold'}`}>
+            <div className={`flex flex-col md:flex-col xl:flex-row text-[8pt] border ${selectedDocuments.includes(data.familyid) ? 'border-red-800 border bg-red-50' : (isEven ? 'bg-stone-50 border-red-50' : 'bg-stone-100 border-red-100')} hover:border-red-800 w-full xl:w-fit px-4 py-2 gap-4 rounded-3xl relative ${data.read_history === "new" && 'font-bold'}`}>
                 {/* Numero documento */}
                 <div className="w-full sm:w-[200px] xl:w-[160px]">
                     {/* <h6>{index}</h6> */}

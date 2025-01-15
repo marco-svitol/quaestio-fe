@@ -10,6 +10,7 @@ import { Link } from "react-router-dom";
 import { setStoredPage } from "../redux/lastCallSlice";
 import NoteModal from "./notes/NoteModal";
 import SortPanel from "./SortPanel";
+import {removeAllDocuments} from '../redux/selectedSlice.js';
 
 // DataPanel riceve i dati da searchSlice, al quale effettua chiamate la navbar quando la sezione selezionata in sectioNumber è 0 (1 è per i favourites)
 // I dati delle singole card, se modificati, vengono memorizzati direttamente in searchSlice senza bisogno di effettuare un'altra chiamata
@@ -30,6 +31,11 @@ const DataPanel = () => {
     const resetSelectedObject = () => {
         setSelectedObject(null)
     }
+
+    // Svuoto la lista di documenti eventualmente selezionati in selectedSlice
+        useEffect(() => {
+            dispatch(removeAllDocuments())
+        }, [])
 
     return (
         <PageBlock width="full" items="center" relative>
@@ -63,11 +69,8 @@ const DataPanel = () => {
 
                         {/* {pagedData && pagedData.length > 0 && <h4>{(pageSize * (pagedData.length - 1)) + (pagedData[pagedData.length - 1].length)} elementi trovati.</h4>} */}
                         {pagedData && pagedData.length > 0 && <PageSelect page={page} selectPage={HandleSelectPage} />}
-
                         {pagedData && pagedData.length === 0 && <h3>Nessun elemento trovato.</h3>}
                         {selectedObject && <DetailsModal data={selectedObject} close={resetSelectedObject} />}
-
-
                     </>
                 )
             }

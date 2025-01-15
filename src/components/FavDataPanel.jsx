@@ -7,6 +7,7 @@ import { getCategory, setFavPage, setCategory } from "../redux/favouritesSlice";
 import PageBlock from "./PageBlock.jsx";
 import SortPanel from "./SortPanel.jsx";
 import { Link } from "react-router-dom";
+import {removeAllDocuments} from '../redux/selectedSlice.js';
 
 // FavouritePanel gestisce le card allo stesso modo di DataPanel, i dati vengono gestiti da favouritesSlice invece che searchSlice
 // Esso è attivato sempre da Navbar in base alla sezione selezionata in sectionSlice
@@ -75,6 +76,11 @@ const FavDataPanel = () => {
             dispatch(getCategory({categoryId: null, pageSize: pageSize}))
         }
     }, [favCategory])
+
+    // Svuoto la lista di documenti eventualmente selezionati in selectedSlice
+    useEffect(() => {
+        dispatch(removeAllDocuments())
+    }, [])
 
     return (
         <PageBlock width="full" items="center" relative>
