@@ -32,13 +32,15 @@ const SortPanel = ({ isFavourite, category }) => {
 
     // Gerstisco la selezione di tutti i documenti
     const { pagedData } = useSelector(state => state.search)
+    const { favPagedData } = useSelector(state => state.favourites)
     const { selectedDocuments } = useSelector(state => state.selected);
     const handleSelectAll = (event) => {
         const { checked } = event.target;
         if (checked) {
-            // Creo un array flat di pagedData
+            const pagedArray = isFavourite ? [...favPagedData] : [...pagedData];
+            // Creo un array flat
             const newArray = []
-            pagedData.forEach(page => {
+            pagedArray.forEach(page => {
                 page.forEach(document => {
                     newArray.push(document.familyid)
                 })
