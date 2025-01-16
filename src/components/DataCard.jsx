@@ -8,7 +8,7 @@ import { setFavNeedTrue } from '../redux/favLastCallSlice';
 import MiniLoader from "./MiniLoader";
 import FavouriteModal from "./FavouriteModal";
 import FavouriteSettingModal from "./FavouriteSettingModal";
-import { addDocuments, removeDocument } from "../redux/selectedSlice";
+import { addDocuments, removeDocument, setLastChecked } from "../redux/selectedSlice";
 import ExportModal from "./ExportModal";
 import getFormattedDate from "./utils/getFormattedDate";
 
@@ -26,7 +26,8 @@ const DataCard = ({ data, token, isEven, click, panel }) => {
     // favourite fetch
     const [favouriteFetchStatus, setFavouriteFetchStatus] = useState('idle');
     const [favouriteError, setFavouriteError] = useState(null)
-    const { pagedData } = useSelector(state => state.search) // Questo serve per verificare se esiste prima di droppare il setNeedTrue()
+    const { pagedData } = useSelector(state => state.search)
+    const { favPagedData } = useSelector(state => state.favourites)
     const dispatch = useDispatch();
     const setOrChangeOrRemoveFavourite = async (categoryId) => {
         // la seguente condizione imposta un aggiunta, una edit o una delete
@@ -95,17 +96,28 @@ const DataCard = ({ data, token, isEven, click, panel }) => {
     }
 
     // Gestisco la selezione della card, aggiornando Redux
-    const { selectedDocuments } = useSelector(state => state.selected)
+    // Gestisco anche la selezione multipla alla pressione del tasto SHIFT
+    const { selectedDocuments, lastChecked, isShiftPressed } = useSelector(state => state.selected);
     const handleSelect = (event) => {
         const { checked } = event.target
-        dispatch(checked ? addDocuments([data.familyid]) : removeDocument(data.familyid))
+        if (checked) {
+            if (isShiftPressed && lastChecked) { // Selezione multipla
+                const totalDocuments = sectionNumber === 0 ? [...pagedData] : [...favPagedData];
+                const flatData = totalDocuments.map(page => page.map(document => document.familyid)).flat(); // familyid totali della ricerca
+                const firstIndex = flatData.indexOf(lastChecked);
+                const secondIndex = flatData.indexOf(data.familyid);
+                const ascendingOrderIndex = firstIndex < secondIndex ? [firstIndex, secondIndex] : [secondIndex, firstIndex];
+                const selection = flatData.slice(ascendingOrderIndex[0], ascendingOrderIndex[1] + 1);
+                dispatch(addDocuments(selection));
+            } else { // Selezione singola
+                dispatch(addDocuments([data.familyid]));
+                dispatch(setLastChecked(data.familyid));
+            }
+        } else {
+            dispatch(removeDocument(data.familyid));
+            dispatch(setLastChecked(null));
+        }
     }
-
-    // Gestisco la modale di esportazione
-    const [formats, setFormats] = useState({
-        pdf: true,
-        csv: false
-    })
 
     return (
         <div className="group w-fit flex justify-center items-center gap-4 p-2">

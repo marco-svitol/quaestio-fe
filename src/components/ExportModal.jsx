@@ -125,7 +125,7 @@ const ExportModal = () => {
                 <div className="flex gap-2 items-center">
                     {(filesFormat.pdf || filesFormat.csv) && <button className="bg-white py-2 px-4 rounded-xl hover:bg-red-50 w-fit" onClick={handleExport} >Esporta</button>}
                     {(!filesFormat.pdf && !filesFormat.csv) && <button className="bg-white text-stone-300 py-2 px-4 rounded-xl w-fit cursor-auto" >Esporta</button>}
-                    <div className="text-white fon">n. <span className="font-bold">{selectedDocuments.length}</span> document<span>{selectedDocuments.length === 1 ? 'o' : 'i'}</span></div>
+                    <div className="text-white fon">n. <span className="font-bold">{selectedDocuments.length}</span> element<span>{selectedDocuments.length === 1 ? 'o' : 'i'}</span></div>
                 </div>
 
             </div>
