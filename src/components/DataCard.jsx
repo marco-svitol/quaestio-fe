@@ -10,16 +10,14 @@ import FavouriteModal from "./FavouriteModal";
 import FavouriteSettingModal from "./FavouriteSettingModal";
 import { addDocuments, removeDocument } from "../redux/selectedSlice";
 import ExportModal from "./ExportModal";
+import getFormattedDate from "./utils/getFormattedDate";
 
 const DataCard = ({ data, token, isEven, click, panel }) => {
     const { sectionNumber } = useSelector(state => state.section);
     const [formattedDate, setFormattedDate] = useState(null);
     useEffect(() => {
         if (data.date) {
-            const y = data.date[0] + data.date[1] + data.date[2] + data.date[3];
-            const m = data.date[4] + data.date[5];
-            const d = data.date[6] + data.date[7];
-            setFormattedDate(`${y} - ${m} - ${d}`);
+            setFormattedDate(getFormattedDate(data.date));
         }
     }, [data.date])
 

@@ -4,7 +4,8 @@ import { useDispatch, useSelector } from "react-redux";
 import { getSearch, setPage } from "../redux/searchSlice.js";
 import PageBlock from "./PageBlock.jsx";
 import { setLastCall, setNeedFalse } from "../redux/lastCallSlice.js";
-import {removeAllDocuments} from '../redux/selectedSlice.js';
+import { removeAllDocuments } from '../redux/selectedSlice.js';
+import ExportModal from "./ExportModal.jsx";
 
 const SearchBar = () => {
     const { fetchStatus } = useSelector((state) => state.search);
