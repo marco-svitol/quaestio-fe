@@ -68,7 +68,7 @@ const searchSlice = createSlice({
         pageSize: initialPageSize,
         page: 1,
         pagedData: null,
-        isDocumentStatusStatus: 'idle'
+        isDocumentStatusStatus: 'idle',
     },
     reducers: {
         setPageSize: (state, action) => {
@@ -114,11 +114,8 @@ const searchSlice = createSlice({
         [getSearch.fulfilled]: (state, action) => {
             state.error = null;
             const data = action.payload.search;
-            console.log('data: ', data)
-            console.log('typeof data: ', typeof (data))
             let dataWithoutUserinfo;
             if (Array.isArray(data)) {
-                console.log('here 1')
                 // tolgo lo userinfo se c'è
                 dataWithoutUserinfo = data.filter(element => !Object.keys(element).includes('userinfo'));
             }

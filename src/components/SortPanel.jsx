@@ -53,7 +53,7 @@ const SortPanel = ({ isFavourite, category }) => {
     }
 
     return (
-        <div className="flex gap-4 text-xs text-stone-400 font-bold">
+        <div className="hidden xl:flex gap-4 text-xs text-stone-400 font-bold">
             <div className="relative group w-8 flex justify-start ml-[-14px]">
                 <input type="checkbox" id="selectAll" className="accent-red-800" onClick={handleSelectAll} defaultChecked={false} />
                 {/* <div className={!selectedDocuments.length > 0 && 'absolute inset-0 bg-white group-hover:hidden'}></div> */}

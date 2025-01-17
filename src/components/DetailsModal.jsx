@@ -15,7 +15,7 @@ const DetailsModal = ({ data, close }) => {
     const [openData, setOpenData] = useState(null);
     const getOpenDoc = async () => {
         try {
-            const response = await fetch(`${process.env.REACT_APP_SERVER_BASE_URL}/v2/opendoc?doc_num=${data.doc_num}`, {
+            const response = await fetch(`${process.env.REACT_APP_SERVER_BASE_URL}/v2/opendoc?doc_num=${data.doc_num}&familyid=${data.familyid}`, {
                 method: 'GET',
                 headers: {
                     Authorization: `Bearer ${token}`,
