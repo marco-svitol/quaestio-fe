@@ -151,7 +151,6 @@ const DataCard = ({ data, token, isEven, click, panel }) => {
                         <h4 className="block xl:hidden text-xs md:text-left text-stone-400">Data</h4>
                         {data.date && <div className="p-2 h-11 flex items-center w-full">{formattedDate}</div>}
                     </div>
-
                     <div className="flex flex-col items-center">
                         <h4 className="block xl:hidden text-xs md:text-left text-stone-400">Stato</h4>
                         <div className="border rounded-lg border-stone-300 p-2 h-11 flex justify-center items-center cursor-pointer w-[40px] hover:bg-stone-200">

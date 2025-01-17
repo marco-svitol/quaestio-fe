@@ -23,7 +23,6 @@ const Homepage = () => {
             dispatch(setIsShiftPressed(false))
         }
     }
-
     return (
         <div className="main-container" tabIndex="0" onKeyDown={handleKeyDown} onKeyUp={handleKeyUp}>
             {
@@ -34,6 +33,10 @@ const Homepage = () => {
             {sectionNumber === 0 && <DataPanel />}
             {sectionNumber === 1 && <FavSearchBar />}
             {sectionNumber === 1 && <FavDataPanel />}
+            {
+                selectedDocuments.length > 0 &&
+                <ExportModal />
+            }
         </div>
     )
 }
