@@ -6,7 +6,7 @@ import { setNeedTrue } from "../../redux/lastCallSlice";
 import MiniLoader from "../MiniLoader";
 import { setFavNeedTrue } from "../../redux/favLastCallSlice";
 
-const NoteModal = ({ close, docNum, note, setLoading }) => {
+const NoteModal = ({ close, docNum, familyId, note, setLoading }) => {
 
     // Gestisco l'input della nota
     const [inputData, setInputData] = useState(null);
@@ -29,7 +29,7 @@ const NoteModal = ({ close, docNum, note, setLoading }) => {
     const dispatch = useDispatch();
     const sendNote = async () => {
         setFetchStatus('loading');
-        const url = `${process.env.REACT_APP_SERVER_BASE_URL}/v2/notes?doc_num=${docNum}&notes=${inputData}`;
+        const url = `${process.env.REACT_APP_SERVER_BASE_URL}/v2/notes?familyid=${familyId}&notes=${inputData}`;
         const headers = {
             Authorization: `Bearer ${token}`
         };

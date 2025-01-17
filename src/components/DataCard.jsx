@@ -180,7 +180,7 @@ const DataCard = ({ data, token, isEven, click, panel }) => {
                     </div>
                     {isFavModal && <FavouriteModal close={setIsFavModal} isBookmark={data.bookmark} setFavouriteFetch={setOrChangeOrRemoveFavourite} />}
                     {isFavSettingModal && <FavouriteSettingModal close={setIsFavSettingModal} categoryId={data.bmfolderid} setFavouriteFetch={setOrChangeOrRemoveFavourite} />}
-                    {isNoteVisible && <NoteModal close={setIsNoteVisible} docNum={data.doc_num} note={data.notes} />}
+                    {isNoteVisible && <NoteModal close={setIsNoteVisible} docNum={data.doc_num} familyId={data.familyid} note={data.notes} />}
                 </div>
             </div>
         </div>
