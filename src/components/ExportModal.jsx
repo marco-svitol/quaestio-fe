@@ -64,13 +64,14 @@ const ExportModal = () => {
         const link = document.createElement('a');
         const url = URL.createObjectURL(blob);
         link.href = url;
-        link.download = 'dati.csv';
+        // Genero il nome del file con la data
+        const timestamp = getFormattedDate();
+        link.download = `pat-to-date-export_${timestamp}.csv`;
         document.body.appendChild(link);
         link.click(); // Simula il click sull'elemento creato
         document.body.removeChild(link);
         URL.revokeObjectURL(url); // Rilascia l'oggetto blob dall'url
     }
-
 
     // Gestisco l'esportazione in pdf
     const handlePdfExport = () => {
@@ -94,7 +95,8 @@ const ExportModal = () => {
         })
 
         // Scarico pdf
-        doc.save('dati.pdf');
+        const timestamp = getFormattedDate();
+        doc.save(`pat-to-date-export_${timestamp}.pdf`);
     };
 
     // Funzion principale per richiamare quelle delle esportazioni
@@ -102,6 +104,18 @@ const ExportModal = () => {
         if (filesFormat.pdf) handlePdfExport();
         if (filesFormat.csv) handleCsvExport();
     }
+
+    // Funzione per generare il timestamp per nominare il file
+    function getFormattedDate() {
+        const now = new Date();
+        const year = now.getFullYear();
+        const month = String(now.getMonth() + 1).padStart(2, '0'); // Mesi da 0 a 11
+        const day = String(now.getDate()).padStart(2, '0');
+        const hours = String(now.getHours()).padStart(2, '0');
+        const minutes = String(now.getMinutes()).padStart(2, '0');
+        return `${year}${month}${day}_${hours}${minutes}`;
+    }
+
 
     return (
         <div className="fixed bottom-4 right-8 flex items-center gap-2 bg-red-800 w-fit py-2 px-4 rounded-xl z-10">
