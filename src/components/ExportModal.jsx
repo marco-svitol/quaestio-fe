@@ -116,7 +116,6 @@ const ExportModal = () => {
         return `${year}${month}${day}_${hours}${minutes}`;
     }
 
-
     return (
         <div className="fixed bottom-4 right-8 flex items-center gap-2 bg-red-800 w-fit py-2 px-4 rounded-xl z-10">
             <div className="flex flex-col gap-3 items-center">
