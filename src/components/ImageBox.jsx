@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import Pdf from "./Pdf";
 
-const ImageBox = ({ image, setIsImageLoaded }) => {
+const ImageBox = ({ image, setIsImageLoaded, isPrinting }) => {
     const { desc, format, link, nofpages } = image;
     const token = useSelector(state => state.login.token);
     const [fileType, setFileType] = useState(null);
@@ -55,25 +55,25 @@ const ImageBox = ({ image, setIsImageLoaded }) => {
         console.log("Passing setIsImageLoaded: ", setIsImageLoaded);
     }, [setIsImageLoaded])
     return (
-        <div className="flex flex-col items-center">
+        <div className={`flex flex-col items-center w-fit`}>
             {
                 fetchStatus === 'pending' ? (
-                    <div className="custom-loader my-4"></div>
+                    <div className={`custom-loader ${isPrinting ? 'my-0' : 'my-4'}`}></div>
                 ) : (
                     fetchStatus === 'succeeded' &&
                         fileData &&
                         fileType.includes('image/') ? (
-                        <div className="flex flex-col items-center mb-16 w-full border-2 border-red-100 py-8 rounded-3xl">
-                            <h4 className="mb-4">Immagine:</h4>
-                            <img src={fileData} alt="image" className="w-96 rounded-2xl" />
+                        <div className={`flex flex-col items-center w-full ${isPrinting ? 'border-0' : 'border-2 border-red-100 py-8'} rounded-3xl`}>
+                            {!isPrinting && <h4 className="mb-4">Immagine:</h4>}
+                            <img src={fileData} alt="image" className={`${isPrinting ? 'max-h-[800px]' : 'w-96'} rounded-2xl`} />
                         </div>
                     ) : (
                         fetchStatus === 'succeeded' &&
                         fileData &&
                         fileType === 'application/pdf' &&
-                        <div className="flex flex-col items-center mb-16 w-full border-2 border-red-100 py-8 rounded-3xl">
-                            <h4 className="mb-4">Immagine:</h4>
-                            <Pdf url={fileData} />
+                        <div className={`flex flex-col items-center w-full ${isPrinting ? 'border-0' : 'border-2 border-red-100 py-8'} rounded-3xl`}>
+                            {!isPrinting && <h4 className="mb-4">Immagine:</h4>}
+                            <Pdf url={fileData} isPrinting={isPrinting} />
                         </div>
                     )
                 )
