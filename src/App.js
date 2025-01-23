@@ -6,6 +6,7 @@ import { useDispatch, useSelector } from "react-redux";
 import WelcomePage from "./pages/WelcomePage.jsx";
 import { getUserProfile } from "./redux/userProfileSlice.js";
 import SettingsPage from "./pages/SettingsPage.jsx";
+import PrintPage from "./pages/PrintPage.jsx";
 
 function App() {
   const isLogged = useSelector(state => state.login.isLogged);
@@ -26,6 +27,7 @@ function App() {
       <Routes>
         <Route exact path="/" element={isLogged ? <Homepage /> : <WelcomePage />} />
         <Route exact path="/settings" element={<SettingsPage />} />
+        <Route exact path="/print-element" element={<PrintPage />} />
       </Routes>
     </Router>
 

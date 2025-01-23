@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { useSelector } from "react-redux";
 import ImageBox from "./ImageBox.jsx";
+import { MiniPrimaryButton } from "./Buttons.js";
 
 const DetailsModal = ({ data, close }) => {
     const y = (data.date).slice(0, 4);
@@ -46,7 +47,6 @@ const DetailsModal = ({ data, close }) => {
         if (openData) {
             console.log('openData.images_links: ', openData)
             if (Array.isArray(openData.images_links)) {
-                console.log('HERE')
                 const first = openData.images_links.find(element => element.desc.includes('FirstPageClipping'));
                 if (first) {
                     setShowedImage(first)
@@ -59,9 +59,15 @@ const DetailsModal = ({ data, close }) => {
             }
         }
     }, [openData])
+
+    // Gestisco la visualizzazione del tasto Print solo quando anche ImageBox ha caricato l'Immagine
+    const [isImageLoaded, setIsImageLoaded] = useState(false);
+    const [isPrintable, setIsPrintable] = useState(false);
     useEffect(() => {
-        console.log('showedImage: ', showedImage);
-    }, [showedImage])
+        if (data && openData && formattedDate && showedImage && isImageLoaded) {
+            setIsPrintable(true)
+        }
+    }, [data, openData, formattedDate, showedImage, isImageLoaded])
 
     return (
         <>
@@ -76,6 +82,7 @@ const DetailsModal = ({ data, close }) => {
                     <p className="text-sm">Richiedente/i: {data.applicant}</p>
                     <p className="text-sm">Inventore/i: {data.inventor_name}</p>
                 </div>
+                {isPrintable && <Link to="/print-element" state={{ data, openData, formattedDate, showedImage, isImageLoaded }}><MiniPrimaryButton text="Stampa" /></Link>}
                 {data.abstract && <div className="flex flex-col 2xl:flex-row border-2 rounded-xl p-3 gap-4">
                     <div className="w-[500px]">
                         <h4>Riassunto:</h4>
@@ -84,7 +91,7 @@ const DetailsModal = ({ data, close }) => {
                     <div className="w-[500px] text-center">
                         {
                             showedImage &&
-                            <ImageBox image={showedImage} />
+                            <ImageBox image={showedImage} setIsImageLoaded={setIsImageLoaded} />
                         }
                     </div>
                 </div>}

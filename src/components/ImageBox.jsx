@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import Pdf from "./Pdf";
 
-const ImageBox = ({ image }) => {
+const ImageBox = ({ image, setIsImageLoaded }) => {
     const { desc, format, link, nofpages } = image;
     const token = useSelector(state => state.login.token);
     const [fileType, setFileType] = useState(null);
@@ -36,6 +36,13 @@ const ImageBox = ({ image }) => {
         }
     }
 
+    // Imposto setImagLoaded quando l'immagine è effettivamente visualizzata
+    useEffect(() => {
+        if (fileData) {
+            setIsImageLoaded(true);
+        }
+    }, [fileData])
+
     // Fetch at start
     useEffect(() => {
         if (image) {
@@ -43,6 +50,10 @@ const ImageBox = ({ image }) => {
             getFileData();
         }
     }, [image])
+
+    useEffect(() => {
+        console.log("Passing setIsImageLoaded: ", setIsImageLoaded);
+    }, [setIsImageLoaded])
     return (
         <div className="flex flex-col items-center">
             {
@@ -52,10 +63,10 @@ const ImageBox = ({ image }) => {
                     fetchStatus === 'succeeded' &&
                         fileData &&
                         fileType.includes('image/') ? (
-                            <div className="flex flex-col items-center mb-16 w-full border-2 border-red-100 py-8 rounded-3xl">
-                                <h4 className="mb-4">Immagine:</h4>
-                                <img src={fileData} alt="image" className="w-96 rounded-2xl"/>
-                            </div>
+                        <div className="flex flex-col items-center mb-16 w-full border-2 border-red-100 py-8 rounded-3xl">
+                            <h4 className="mb-4">Immagine:</h4>
+                            <img src={fileData} alt="image" className="w-96 rounded-2xl" />
+                        </div>
                     ) : (
                         fetchStatus === 'succeeded' &&
                         fileData &&

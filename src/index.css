@@ -8,7 +8,10 @@ body {
   background-color: #fef2f2;
 }
 
-h1, h2, h3, h4 {
+h1,
+h2,
+h3,
+h4 {
   color: #991b1b;
   font-weight: bold;
 }
@@ -16,12 +19,15 @@ h1, h2, h3, h4 {
 h1 {
   font-size: 3rem;
 }
+
 h2 {
   font-size: 2rem;
 }
+
 h3 {
   font-size: 1.5rem;
 }
+
 h4 {
   font-size: 1rem;
 }
@@ -48,6 +54,7 @@ select {
   padding: 12px;
   font-size: 9pt;
 }
+
 select:focus {
   outline: none;
   border-color: #991b1b;
@@ -62,13 +69,13 @@ select:focus {
   min-height: 100vh;
 }
 
-  @media (max-width: 1024px) {
-    .main-container {
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-    }
+@media (max-width: 1024px) {
+  .main-container {
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
   }
+}
 
 .box {
   background-color: white;
@@ -82,9 +89,11 @@ select:focus {
   border-radius: 8px;
 }
 
-  @media (max-width: 1024px) {
-    .box {width: 100%;}
+@media (max-width: 1024px) {
+  .box {
+    width: 100%;
   }
+}
 
 .navbar {
   background-color: white;
@@ -146,19 +155,24 @@ select:focus {
 }
 
 .custom-loader {
-  width:50px;
-  height:50px;
-  --c:radial-gradient(farthest-side,#991b1b 92%,#0000);
-  background: 
+  width: 50px;
+  height: 50px;
+  --c: radial-gradient(farthest-side, #991b1b 92%, #0000);
+  background:
     var(--c) 50% 0,
     var(--c) 50% 100%,
     var(--c) 100% 50%,
-    var(--c) 0    50%;
-  background-size:12px 12px;
-  background-repeat:no-repeat;
-  animation:s7 1s infinite;
+    var(--c) 0 50%;
+  background-size: 12px 12px;
+  background-repeat: no-repeat;
+  animation: s7 1s infinite;
 }
-@keyframes s7 {to{transform: rotate(.5turn)}}
+
+@keyframes s7 {
+  to {
+    transform: rotate(.5turn)
+  }
+}
 
 @media (max-width: 480px) {
   .xs-custom {
@@ -170,13 +184,21 @@ select:focus {
   width: 25px;
   height: 25px;
   border-radius: 50%;
-  background: 
-    radial-gradient(farthest-side,#991b1b 94%,#0000) top/8px 8px no-repeat,
-    conic-gradient(#0000 30%,#991b1b);
-  -webkit-mask: radial-gradient(farthest-side,#0000 calc(100% - 8px),#000 0);
-  animation:s3 1s infinite linear;
+  background:
+    radial-gradient(farthest-side, #991b1b 94%, #0000) top/8px 8px no-repeat,
+    conic-gradient(#0000 30%, #991b1b);
+  -webkit-mask: radial-gradient(farthest-side, #0000 calc(100% - 8px), #000 0);
+  animation: s3 1s infinite linear;
 }
 
-@keyframes s3{ 
-  100%{transform: rotate(1turn)}
+@keyframes s3 {
+  100% {
+    transform: rotate(1turn)
+  }
+}
+
+@media print {
+  button {
+    display: none; /* Nasconde il bottone di stampa */
+  }
 }
