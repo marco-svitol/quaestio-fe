@@ -12,6 +12,7 @@ const PrintPage = () => {
     // Evito che si possa tornare indietro quando la pagina sta caricando la stampa
     const [isCanBack, setIsCanBack] = useState(false);
 
+
     // Avvio la stampa solo quando anche ImageBox ha caricato l'Immagine
     const [isImageLoaded, setIsImageLoaded] = useState(false);
     useEffect(() => {
@@ -54,8 +55,6 @@ const PrintPage = () => {
                     <ImageBox image={showedImage} setIsImageLoaded={setIsImageLoaded} isPrinting />
                 }
             </div>
-
-
         </div>
     )
 }

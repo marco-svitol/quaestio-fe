@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import Pdf from "./Pdf";
 
+
 const ImageBox = ({ image, setIsImageLoaded, isPrinting }) => {
     const { desc, format, link, nofpages } = image;
     const token = useSelector(state => state.login.token);
@@ -66,6 +67,7 @@ const ImageBox = ({ image, setIsImageLoaded, isPrinting }) => {
                         <div className={`flex flex-col items-center w-full ${isPrinting ? 'border-0' : 'border-2 border-red-100 py-8'} rounded-3xl`}>
                             {!isPrinting && <h4 className="mb-4">Immagine:</h4>}
                             <img src={fileData} alt="image" className={`${isPrinting ? 'max-h-[800px]' : 'w-96'} rounded-2xl`} />
+
                         </div>
                     ) : (
                         fetchStatus === 'succeeded' &&
