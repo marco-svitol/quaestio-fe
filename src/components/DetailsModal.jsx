@@ -43,6 +43,7 @@ const DetailsModal = ({ data, close }) => {
 
     // Image showed selection
     const [showedImage, setShowedImage] = useState(null);
+    const [isNotImage, setIsNotImage] = useState(false);
     useEffect(() => {
         if (openData) {
             console.log('openData.images_links: ', openData)
@@ -56,18 +57,24 @@ const DetailsModal = ({ data, close }) => {
                         setShowedImage(second)
                     }
                 }
+            } else {
+                console.log('THERE IS NO FUCKING IMAGE')
+                setIsNotImage(true)
             }
         }
     }, [openData])
 
     // Gestisco la visualizzazione del tasto Print solo quando anche ImageBox ha caricato l'Immagine
-    const [isImageLoaded, setIsImageLoaded] = useState(false);
+    const [isImageLoaded, setIsImageLoaded] = useState(false); // isImageLoaded sarà settato su true una volta carica l'immagine da ImageBox oppure anche se l'immagine non è presente
     const [isPrintable, setIsPrintable] = useState(false);
     useEffect(() => {
         if (data && openData && formattedDate && showedImage && isImageLoaded) {
             setIsPrintable(true)
         }
-    }, [data, openData, formattedDate, showedImage, isImageLoaded])
+        if (isNotImage) {
+            setIsPrintable(true)
+        }
+    }, [data, openData, formattedDate, showedImage, isImageLoaded, isNotImage])
 
     return (
         <>
@@ -82,7 +89,9 @@ const DetailsModal = ({ data, close }) => {
                     <p className="text-sm">Richiedente/i: {data.applicant}</p>
                     <p className="text-sm">Inventore/i: {data.inventor_name}</p>
                 </div>
-                {isPrintable && <Link to="/print-element" state={{ data, openData, formattedDate, showedImage, isImageLoaded }}><MiniPrimaryButton text="Stampa" /></Link>}
+
+                {isPrintable && <Link to="/print-element" state={{ data, openData, formattedDate, showedImage, isImageLoaded, isNotImage }}><MiniPrimaryButton text="Stampa" /></Link>}
+
                 {data.abstract && <div className="flex flex-col 2xl:flex-row border-2 rounded-xl p-3 gap-4">
                     <div className="w-[500px]">
                         <h4>Riassunto:</h4>

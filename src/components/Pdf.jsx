@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { Worker, Viewer, PageIndicator } from "@react-pdf-viewer/core";
 import '@react-pdf-viewer/core/lib/styles/index.css';
 
-const Pdf = ({ url }) => {
+const Pdf = ({ url, isPrinting }) => {
     
     const [totalPages, setTotalPages] = useState(null);
     const [currentPage, setCurrentPage] = useState(0);
@@ -17,7 +17,7 @@ const Pdf = ({ url }) => {
     };
     return (
         <Worker workerUrl="https://unpkg.com/pdfjs-dist@3.4.120/build/pdf.worker.min.js">
-            <div className="w-96">
+            <div className={`${isPrinting ? 'w-[700px]' : 'w-96'}`}>
                 <Viewer fileUrl={url} onPageChange={(e) => handlePageChange(e.pageIndex)}/>
                 {totalPages !== null && (
                     <div>

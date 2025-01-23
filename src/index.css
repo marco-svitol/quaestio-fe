@@ -198,7 +198,29 @@ select:focus {
 }
 
 @media print {
+
+  .fixed {
+    position: static !important;
+    /* Cambia il layout per la stampa */
+    inset: auto !important;
+  }
+
+  .page {
+    page-break-after: always;
+    /* Forza l'interruzione di pagina */
+  }
+
+  .page:last-of-type {
+    page-break-after: auto;
+    /* Nessuna interruzione dopo l'ultima pagina */
+  }
+
+  .navbar {
+    display: none;
+  }
+
   button {
-    display: none; /* Nasconde il bottone di stampa */
+    display: none;
+    /* Nasconde il bottone di stampa */
   }
 }
