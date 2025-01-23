@@ -23,7 +23,7 @@ const PrintPage = () => {
         <div ref={componentRef} className="fixed inset-0 bg-white p-8 flex flex-col gap-3">
             <div className="w-48" onClick={() => navigate(-1)}><MiniPrimaryButton text="Torna indietro" /></div>
             <h3 className="text-black mr-8">{data.invention_title}</h3>
-            {openData && <p className="font-bold">Numero di pubblicazione: <Link to={openData.ops_link} target="_blank"><i class="fi fi-rs-link text-red-800"></i> <span className="hover:underline text-red-800">{data.doc_num}</span></Link></p>}
+            {openData && <p className="font-bold text-sm">Numero di pubblicazione: <Link to={openData.ops_link} target="_blank"><i class="fi fi-rs-link text-red-800"></i> <span className="hover:underline text-red-800">{data.doc_num}</span></Link></p>}
             <div className="flex flex-col border-2 rounded-xl p-3">
                 <p className="text-sm">Data di pubblicazione: {formattedDate}</p>
                 <p className="text-sm">Richiedente/i: {data.applicant}</p>
@@ -32,7 +32,7 @@ const PrintPage = () => {
             {data.abstract && <div className="flex flex-col 2xl:flex-row border-2 rounded-xl p-3 gap-4">
                 <div className="w-[500px]">
                     <h4>Riassunto:</h4>
-                    <p>{data.abstract}</p>
+                    <p className="text-sm">{data.abstract}</p>
                 </div>
                 <div className="w-[500px] text-center">
                     {
