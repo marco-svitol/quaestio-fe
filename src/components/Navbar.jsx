@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { useAuth0 } from "@auth0/auth0-react";
-import { PrimaryButton, SecondaryButton } from "./Buttons";
+import { MiniSecondaryButton, PrimaryButton, SecondaryButton } from "./Buttons";
 import { getLoggedByAuth0, getUnloggedByAuth0 } from "../redux/loginSlice";
 import { getFavourites } from "../redux/favouritesSlice";
 import { setSection } from "../redux/sectionSlice";
@@ -80,7 +80,9 @@ const Navbar = () => {
                     <Link to="/"><li className={`cursor-pointer hover:text-black ${sectionNumber === 1 ? 'bg-red-100' : ''} rounded-lg p-2`} onClick={() => { handleSection(1) }}>Preferiti</li></Link>
                 </ul>}
                 {!isAuthenticated && <PrimaryButton text="Login" click={() => loginWithRedirect()} />}
-                {isAuthenticated && <i class="fi fi-rr-circle-xmark text-3xl text-red-800 mb-[-5px] cursor-pointer" onClick={handleLogout}></i>}
+                {
+                    isAuthenticated && <MiniSecondaryButton text="Logout" click={handleLogout} />
+                }
             </div>
         </div>
     )

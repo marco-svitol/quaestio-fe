@@ -26,10 +26,10 @@ export const DisabledButton = ({ text }) => {
     return (
         <button className="my-4 py-4 px-8 min-w-[150px] rounded-lg bg-red-200 text-white font-medium cursor-default">{text}</button>
     )
-
 }
+
 export const MiniDisabledButton = ({ text, click }) => {
     return (
-        <button className="my-4 py-2 px-4 min-w-[100px] rounded-lg bg-red-200 font-medium whitespace-nowrap text-white" onClick={click} >{text}</button>
+        <button className="my-4 py-2 px-4 min-w-[100px] rounded-lg bg-red-200 font-medium whitespace-nowrap text-white cursor-default" onClick={click} >{text}</button>
     )
 }
