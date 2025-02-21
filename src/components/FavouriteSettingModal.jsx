@@ -1,9 +1,8 @@
 import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
-import { MiniPrimaryButton, MiniSecondaryButton } from "./Buttons";
+import { MiniDisabledButton, MiniPrimaryButton, MiniSecondaryButton } from "./Buttons";
 
 const FavouriteSettingModal = ({ close, categoryId, setFavouriteFetch }) => {
-    console.log('bmfolderId: ', categoryId)
 
     // Vado a pescare il nome della categoria in Redux userProfile
     const { bmfolders } = useSelector(state => state.userProfile);
@@ -34,9 +33,6 @@ const FavouriteSettingModal = ({ close, categoryId, setFavouriteFetch }) => {
             name: name
         })
     }
-    useEffect(() => {
-        console.log('selecetedCategory: ', selectedCategory)
-    }, [selectedCategory])
 
     // Invio fetch cambio categoria:
     const sendData = () => {
@@ -73,15 +69,23 @@ const FavouriteSettingModal = ({ close, categoryId, setFavouriteFetch }) => {
             {
                 selectedCategory &&
                 <div className="flex flex-col self-end">
-            
-                        <MiniPrimaryButton text={`Sposta preferito in '${selectedCategory.name}'`} click={sendData}/>
-            
+
+                    {/* Questa condizione imposta un grayed out al button se è selezionata la categoria corrente */}
+                    {
+                        selectedCategory.id === categoryId ? (
+                            <MiniDisabledButton text={`Sposta preferito in '${selectedCategory.name}'`} />
+                        ) : (
+                            <MiniPrimaryButton text={`Sposta preferito in '${selectedCategory.name}'`} click={sendData} />
+                        )
+                    }
+
+
                     {/* Elimina dai preferiti */}
-                    <MiniSecondaryButton text={`Elimina dai preferiti`} click={removeFavourite}/>
+                    <MiniSecondaryButton text={`Elimina dai preferiti`} click={removeFavourite} />
 
                 </div>
             }
-            
+
 
 
 

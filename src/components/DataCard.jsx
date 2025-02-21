@@ -34,9 +34,6 @@ const DataCard = ({ data, token, isEven, click, panel }) => {
         let bookmark = data.bookmark === false ? categoryId : categoryId || 0;
         try {
             setFavouriteFetchStatus('loading');
-            console.log('data.bookmark: ', data.bookmark);
-
-            console.log('bookmark: ', bookmark)
             const url = `${process.env.REACT_APP_SERVER_BASE_URL}/v2/bookmark?doc_num=${data.doc_num}&bookmark=${bookmark}`
             console.log('here url: ', url);
             const response = await fetch(url, {
