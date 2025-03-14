@@ -23,7 +23,11 @@ const ExportModal = () => {
     const [applicant, setApplicant] = useState(null);
     useEffect(() => {
         if (pa && searchValues) {
-            setApplicant(searchValues.applicants[pa - 1].name)
+            if (pa < 1009){
+                setApplicant(searchValues.applicants[pa - 1].name)
+            }else{
+                setApplicant("-")
+            }
         }
     }, [pa, searchValues])
 
