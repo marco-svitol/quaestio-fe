@@ -36,7 +36,7 @@ const ExportModal = () => {
                 document.doc_num,
                 applicant,
                 document.invention_title,
-                getFormattedDate(document.date)
+                getFormattedDocDate(document.date)
             ]
         })).flat();
         return flatReferenceData
@@ -114,6 +114,17 @@ const ExportModal = () => {
         const hours = String(now.getHours()).padStart(2, '0');
         const minutes = String(now.getMinutes()).padStart(2, '0');
         return `${year}${month}${day}_${hours}${minutes}`;
+    }
+
+    // Funzione per formattare la data del documento
+    function getFormattedDocDate(docDate) {
+        if (!docDate || !/^\d{8}$/.test(docDate)) {
+            return "-";
+        }
+        const year = docDate.substring(0, 4);
+        const month = docDate.substring(4, 6);
+        const day = docDate.substring(6, 8);
+        return `${day}/${month}/${year}`;
     }
 
     return (
