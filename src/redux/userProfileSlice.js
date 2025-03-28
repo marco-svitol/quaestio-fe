@@ -36,23 +36,23 @@ const userProfileSlice = createSlice({
         bmfolders: null
     },
     reducers: {},
-    extraReducers: {
-        [getUserProfile.pending]: (state) => {
-            state.fetchStatus = 'pending';
-        },
-        [getUserProfile.fulfilled]: (state, action) => {
-            state.userInfo = action.payload[0].userinfo;
-            state.searchValues = action.payload[0].searchvalues;
-            state.bmfolders = action.payload[0].bmfolders;
-            state.fetchStatus = 'succeeded'
-        },
-        [getUserProfile.rejected]: (state, action) => {
-            console.log('action.payload: ', action.payload)
-            state.error = action.error.message;
-            state.fetchStatus = 'error'
-        }
+    extraReducers: (builder) => {
+        builder
+            .addCase(getUserProfile.pending, (state) => {
+                state.fetchStatus = 'pending';
+            })
+            .addCase(getUserProfile.fulfilled, (state, action) => {
+                state.userInfo = action.payload[0].userinfo;
+                state.searchValues = action.payload[0].searchvalues;
+                state.bmfolders = action.payload[0].bmfolders;
+                state.fetchStatus = 'succeeded';
+            })
+            .addCase(getUserProfile.rejected, (state, action) => {
+                console.log('action.payload: ', action.payload);
+                state.error = action.error.message;
+                state.fetchStatus = 'error';
+            });
     }
-
-})
+});
 
 export default userProfileSlice.reducer;

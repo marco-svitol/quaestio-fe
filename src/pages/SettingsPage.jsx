@@ -343,7 +343,7 @@ const SettingsPage = () => {
     return (
         <div className="main-container settings">
             <PageBlock width="full" items="start">
-                <div><i class="fi fi-rr-settings-sliders text-3xl"></i></div>
+                <div><i className="fi fi-rr-settings-sliders text-3xl"></i></div>
                 <h3>Gestione utente</h3>
 
                 {/* Page size */}

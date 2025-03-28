@@ -37,7 +37,7 @@ const PrintPage = () => {
             <div className="page flex flex-col gap-2">
                 <div className="w-48" onClick={() => isCanBack ? navigate(-1) : null}><MiniPrimaryButton text="Torna indietro" /></div>
                 <h4 className="text-black mr-8">{data.invention_title}</h4>
-                {openData && <p className="font-bold text-sm">Numero di pubblicazione: <Link to={openData.ops_link} target="_blank"><i class="fi fi-rs-link text-red-800"></i> <span className="hover:underline text-red-800">{data.doc_num}</span></Link></p>}
+                {openData && <p className="font-bold text-sm">Numero di pubblicazione: <Link to={openData.ops_link} target="_blank"><i className="fi fi-rs-link text-red-800"></i> <span className="hover:underline text-red-800">{data.doc_num}</span></Link></p>}
                 <div className="flex flex-col border-2 rounded-xl p-3 text-xs">
                     <p>Data di pubblicazione: {formattedDate}</p>
                     <p>Richiedente/i: {data.applicant}</p>

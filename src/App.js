@@ -18,11 +18,10 @@ function App() {
     if (isLogged) {
       dispatch(getUserProfile({ token: token }))
     }
-  }, [isLogged])
+  }, [isLogged]);
 
   return (
-
-    <Router>
+    <Router future={{ v7_startTransition: true, v7_relativeSplatPath: true }}>
       <Navbar />
       <Routes>
         <Route exact path="/" element={isLogged ? <Homepage /> : <WelcomePage />} />
@@ -30,7 +29,6 @@ function App() {
         <Route exact path="/print-element" element={<PrintPage />} />
       </Routes>
     </Router>
-
   );
 }
 

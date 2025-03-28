@@ -83,7 +83,7 @@ const DetailsModal = ({ data, close }) => {
             <div className="modal relative">
                 <i className="fi fi-sr-circle-xmark cursor-pointer text-3xl text-red-800 absolute top-5 right-5" onClick={close}></i>
                 <h3 className="text-black mr-8">{data.invention_title}</h3>
-                {openData && <p className="font-bold">Numero di pubblicazione: <Link to={openData.ops_link} target="_blank"><i class="fi fi-rs-link text-red-800"></i> <span className="hover:underline text-red-800">{data.doc_num}</span></Link></p>}
+                {openData && <p className="font-bold">Numero di pubblicazione: <Link to={openData.ops_link} target="_blank"><i className="fi fi-rs-link text-red-800"></i> <span className="hover:underline text-red-800">{data.doc_num}</span></Link></p>}
                 <div className="flex flex-col border-2 rounded-xl p-3">
                     <p className="text-sm">Data di pubblicazione: {formattedDate}</p>
                     <p className="text-sm">Richiedente/i: {data.applicant}</p>

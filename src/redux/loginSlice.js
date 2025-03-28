@@ -19,8 +19,10 @@ const loginSlice = createSlice({
             state.token = null;
         }
     },
-    extraReducers: {}
-})
+    extraReducers: (builder) => {
+        // No extra reducers for now, but this ensures compatibility with Redux Toolkit 2.0
+    }
+});
 
 export const { getLoggedByAuth0, getUnloggedByAuth0} = loginSlice.actions;
 export default loginSlice.reducer;
