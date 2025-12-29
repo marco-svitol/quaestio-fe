@@ -343,8 +343,13 @@ const SettingsPage = () => {
     return (
         <div className="main-container settings">
             <PageBlock width="full" items="start">
-                <div><i class="fi fi-rr-settings-sliders text-3xl"></i></div>
-                <h3>Gestione utente</h3>
+                {/* Settings Header */}
+                <div className="flex items-center gap-4 mb-6 pb-4 border-b-2 border-red-100">
+                    <div className="flex items-center justify-center w-12 h-12 bg-red-100 rounded-full">
+                        <i className="fi fi-rr-settings-sliders text-2xl text-red-800"></i>
+                    </div>
+                    <h3 className="text-2xl font-semibold text-gray-800 m-0">Gestione utente</h3>
+                </div>
 
                 {/* Page size */}
                 <div className="flex items-center gap-2 border border-red-800 rounded p-4 h-[105px]">

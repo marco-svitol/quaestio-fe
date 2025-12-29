@@ -18,8 +18,7 @@ const loginSlice = createSlice({
             state.user = null;
             state.token = null;
         }
-    },
-    extraReducers: {}
+    }
 })
 
 export const { getLoggedByAuth0, getUnloggedByAuth0} = loginSlice.actions;

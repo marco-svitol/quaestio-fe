@@ -1,13 +1,15 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { useAuth0 } from "@auth0/auth0-react";
 import { MiniSecondaryButton, PrimaryButton, SecondaryButton } from "./Buttons";
 import { getLoggedByAuth0, getUnloggedByAuth0 } from "../redux/loginSlice";
 import { getFavourites } from "../redux/favouritesSlice";
 import { setSection } from "../redux/sectionSlice";
-import { Link } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 
 const Navbar = () => {
+    const location = useLocation();
+    const navigate = useNavigate();
 
     // Login
     const {
@@ -44,6 +46,20 @@ const Navbar = () => {
     const { sectionNumber } = useSelector(state => state.section);
     const sortStatus = useSelector(state => state.sortStatus);
     const { pageSize } = useSelector(state => state.search);
+
+    // Handle settings button click
+    const handleSettingsClick = () => {
+        if (location.pathname === '/settings') {
+            // If we're on settings page, go back to home page
+            navigate('/');
+            handleSection(0); // Set section to "Tutti"
+        } else {
+            // If we're not on settings page, navigate to settings
+            navigate('/settings');
+            handleSection(2);
+        }
+    };
+
     const handleSection = (number) => {
         dispatch(setSection(number))
         if (number === 1) {
@@ -67,7 +83,7 @@ const Navbar = () => {
                                 {userInfo && userInfo.logopath && <img src={userInfo.logopath} alt="avatar" className="rounded-xl" />}
                             </div>
                             {userInfo && userInfo.displayname && <h2>{userInfo.displayname}</h2>}
-                            <Link to="/settings"><div className="border border-red-300 py-1 pt-[10px] px-3 rounded-xl" onClick={() => handleSection(2)}><i class="fi fi-rr-user-gear text-2xl"></i></div></Link>
+                            <div className="border border-red-300 py-1 pt-[10px] px-3 rounded-xl cursor-pointer hover:bg-red-50" onClick={handleSettingsClick}><i class="fi fi-rr-user-gear text-2xl"></i></div>
                         </div>
                     ) : (
                         <></>

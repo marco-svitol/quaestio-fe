@@ -42,7 +42,11 @@ const ImageBox = ({ image, setIsImageLoaded, isPrinting }) => {
         if (fileData) {
             setIsImageLoaded(true);
         }
-    }, [fileData])
+        // Also set loaded if fetch failed and we're printing (to avoid infinite loading)
+        if (fetchStatus === 'rejected' && isPrinting) {
+            setIsImageLoaded(true);
+        }
+    }, [fileData, fetchStatus, isPrinting, setIsImageLoaded])
 
     // Fetch at start
     useEffect(() => {
@@ -59,7 +63,14 @@ const ImageBox = ({ image, setIsImageLoaded, isPrinting }) => {
         <div className={`flex flex-col items-center w-fit`}>
             {
                 fetchStatus === 'pending' ? (
-                    <div className={`custom-loader ${isPrinting ? 'my-0' : 'my-4'}`}></div>
+                    isPrinting ? 
+                        <div className="text-center text-gray-500">Caricamento immagine...</div> :
+                        <div className={`custom-loader ${isPrinting ? 'my-0' : 'my-4'}`}></div>
+                ) : fetchStatus === 'rejected' ? (
+                    <div className="text-center text-gray-500 p-4">
+                        {!isPrinting && <h4 className="mb-4">Immagine:</h4>}
+                        <p>Impossibile caricare l'immagine</p>
+                    </div>
                 ) : (
                     fetchStatus === 'succeeded' &&
                         fileData &&

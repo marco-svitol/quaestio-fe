@@ -15,24 +15,46 @@ const PrintPage = () => {
 
     // Avvio la stampa solo quando anche ImageBox ha caricato l'Immagine
     const [isImageLoaded, setIsImageLoaded] = useState(false);
-    useEffect(() => {
-        if (isImageLoaded && data && openData && formattedDate && showedImage) {
-            setTimeout(() => {
-                window.print();
-                setIsCanBack(true);
-            }, 1000)
-        } else {
-            if (isNotImage) {
-                window.print();
-                setIsCanBack(true);
-            }
-        }
+    const [shouldPrint, setShouldPrint] = useState(false);
+    const [printTriggered, setPrintTriggered] = useState(false);
 
-    }, [isImageLoaded, data, openData, formattedDate, showedImage, isNotImage])
+    useEffect(() => {
+        // Check if we should trigger print
+        if ((isImageLoaded && data && openData && formattedDate && showedImage) || isNotImage) {
+            setShouldPrint(true);
+        }
+    }, [isImageLoaded, data, openData, formattedDate, showedImage, isNotImage]);
+
+    // Add a fallback timer in case image never loads
+    useEffect(() => {
+        if (showedImage && !isNotImage) {
+            const fallbackTimer = setTimeout(() => {
+                if (!shouldPrint) {
+                    console.log('Image taking too long to load, printing anyway...');
+                    setShouldPrint(true);
+                }
+            }, 5000); // Wait max 5 seconds for image
+
+            return () => clearTimeout(fallbackTimer);
+        }
+    }, [showedImage, isNotImage, shouldPrint]);
+
+    useEffect(() => {
+        if (shouldPrint && !printTriggered) {
+            setPrintTriggered(true);
+            // Use requestAnimationFrame to ensure DOM is fully rendered
+            requestAnimationFrame(() => {
+                setTimeout(() => {
+                    window.print();
+                    setIsCanBack(true);
+                }, 500); // Reduced timeout
+            });
+        }
+    }, [shouldPrint, printTriggered]);
 
 
     return (
-        <div ref={componentRef} className="fixed inset-0 bg-white p-2 flex flex-col gap-2 overflow-y-auto">
+        <div ref={componentRef} className="min-h-screen bg-white p-2 flex flex-col gap-2 overflow-y-auto print:p-0">
             {/* PAGE 1 */}
             <div className="page flex flex-col gap-2">
                 <div className="w-48" onClick={() => isCanBack ? navigate(-1) : null}><MiniPrimaryButton text="Torna indietro" /></div>

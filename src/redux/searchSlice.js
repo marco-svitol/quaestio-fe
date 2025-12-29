@@ -107,66 +107,67 @@ const searchSlice = createSlice({
             state.page = 1;
         }
     },
-    extraReducers: {
-        [getSearch.pending]: (state) => {
-            state.fetchStatus = 'pending';
-        },
-        [getSearch.fulfilled]: (state, action) => {
-            state.error = null;
-            const data = action.payload.search;
-            let dataWithoutUserinfo;
-            if (Array.isArray(data)) {
-                // tolgo lo userinfo se c'è
-                dataWithoutUserinfo = data.filter(element => !Object.keys(element).includes('userinfo'));
-            }
-            const sort = action.payload.sort;
-            // Sorto solo se il sortStatus è settato
-            let sortedData = dataWithoutUserinfo;
-            if (sort.key) {
-                if (sort.key === 'bookmark') {
-                    sortedData = booleanSortArray(data, sort.key, sort.reverse);
-                } else if (sort.key === 'notes') {
-                    sortedData = emptyStringSortArray(data, sort.key, sort.reverse);
-                } else {
-                    sortedData = sortArray(data, sort.key, sort.reverse);
-                }
-            }
-            // Impagino
-            let pagedData;
-            if (Array.isArray(data)) {
-                pagedData = dataPagination(sortedData, state.pageSize)
-                state.pagedData = pagedData
-            } else {
-                state.pagedData = null;
-            }
-            state.fetchStatus = 'succeeded';
-        },
-        [getSearch.rejected]: (state, action) => {
-            state.error = action.error.message;
-            state.fetchStatus = 'error';
-        },
-        [toggleDocumentStatus.pending]: (state) => {
-            state.isDocumentStatusStatus = 'loading';
-        },
-        [toggleDocumentStatus.fulfilled]: (state, action) => {
-            const familyId = action.payload.familyId;
-            const newStatus = action.payload.newStatus;
-            const updatedPagedData = state.pagedData.map(page => {
-                return page.map(document => {
-                    if (document.familyid === familyId) {
-                        return { ...document, read_history: newStatus};
-                    } else {
-                        return document
-                    }
-                })
+    extraReducers: (builder) => {
+        builder
+            .addCase(getSearch.pending, (state) => {
+                state.fetchStatus = 'pending';
             })
-            state.pagedData = updatedPagedData;
-            state.isDocumentStatusStatus = 'succeeded';
-        },
-        [toggleDocumentStatus.rejected]: (state, action) => {
-            state.documentStatusError = action.error.message;
-            state.isDocumentStatusStatus = 'failed';
-        }
+            .addCase(getSearch.fulfilled, (state, action) => {
+                state.error = null;
+                const data = action.payload.search;
+                let dataWithoutUserinfo;
+                if (Array.isArray(data)) {
+                    // tolgo lo userinfo se c'è
+                    dataWithoutUserinfo = data.filter(element => !Object.keys(element).includes('userinfo'));
+                }
+                const sort = action.payload.sort;
+                // Sorto solo se il sortStatus è settato
+                let sortedData = dataWithoutUserinfo;
+                if (sort.key) {
+                    if (sort.key === 'bookmark') {
+                        sortedData = booleanSortArray(data, sort.key, sort.reverse);
+                    } else if (sort.key === 'notes') {
+                        sortedData = emptyStringSortArray(data, sort.key, sort.reverse);
+                    } else {
+                        sortedData = sortArray(data, sort.key, sort.reverse);
+                    }
+                }
+                // Impagino
+                let pagedData;
+                if (Array.isArray(data)) {
+                    pagedData = dataPagination(sortedData, state.pageSize)
+                    state.pagedData = pagedData
+                } else {
+                    state.pagedData = null;
+                }
+                state.fetchStatus = 'succeeded';
+            })
+            .addCase(getSearch.rejected, (state, action) => {
+                state.error = action.error.message;
+                state.fetchStatus = 'error';
+            })
+            .addCase(toggleDocumentStatus.pending, (state) => {
+                state.isDocumentStatusStatus = 'loading';
+            })
+            .addCase(toggleDocumentStatus.fulfilled, (state, action) => {
+                const familyId = action.payload.familyId;
+                const newStatus = action.payload.newStatus;
+                const updatedPagedData = state.pagedData.map(page => {
+                    return page.map(document => {
+                        if (document.familyid === familyId) {
+                            return { ...document, read_history: newStatus};
+                        } else {
+                            return document
+                        }
+                    })
+                })
+                state.pagedData = updatedPagedData;
+                state.isDocumentStatusStatus = 'succeeded';
+            })
+            .addCase(toggleDocumentStatus.rejected, (state, action) => {
+                state.documentStatusError = action.error.message;
+                state.isDocumentStatusStatus = 'failed';
+            });
     }
 })
 

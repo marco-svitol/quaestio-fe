@@ -198,6 +198,15 @@ select:focus {
 }
 
 @media print {
+  * {
+    -webkit-print-color-adjust: exact !important;
+    color-adjust: exact !important;
+    print-color-adjust: exact !important;
+  }
+
+  body {
+    background: white !important;
+  }
 
   .fixed {
     position: static !important;
@@ -208,6 +217,9 @@ select:focus {
   .page {
     page-break-after: always;
     /* Forza l'interruzione di pagina */
+    min-height: 100vh;
+    display: flex !important;
+    flex-direction: column !important;
   }
 
   .page:last-of-type {
@@ -216,11 +228,22 @@ select:focus {
   }
 
   .navbar {
-    display: none;
+    display: none !important;
   }
 
   button {
-    display: none;
+    display: none !important;
     /* Nasconde il bottone di stampa */
+  }
+
+  /* Ensure content is visible */
+  .custom-loader {
+    display: none !important;
+  }
+  
+  /* Make sure images are properly sized for print */
+  img {
+    max-width: 100% !important;
+    height: auto !important;
   }
 }
