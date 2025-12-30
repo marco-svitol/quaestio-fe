@@ -40,7 +40,7 @@ const Homepage = () => {
                             {/* Pin Button */}
                             <button
                                 onClick={toggleSearchPanelPin}
-                                className="absolute top-4 right-12 z-10 flex items-center justify-center w-10 h-10 bg-blue-600 hover:bg-blue-700 text-white rounded-full shadow-lg transition-all duration-300 hover:shadow-xl"
+                                className="absolute top-4 left-12 z-10 flex items-center justify-center w-10 h-10 bg-blue-600 hover:bg-blue-700 text-white rounded-full shadow-lg transition-all duration-300 hover:shadow-xl"
                                 title={isSearchPanelPinned ? 'Sblocca filtri' : 'Blocca filtri'}
                             >
                                 <i className={`fi ${isSearchPanelPinned ? 'fi-sr-thumbtack' : 'fi-rr-thumbtack'} text-sm transition-transform duration-300`}></i>
@@ -62,7 +62,7 @@ const Homepage = () => {
                             {/* Pin Button */}
                             <button
                                 onClick={toggleSearchPanelPin}
-                                className="absolute top-4 right-12 z-10 flex items-center justify-center w-10 h-10 bg-blue-600 hover:bg-blue-700 text-white rounded-full shadow-lg transition-all duration-300 hover:shadow-xl"
+                                className="absolute top-4 left-12 z-10 flex items-center justify-center w-10 h-10 bg-blue-600 hover:bg-blue-700 text-white rounded-full shadow-lg transition-all duration-300 hover:shadow-xl"
                                 title={isSearchPanelPinned ? 'Sblocca filtri' : 'Blocca filtri'}
                             >
                                 <i className={`fi ${isSearchPanelPinned ? 'fi-sr-thumbtack' : 'fi-rr-thumbtack'} text-sm transition-transform duration-300`}></i>
