@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { DisabledButton, MiniSecondaryButton, PrimaryButton } from './Buttons.js';
 import { useDispatch, useSelector } from "react-redux";
-import { getCategory, getFavourites, setFavPage } from "../redux/favouritesSlice.js";
+import { getCategory, getFavourites, setFavPage, setCategory } from "../redux/favouritesSlice.js";
 import PageBlock from "./PageBlock.jsx";
 import { setFavLastCall, setFavNeedFalse } from "../redux/favLastCallSlice.js";
 
@@ -11,11 +11,30 @@ const FavSearchBar = () => {
     // Handle input data
     const token = useSelector(state => state.login.token);
     const searchValues = useSelector((state) => state.userProfile.searchValues);
+    const { bmfolders } = useSelector((state) => state.userProfile);
+    const { favCategory } = useSelector((state) => state.favourites);
     const [inputData, setInputData] = useState({
         doc_num: '',
         pdfrom: '',
         pdto: ''
     })
+
+    // Handle category selection
+    const handleCategorySelect = (event) => {
+        const value = event.target.value === 'null' ? null : event.target.value;
+        const name = event.target.options[event.target.selectedIndex].getAttribute('data-name');
+        if (value === null) {
+            dispatch(setCategory({
+                id: null,
+                name: null
+            }))
+        } else {
+            dispatch(setCategory({
+                id: value,
+                name: name
+            }))
+        }
+    }
 
     // debug
     /* useEffect(() => {
@@ -78,35 +97,81 @@ const FavSearchBar = () => {
     return (
         <PageBlock width="fit" items="center">
 
-            <i className="fi fi-sr-star text-red-800 text-3xl"></i>
-            <h3>Ricerca tra i preferiti</h3>
-
-            <label htmlFor="data">Da:</label>
-            <input type="date" id="pdfrom" value={inputData.pdfrom} onChange={handleInputData} />
-            <label htmlFor="data">A:</label>
-            <input type="date" id="pdto" value={inputData.pdto} onChange={handleInputData} />
-            <div className="flex xs-custom text-sm gap-1">
-                <MiniSecondaryButton text="Ultimo mese" click={() => handleLast(30)} />
-                <MiniSecondaryButton text="Ultimo trimestre" click={() => handleLast(90)} />
-                <MiniSecondaryButton text="Ultimo anno" click={() => handleLast(365)} />
+            <div className="flex items-center gap-2 mb-4">
+                <i className="fi fi-sr-star text-red-800 text-3xl"></i>
+                <h3>Ricerca tra i preferiti</h3>
             </div>
 
-            <label htmlFor="doc_num">Numero di pubblicazione</label>
-            <input type="text" id="doc_num" onChange={handleInputData} />
+            {/* Main Layout - Two Columns */}
+            <div className="flex flex-col lg:flex-row gap-6 w-full">
+                {/* Left Column - Category and Document Number */}
+                <div className="flex-1 space-y-3">
+                    {/* Category Selection */}
+                    {bmfolders && (
+                        <div>
+                            <label htmlFor="category" className="block text-sm font-medium text-slate-700 mb-1">Categoria di preferiti</label>
+                            <select id="category" onChange={handleCategorySelect} className="w-full">
+                                <option key={0} value={null}>Tutti</option>
+                                {
+                                    bmfolders && bmfolders.map((element, index) => {
+                                        return <option key={index + 1} value={element.id} data-name={element.name}>{element.name}</option>
+                                    })
+                                }
+                            </select>
+                        </div>
+                    )}
+                    
+                    <div>
+                        <label htmlFor="doc_num" className="block text-sm font-medium text-slate-700 mb-1">Numero di pubblicazione</label>
+                        <input type="text" id="doc_num" onChange={handleInputData} value={inputData.doc_num} className="w-full" />
+                    </div>
+                </div>
 
-            {
-                favFetchStatus === 'pending' ? (
-                    <div className="custom-loader my-4"></div>
-                ) : (
-                    (
-                        inputData.pa !== '' || inputData.doc_num !== '' // capire se rende non obbligatori gli altri
-                    ) ? (
-                        <PrimaryButton text="Cerca" click={getReduxFavourites} />
-                    ) : (
-                        <DisabledButton text="Cerca" />
-                    )
-                )
-            }
+                {/* Visual Separator */}
+                <div className="hidden lg:block w-px bg-slate-200"></div>
+
+                {/* Right Column - Date Range and Search Button */}
+                <div className="flex-1 flex flex-col justify-between">
+                    <div className="space-y-3">
+                        <div className="flex gap-3 items-center">
+                            <div className="flex-1">
+                                <label htmlFor="pdfrom" className="block text-sm font-medium text-slate-700 mb-1">Da:</label>
+                                <input type="date" id="pdfrom" value={inputData.pdfrom} onChange={handleInputData} className="w-full" />
+                            </div>
+                            <div className="flex-1">
+                                <label htmlFor="pdto" className="block text-sm font-medium text-slate-700 mb-1">A:</label>
+                                <input type="date" id="pdto" value={inputData.pdto} onChange={handleInputData} className="w-full" />
+                            </div>
+                        </div>
+                        
+                        <div className="flex items-center gap-2">
+                            <span className="text-sm font-medium text-slate-700">Ultimo:</span>
+                            <div className="flex flex-wrap gap-2">
+                                <MiniSecondaryButton text="mese" click={() => handleLast(30)} />
+                                <MiniSecondaryButton text="trimestre" click={() => handleLast(90)} />
+                                <MiniSecondaryButton text="anno" click={() => handleLast(365)} />
+                            </div>
+                        </div>
+                    </div>
+                    
+                    {/* Search Button - Bottom Right */}
+                    <div className="flex justify-end mt-3">
+                        {
+                            favFetchStatus === 'pending' ? (
+                                <div className="custom-loader my-4"></div>
+                            ) : (
+                                (
+                                    inputData.pa !== '' || inputData.doc_num !== '' // capire se rende non obbligatori gli altri
+                                ) ? (
+                                    <PrimaryButton text="Cerca" click={getReduxFavourites} />
+                                ) : (
+                                    <DisabledButton text="Cerca" />
+                                )
+                            )
+                        }
+                    </div>
+                </div>
+            </div>
 
         </PageBlock>
     )

@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { useAuth0 } from "@auth0/auth0-react";
 import { MiniSecondaryButton, PrimaryButton, SecondaryButton } from "./Buttons";
@@ -36,6 +36,11 @@ const Navbar = () => {
         dispatch(getUnloggedByAuth0());
         logout();
     }
+
+    // Dropdown state for user menu
+    const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+    const toggleDropdown = () => setIsDropdownOpen(!isDropdownOpen);
+    const closeDropdown = () => setIsDropdownOpen(false);
 
     // Get user profile
     const { isLogged, token } = useSelector((state) => state.login);
@@ -75,30 +80,127 @@ const Navbar = () => {
 
     return (
         <div className="navbar">
-            <div className="min-w-[150px]">
-                {
-                    isLogged ? (
-                        <div className="flex gap-4 items-center">
-                            <div className="w-16 h-16 flex justify-center items-center border p-1">
-                                {userInfo && userInfo.logopath && <img src={userInfo.logopath} alt="avatar" className="rounded-xl" />}
-                            </div>
-                            {userInfo && userInfo.displayname && <h2>{userInfo.displayname}</h2>}
-                            <div className="border border-red-300 py-1 pt-[10px] px-3 rounded-xl cursor-pointer hover:bg-red-50" onClick={handleSettingsClick}><i class="fi fi-rr-user-gear text-2xl"></i></div>
+            <div className="flex items-center gap-4">
+                {/* Profile Picture on Left */}
+                {isAuthenticated && userInfo?.logopath && (
+                    <div className="w-10 h-10 border-2 border-slate-200 bg-white shadow-sm overflow-hidden">
+                        <img 
+                            src={userInfo.logopath} 
+                            alt={userInfo?.displayname || 'User avatar'} 
+                            className="w-full h-full object-cover" 
+                        />
+                    </div>
+                )}
+                
+                <div className="min-w-[150px]">
+                    {isLogged ? (
+                        <div className="flex items-center">
+                            <h2 className="font-bold text-slate-800">Pat-To-Date</h2>
                         </div>
                     ) : (
-                        <></>
-                    )
-                }
+                        <div className="flex items-center">
+                            <h2 className="font-bold text-slate-800">Pat-To-Date</h2>
+                        </div>
+                    )}
+                </div>
             </div>
-            <div className="flex gap-4 items-center">
-                {isAuthenticated && <ul className="flex gap-4 text-2xl text-red-800 mr-8 items-center">
-                    <Link to="/"><li className={`cursor-pointer hover:text-black ${sectionNumber === 0 ? 'bg-red-100' : ''} rounded-lg p-2`} onClick={() => { handleSection(0) }}>Tutti</li></Link>
-                    <Link to="/"><li className={`cursor-pointer hover:text-black ${sectionNumber === 1 ? 'bg-red-100' : ''} rounded-lg p-2`} onClick={() => { handleSection(1) }}>Preferiti</li></Link>
-                </ul>}
+            <div className="flex gap-6 items-center">
+                {isAuthenticated && (
+                    <nav className="flex gap-2 mr-4">
+                        <Link to="/">
+                            <button 
+                                className={`px-4 py-2 rounded-lg font-medium text-sm transition-all duration-200 ${
+                                    sectionNumber === 0 
+                                    ? 'bg-blue-100 text-blue-700 shadow-sm' 
+                                    : 'text-slate-600 hover:bg-slate-100 hover:text-slate-800'
+                                }`} 
+                                onClick={() => { handleSection(0) }}
+                            >
+                                Tutti
+                            </button>
+                        </Link>
+                        <Link to="/">
+                            <button 
+                                className={`px-4 py-2 rounded-lg font-medium text-sm transition-all duration-200 ${
+                                    sectionNumber === 1 
+                                    ? 'bg-blue-100 text-blue-700 shadow-sm' 
+                                    : 'text-slate-600 hover:bg-slate-100 hover:text-slate-800'
+                                }`} 
+                                onClick={() => { handleSection(1) }}
+                            >
+                                Preferiti
+                            </button>
+                        </Link>
+                    </nav>
+                )}
+                
                 {!isAuthenticated && <PrimaryButton text="Login" click={() => loginWithRedirect()} />}
-                {
-                    isAuthenticated && <MiniSecondaryButton text="Logout" click={handleLogout} />
-                }
+                
+                {isAuthenticated && (
+                    <div className="relative">
+                        <button 
+                            onClick={toggleDropdown}
+                            className="flex items-center gap-2 p-1 rounded-full hover:bg-slate-100 transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-1"
+                        >
+                            <div className="w-10 h-10 rounded-full border-2 border-slate-200 bg-white shadow-sm overflow-hidden">
+                                {user?.picture ? (
+                                    <img 
+                                        src={user.picture} 
+                                        alt={user?.name || 'User avatar'} 
+                                        className="w-full h-full object-cover" 
+                                    />
+                                ) : (
+                                    <div className="w-full h-full bg-gradient-to-r from-blue-500 to-blue-600 flex items-center justify-center">
+                                        <span className="text-white font-semibold text-sm">
+                                            {user?.name?.charAt(0) || user?.email?.charAt(0) || 'U'}
+                                        </span>
+                                    </div>
+                                )}
+                            </div>
+                        </button>
+                        
+                        {isDropdownOpen && (
+                            <>
+                                <div 
+                                    className="fixed inset-0 z-10" 
+                                    onClick={closeDropdown}
+                                ></div>
+                                <div className="absolute right-0 mt-2 w-64 bg-white border border-slate-200 rounded-xl shadow-lg z-20 py-2">
+                                    <div className="px-4 py-3 border-b border-slate-100">
+                                        <p className="text-sm font-medium text-slate-900">
+                                            {userInfo?.displayname || user?.name || 'User'}
+                                        </p>
+                                        <p className="text-sm text-slate-600 truncate">
+                                            {user?.email}
+                                        </p>
+                                    </div>
+                                    
+                                    <button
+                                        onClick={() => {
+                                            handleSettingsClick();
+                                            closeDropdown();
+                                        }}
+                                        className="flex items-center w-full px-4 py-2 text-sm text-slate-700 hover:bg-slate-50 transition-colors duration-150"
+                                    >
+                                        <i className="fi fi-rr-user-gear text-base mr-3 text-slate-500"></i>
+                                        Impostazioni
+                                    </button>
+                                    
+                                    <button
+                                        onClick={() => {
+                                            handleLogout();
+                                            closeDropdown();
+                                        }}
+                                        className="flex items-center w-full px-4 py-2 text-sm text-slate-700 hover:bg-slate-50 transition-colors duration-150"
+                                    >
+                                        <i className="fi fi-rr-exit text-base mr-3 text-slate-500"></i>
+                                        Esci ({userInfo?.displayname || user?.name || 'User'})
+                                    </button>
+                                </div>
+                            </>
+                        )}
+                    </div>
+                )}
             </div>
         </div>
     )

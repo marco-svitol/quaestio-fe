@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { createPortal } from "react-dom";
 import { Link } from "react-router-dom";
 import { useSelector } from "react-redux";
 import ImageBox from "./ImageBox.jsx";
@@ -76,12 +77,19 @@ const DetailsModal = ({ data, close }) => {
         }
     }, [data, openData, formattedDate, showedImage, isImageLoaded, isNotImage])
 
-    return (
+    return createPortal(
         <>
             <div className="overlay" onClick={close}>
             </div>
             <div className="modal relative">
                 <i className="fi fi-sr-circle-xmark cursor-pointer text-3xl text-red-800 absolute top-5 right-5" onClick={close}></i>
+                {isPrintable && (
+                    <div className="absolute top-16 right-5">
+                        <Link to="/print-element" state={{ data, openData, formattedDate, showedImage, isImageLoaded, isNotImage }}>
+                            <MiniPrimaryButton text="Stampa" />
+                        </Link>
+                    </div>
+                )}
                 <h3 className="text-black mr-8">{data.invention_title}</h3>
                 {openData && <p className="font-bold">Numero di pubblicazione: <Link to={openData.ops_link} target="_blank"><i class="fi fi-rs-link text-red-800"></i> <span className="hover:underline text-red-800">{data.doc_num}</span></Link></p>}
                 <div className="flex flex-col border-2 rounded-xl p-3">
@@ -90,14 +98,12 @@ const DetailsModal = ({ data, close }) => {
                     <p className="text-sm">Inventore/i: {data.inventor_name}</p>
                 </div>
 
-                {isPrintable && <Link to="/print-element" state={{ data, openData, formattedDate, showedImage, isImageLoaded, isNotImage }}><MiniPrimaryButton text="Stampa" /></Link>}
-
                 {data.abstract && <div className="flex flex-col 2xl:flex-row border-2 rounded-xl p-3 gap-4">
-                    <div className="w-[500px]">
+                    <div className="flex-1">
                         <h4>Riassunto:</h4>
                         <p>{data.abstract}</p>
                     </div>
-                    <div className="w-[500px] text-center">
+                    <div className="flex-1 min-w-[600px]">
                         {
                             showedImage &&
                             <ImageBox image={showedImage} setIsImageLoaded={setIsImageLoaded} />
@@ -105,7 +111,8 @@ const DetailsModal = ({ data, close }) => {
                     </div>
                 </div>}
             </div>
-        </>
+        </>,
+        document.body
     )
 }
 

@@ -1,6 +1,10 @@
 import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
-import Pdf from "./Pdf";
+import PdfClean from "./PdfClean";
+// Alternative PDF viewers (with browser controls):
+// import Pdf from "./Pdf";
+// import PdfAlternative from "./PdfAlternative";
+// import PdfEmbed from "./PdfEmbed";
 
 
 const ImageBox = ({ image, setIsImageLoaded, isPrinting }) => {
@@ -77,16 +81,16 @@ const ImageBox = ({ image, setIsImageLoaded, isPrinting }) => {
                         fileType.includes('image/') ? (
                         <div className={`flex flex-col items-center w-full ${isPrinting ? 'border-0' : 'border-2 border-red-100 py-8'} rounded-3xl`}>
                             {!isPrinting && <h4 className="mb-4">Immagine:</h4>}
-                            <img src={fileData} alt="image" className={`${isPrinting ? 'max-h-[800px]' : 'w-96'} rounded-2xl`} />
+                            <img src={fileData} alt="image" className={`${isPrinting ? 'max-h-[800px]' : 'max-w-full h-auto'} rounded-2xl`} />
 
                         </div>
                     ) : (
                         fetchStatus === 'succeeded' &&
                         fileData &&
                         fileType === 'application/pdf' &&
-                        <div className={`flex flex-col items-center w-full ${isPrinting ? 'border-0' : 'border-2 border-red-100 py-8'} rounded-3xl`}>
+                        <div className={`flex flex-col items-center ${isPrinting ? 'border-0' : 'border-2 border-red-100 py-8'} rounded-3xl`} style={{ width: '100%', maxWidth: '100%' }}>
                             {!isPrinting && <h4 className="mb-4">Immagine:</h4>}
-                            <Pdf url={fileData} isPrinting={isPrinting} />
+                            <PdfClean url={fileData} isPrinting={isPrinting} />
                         </div>
                     )
                 )

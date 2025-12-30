@@ -77,58 +77,86 @@ const SearchBar = () => {
 
     return (
         <PageBlock width="fit" items="center">
+            
+            {/* Main Layout - Two Columns */}
+            <div className="flex flex-col lg:flex-row gap-6 w-full">
+                {/* Left Column - Main Search Fields */}
+                <div className="flex-1 space-y-3">
+                    <div>
+                        <label htmlFor="pa" className="block text-sm font-medium text-slate-700 mb-1">Richiedente (obbligatorio)</label>
+                        <select id="pa" onChange={handleInputData} value={inputData.pa} className="w-full">
+                            <option value="">---</option>
+                            {
+                                searchValues && searchValues.applicants.map((element, index) => (
+                                    <option key={index} value={element.id}>{element.name}</option>
+                                ))
+                            }
+                        </select>
+                    </div>
 
-            <h3>Ricerca brevetti</h3>
-            <label htmlFor="pa">Richiedente (obbligatorio)</label>
-            <select id="pa" onChange={handleInputData} value={inputData.pa}>
-                <option value="">---</option>
-                {
-                    searchValues && searchValues.applicants.map((element, index) => (
-                        <option key={index} value={element.id}>{element.name}</option>
-                    ))
-                }
-            </select>
+                    <div>
+                        <label htmlFor="tecarea" className="block text-sm font-medium text-slate-700 mb-1">Area tecnica (opzionale)</label>
+                        <select id="tecarea" onChange={handleInputData} value={inputData.tecarea} className="w-full">
+                            <option value="">---</option>
+                            {
+                                searchValues && searchValues.tecareas.map((element, index) => (
+                                    <option key={index} value={element.id}>{element.name}</option>
+                                ))
+                            }
+                        </select>
+                    </div>
 
+                    <div>
+                        <label htmlFor="doc_num" className="block text-sm font-medium text-slate-700 mb-1">Numero di pubblicazione</label>
+                        <input type="text" id="doc_num" onChange={handleInputData} value={inputData.doc_num} className="w-full" />
+                    </div>
+                </div>
 
-            <label htmlFor="tecarea">Area tecnica (opzionale)</label>
-            <select id="tecarea" onChange={handleInputData} value={inputData.tecarea}>
-                <option value="">---</option>
-                {
-                    searchValues && searchValues.tecareas.map((element, index) => (
-                        <option key={index} value={element.id}>{element.name}</option>
-                    ))
-                }
-            </select>
+                {/* Visual Separator */}
+                <div className="hidden lg:block w-px bg-slate-200"></div>
 
-            {/* Data da */}
-            <label htmlFor="data">Da:</label>
-            <input type="date" id="pdfrom" value={inputData.pdfrom} onChange={handleInputData} />
-
-            {/* Data a */}
-            <label htmlFor="data">A:</label>
-            <input type="date" id="pdto" value={inputData.pdto} onChange={handleInputData} />
-            <div className="flex xs-custom text-sm gap-1">
-                <MiniSecondaryButton text="Ultimo mese" click={() => handleLast(30)} />
-                <MiniSecondaryButton text="Ultimo trimestre" click={() => handleLast(90)} />
-                <MiniSecondaryButton text="Ultimo anno" click={() => handleLast(365)} />
+                {/* Right Column - Date Range and Search Button */}
+                <div className="flex-1 flex flex-col justify-between">
+                    <div className="space-y-3">
+                        <div className="flex gap-3 items-center">
+                            <div className="flex-1">
+                                <label htmlFor="pdfrom" className="block text-sm font-medium text-slate-700 mb-1">Da:</label>
+                                <input type="date" id="pdfrom" value={inputData.pdfrom} onChange={handleInputData} className="w-full" />
+                            </div>
+                            <div className="flex-1">
+                                <label htmlFor="pdto" className="block text-sm font-medium text-slate-700 mb-1">A:</label>
+                                <input type="date" id="pdto" value={inputData.pdto} onChange={handleInputData} className="w-full" />
+                            </div>
+                        </div>
+                        
+                        <div className="flex items-center gap-2">
+                            <span className="text-sm font-medium text-slate-700">Ultimo:</span>
+                            <div className="flex flex-wrap gap-2">
+                                <MiniSecondaryButton text="mese" click={() => handleLast(30)} />
+                                <MiniSecondaryButton text="trimestre" click={() => handleLast(90)} />
+                                <MiniSecondaryButton text="anno" click={() => handleLast(365)} />
+                            </div>
+                        </div>
+                    </div>
+                    
+                    {/* Search Button - Bottom Right */}
+                    <div className="flex justify-end mt-3">
+                        {
+                            fetchStatus === 'pending' ? (
+                                <div className="custom-loader my-4"></div>
+                            ) : (
+                                (
+                                    inputData.pa !== '' || inputData.doc_num !== '' // capire se rende non obbligatori gli altri
+                                ) ? (
+                                    <PrimaryButton text="Cerca" click={getReduxSearch} />
+                                ) : (
+                                    <DisabledButton text="Cerca" />
+                                )
+                            )
+                        }
+                    </div>
+                </div>
             </div>
-
-            <label htmlFor="doc_num">Numero di pubblicazione</label>
-            <input type="text" id="doc_num" onChange={handleInputData} value={inputData.doc_num} />
-
-            {
-                fetchStatus === 'pending' ? (
-                    <div className="custom-loader my-4"></div>
-                ) : (
-                    (
-                        inputData.pa !== '' || inputData.doc_num !== '' // capire se rende non obbligatori gli altri
-                    ) ? (
-                        <PrimaryButton text="Cerca" click={getReduxSearch} />
-                    ) : (
-                        <DisabledButton text="Cerca" />
-                    )
-                )
-            }
 
         </PageBlock>
     )

@@ -6,9 +6,16 @@ import { MiniPrimaryButton, PrimaryButton } from "../components/Buttons";
 import { useNavigate } from 'react-router-dom';
 import { repageDataPageSize, setPageSize } from "../redux/searchSlice";
 import MiniLoader from '../components/MiniLoader';
-import { getUserProfile } from '../redux/userProfileSlice.js'
+import { getUserProfile } from '../redux/userProfileSlice.js';
+import { useAuth0 } from "@auth0/auth0-react";
 
 const SettingsPage = () => {
+
+    // Auth0 user information
+    const { user } = useAuth0();
+
+    // Get user profile from Redux store
+    const { userInfo } = useSelector((state) => state.userProfile);
 
     // CAMBIO NUMERO ELEMENTI PER PAGINA
 
@@ -344,24 +351,106 @@ const SettingsPage = () => {
         <div className="main-container settings">
             <PageBlock width="full" items="start">
                 {/* Settings Header */}
-                <div className="flex items-center gap-4 mb-6 pb-4 border-b-2 border-red-100">
-                    <div className="flex items-center justify-center w-12 h-12 bg-red-100 rounded-full">
-                        <i className="fi fi-rr-settings-sliders text-2xl text-red-800"></i>
+                <div className="flex items-center justify-between mb-6 pb-4 border-b border-slate-200">
+                    <div className="flex items-center gap-4">
+                        <div className="flex items-center justify-center w-12 h-12 bg-blue-100 rounded-full">
+                            <i className="fi fi-rr-settings-sliders text-2xl text-blue-700"></i>
+                        </div>
+                        <h3 className="text-2xl font-semibold text-slate-800 m-0">Gestione utente</h3>
                     </div>
-                    <h3 className="text-2xl font-semibold text-gray-800 m-0">Gestione utente</h3>
+                    <div className="flex gap-3">
+                        <button 
+                            onClick={() => window.history.back()}
+                            className="flex items-center gap-2 px-4 py-2 text-sm font-medium text-slate-700 bg-slate-100 hover:bg-slate-200 rounded-lg transition-all duration-200"
+                        >
+                            <i className="fi fi-rr-arrow-left text-sm"></i>
+                            Indietro
+                        </button>
+                        <button 
+                            onClick={() => navigate('/')}
+                            className="flex items-center gap-2 px-4 py-2 text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 rounded-lg transition-all duration-200"
+                        >
+                            <i className="fi fi-rr-home text-sm"></i>
+                            Home
+                        </button>
+                    </div>
+                </div>
+
+                {/* User Profile Information */}
+                <div className="bg-slate-50 rounded-lg p-6 mb-6">
+                    <div className="flex items-start gap-6">
+                        <div className="w-20 h-20 rounded-full border-2 border-slate-200 bg-white shadow-sm overflow-hidden flex-shrink-0">
+                            {userInfo && userInfo.logopath ? (
+                                <img 
+                                    src={userInfo.logopath} 
+                                    alt={userInfo.displayname || 'User avatar'} 
+                                    className="w-full h-full object-cover" 
+                                />
+                            ) : (
+                                <div className="w-full h-full bg-gradient-to-r from-blue-500 to-blue-600 flex items-center justify-center">
+                                    <span className="text-white font-bold text-xl">
+                                        {user?.name?.charAt(0) || user?.email?.charAt(0) || 'U'}
+                                    </span>
+                                </div>
+                            )}
+                        </div>
+                        <div className="flex-1">
+                            <h4 className="text-xl font-semibold text-slate-800 mb-2">
+                                {userInfo?.displayname || user?.name || 'Nome non disponibile'}
+                            </h4>
+                            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm">
+                                <div>
+                                    <span className="text-slate-600 font-medium">Email:</span>
+                                    <p className="text-slate-800">{user?.email || 'Non disponibile'}</p>
+                                </div>
+                                <div>
+                                    <span className="text-slate-600 font-medium">ID Utente:</span>
+                                    <p className="text-slate-800 font-mono text-xs">{user?.sub || 'Non disponibile'}</p>
+                                </div>
+                                <div>
+                                    <span className="text-slate-600 font-medium">Ultimo accesso:</span>
+                                    <p className="text-slate-800">
+                                        {user?.updated_at ? new Date(user.updated_at).toLocaleDateString('it-IT', {
+                                            year: 'numeric',
+                                            month: 'long',
+                                            day: 'numeric',
+                                            hour: '2-digit',
+                                            minute: '2-digit'
+                                        }) : 'Non disponibile'}
+                                    </p>
+                                </div>
+                                <div>
+                                    <span className="text-slate-600 font-medium">Email verificata:</span>
+                                    <p className="text-slate-800">
+                                        {user?.email_verified ? (
+                                            <span className="inline-flex items-center px-2 py-1 rounded-full text-xs bg-green-100 text-green-800">
+                                                <i className="fi fi-sr-check-circle mr-1"></i>
+                                                Verificata
+                                            </span>
+                                        ) : (
+                                            <span className="inline-flex items-center px-2 py-1 rounded-full text-xs bg-yellow-100 text-yellow-800">
+                                                <i className="fi fi-sr-exclamation-triangle mr-1"></i>
+                                                Non verificata
+                                            </span>
+                                        )}
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
 
                 {/* Page size */}
-                <div className="flex items-center gap-2 border border-red-800 rounded p-4 h-[105px]">
-                    <label htmlFor="pageSize">Quantità di elementi per pagina:</label>
+                <div className="flex items-center gap-2 border border-slate-300 rounded-lg p-4 h-[105px] bg-white">
+                    <label htmlFor="pageSize" className="text-slate-700 font-medium">Quantità di elementi per pagina:</label>
                     {pageSize && <input type="number" id="pageSize" value={pageSizeInput} className="w-16" onChange={handlePageSizeInput} />}
                     {pageSizeInput && pageSizeInput !== pageSize && <div className="ml-4"><MiniPrimaryButton text="Salva elementi per pagina" click={sendPageSizeSettings} /></div>}
-                    {!pageSizeInput && <h4>Nessun valore specificato</h4>}
+                    {!pageSizeInput && <h4 className="text-slate-600">Nessun valore specificato</h4>}
                 </div>
 
                 {/* Cambio password */}
-                <div className="flex flex-col items-start gap-2 border border-red-800 rounded p-4">
-                    <label>Modifica password:</label>
+                <div className="flex flex-col items-start gap-2 border border-slate-300 rounded-lg p-4 bg-white">
+                    <label className="text-slate-700 font-medium">Modifica password:</label>
                     <div className="flex flex-col lg:flex-row items-center gap-8 border p-4">
                         <div className="flex flex-col items-start">
                             <label htmlFor="oldPassword">Vecchia password</label>
@@ -443,6 +532,24 @@ const SettingsPage = () => {
 
                     </div>
                 }
+
+                {/* Navigation Footer */}
+                <div className="flex justify-center gap-4 pt-6 mt-8 border-t border-slate-200">
+                    <button 
+                        onClick={() => window.history.back()}
+                        className="flex items-center gap-2 px-6 py-3 font-medium text-slate-700 bg-slate-100 hover:bg-slate-200 rounded-lg transition-all duration-200"
+                    >
+                        <i className="fi fi-rr-arrow-left"></i>
+                        Torna indietro
+                    </button>
+                    <button 
+                        onClick={() => navigate('/')}
+                        className="flex items-center gap-2 px-6 py-3 font-medium text-white bg-blue-600 hover:bg-blue-700 rounded-lg transition-all duration-200"
+                    >
+                        <i className="fi fi-rr-home"></i>
+                        Pagina principale
+                    </button>
+                </div>
 
             </PageBlock>
         </div>

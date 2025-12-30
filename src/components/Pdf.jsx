@@ -1,34 +1,38 @@
 import { useState } from "react";
-import { RPProvider, RPDefaultLayout, RPPages, RPConfig } from '@pdf-viewer/react';
+import { Document, Page, pdfjs } from 'react-pdf';
+
+// Configure pdfjs worker
+pdfjs.GlobalWorkerOptions.workerSrc = `https://cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.min.js`;
 
 const Pdf = ({ url, isPrinting }) => {
-    
-    const [totalPages, setTotalPages] = useState(null);
-    const [currentPage, setCurrentPage] = useState(0);
+    const [numPages, setNumPages] = useState(null);
 
-    const handlePageChange = (page) => {
-        setCurrentPage(page);
-    };
-
-    const handleDocumentLoadSuccess = ({ numPages }) => {
-        setTotalPages(numPages);
-    };
+    function onDocumentLoadSuccess({ numPages }) {
+        setNumPages(numPages);
+    }
 
     return (
-        <RPConfig>
-            <RPProvider src={url} onDocumentLoadSuccess={handleDocumentLoadSuccess}>
-                <div className={`${isPrinting ? 'w-[700px]' : 'w-96'}`}>
-                    <RPDefaultLayout style={{ height: '100%' }}>
-                        <RPPages onPageChange={handlePageChange} />
-                    </RPDefaultLayout>
-                    {totalPages !== null && (
-                        <div>
-                            <p>Page {currentPage + 1} of {totalPages}</p>
-                        </div>
-                    )}
-                </div>
-            </RPProvider>
-        </RPConfig>
+        <div style={{ 
+            width: '100%',
+            display: 'flex',
+            justifyContent: 'center'
+        }}>
+            <Document 
+                file={{ url: url }}
+                onLoadSuccess={onDocumentLoadSuccess}
+                onLoadError={(error) => console.error('PDF Load Error:', error)}
+            >
+                {Array.from(new Array(numPages), (el, index) => (
+                    <Page 
+                        key={`page_${index + 1}`}
+                        pageNumber={index + 1}
+                        width={isPrinting ? 700 : 800}
+                        renderTextLayer={false}
+                        renderAnnotationLayer={false}
+                    />
+                ))}
+            </Document>
+        </div>
     )
 }
 
